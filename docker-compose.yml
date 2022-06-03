@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+
+  data:
+    container_name: MsSqlServer
+    image: mcr.microsoft.com/mssql/server:latest
+    ports:
+      - "1435:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=MyStrong(!)Password12
+    volumes:
+      - mssqldata:/var/opt/mssql
+    networks:
+      - CookingRecipesSystem-network
+
+  server:
+    container_name: ServerStartup
+    image: borislavgeorgievgeorgiev/cooking-recipes-system-server:1.0
+    build:
+      context: ./src
+      dockerfile: Server/DockerfileServer
+    ports:
+      - "6000:80"
+    restart: on-failure
+    networks:
+      - CookingRecipesSystem-network
+
+  client:
+    container_name: ClientStartup
+    image: borislavgeorgievgeorgiev/cooking-recipes-system-client:1.0
+    build:
+      context: ./src
+      dockerfile: Client/DockerfileClient
+    ports:
+      - "80:80"
+    restart: on-failure
+
+networks:
+  CookingRecipesSystem-network:
+
+
+volumes:
+  mssqldata:
