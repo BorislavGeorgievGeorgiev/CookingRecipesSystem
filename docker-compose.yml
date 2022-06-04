@@ -20,7 +20,7 @@ services:
     image: borislavgeorgievgeorgiev/cooking-recipes-system-server:1.0
     build:
       context: ./src
-      dockerfile: Server/DockerfileServer
+      dockerfile: Server/Startup/Dockerfile
     ports:
       - "6000:80"
     restart: on-failure
@@ -32,7 +32,7 @@ services:
     image: borislavgeorgievgeorgiev/cooking-recipes-system-client:1.0
     build:
       context: ./src
-      dockerfile: Client/DockerfileClient
+      dockerfile: Client/Startup/Dockerfile
     ports:
       - "80:80"
     restart: on-failure
