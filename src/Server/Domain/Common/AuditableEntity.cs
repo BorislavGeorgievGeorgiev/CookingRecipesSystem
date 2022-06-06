@@ -3,6 +3,7 @@
 namespace CookingRecipesSystem.Domain.Common
 {
 	public abstract class AuditableEntity<TKey> : Entity<TKey>, IAuditableEntity
+		where TKey : struct
 	{
 		private string? _createdBy;
 		private string? _modifiedBy;
