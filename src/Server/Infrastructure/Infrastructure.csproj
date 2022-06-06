@@ -4,8 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-		<AssemblyName>CookingRecipesSystem.Identity.Domain</AssemblyName>
-		<RootNamespace>CookingRecipesSystem.Identity.Domain</RootNamespace>
+		<AssemblyName>CookingRecipesSystem.Infrastructure</AssemblyName>
+		<RootNamespace>CookingRecipesSystem.Infrastructure</RootNamespace>
   </PropertyGroup>
 
 </Project>

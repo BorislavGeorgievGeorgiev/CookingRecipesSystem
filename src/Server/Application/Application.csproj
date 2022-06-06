@@ -4,8 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-		<AssemblyName>CookingRecipesSystem.Identity.Application</AssemblyName>
-		<RootNamespace>CookingRecipesSystem.Identity.Application</RootNamespace>
+		<AssemblyName>CookingRecipesSystem.Application</AssemblyName>
+		<RootNamespace>CookingRecipesSystem.Application</RootNamespace>
   </PropertyGroup>
 
 </Project>
