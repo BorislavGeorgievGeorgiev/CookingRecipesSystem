@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>bbe6e133-10e1-45a9-b9fb-3603921e5927</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<AssemblyName>CookingRecipesSystem.Startup</AssemblyName>
+		<RootNamespace>CookingRecipesSystem.Startup</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
