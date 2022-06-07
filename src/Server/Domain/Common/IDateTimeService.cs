@@ -1,6 +1,6 @@
 ﻿namespace CookingRecipesSystem.Domain.Common
 {
-	public interface IDateTime
+	public interface IDateTimeService
 	{
 		DateTime Now { get; }
 	}
