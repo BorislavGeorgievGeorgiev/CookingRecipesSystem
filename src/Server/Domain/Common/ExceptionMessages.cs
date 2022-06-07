@@ -4,5 +4,7 @@
 	{
 		public const string CreatorIdNotNull = "The creator user ID cannot be null.";
 		public const string ModifierIdNotNull = "The modifier user ID cannot be null.";
+
+		public const string ModelValidationFailures = "One or more validation failures have occurred.";
 	}
 }
