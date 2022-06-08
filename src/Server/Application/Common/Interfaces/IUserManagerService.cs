@@ -5,10 +5,10 @@ namespace CookingRecipesSystem.Application.Common.Interfaces
 {
 	public interface IUserManagerService : ITransientService
 	{
-		Task<string> GetUserName(string userId);
+		Task<string?> GetUserName(string userId);
 
-		Task<(Result Result, string UserId)> CreateUser(string userName, string password);
+		Task<(ApplicationResult Result, string UserId)> CreateUser(string userName, string password);
 
-		Task<Result> DeleteUser(string userId);
+		Task<ApplicationResult> DeleteUser(string userId);
 	}
 }
