@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookingRecipesSystem.Infrastructure.Identity
 {
-	public class UserManagerService : IUserManagerService
+	internal class UserManagerService : IUserManagerService
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 

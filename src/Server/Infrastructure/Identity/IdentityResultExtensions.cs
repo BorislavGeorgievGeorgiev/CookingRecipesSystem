@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CookingRecipesSystem.Infrastructure.Identity
 {
-	public static class IdentityResultExtensions
+	internal static class IdentityResultExtensions
 	{
 		public static ApplicationResult ToApplicationResult(this IdentityResult result)
 				=> result.Succeeded

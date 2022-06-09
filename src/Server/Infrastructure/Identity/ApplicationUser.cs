@@ -2,7 +2,7 @@
 
 namespace CookingRecipesSystem.Infrastructure.Identity
 {
-	public class ApplicationUser : IdentityUser
+	internal class ApplicationUser : IdentityUser
 	{
 	}
 }
