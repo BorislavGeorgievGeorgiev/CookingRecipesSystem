@@ -2,6 +2,7 @@
 
 using CookingRecipesSystem.Application;
 using CookingRecipesSystem.Domain.Common;
+using CookingRecipesSystem.Infrastructure.Common;
 using CookingRecipesSystem.Infrastructure.Identity;
 using CookingRecipesSystem.Infrastructure.Persistence;
 
@@ -23,6 +24,8 @@ namespace CookingRecipesSystem.Infrastructure
 					bilder => bilder.MigrationsAssembly(
 						typeof(CookingRecipesSystemDbContext).Assembly.FullName)));
 
+			services.Configure<JwtConfig>(configuration.GetSection(nameof(JwtConfig)),
+				options => options.BindNonPublicProperties = true);
 			services.AddConventionalServices(Assembly.GetExecutingAssembly());
 
 			services
@@ -37,8 +40,6 @@ namespace CookingRecipesSystem.Infrastructure
 					 options.Password.RequiredLength = 3;
 				 })
 				 .AddEntityFrameworkStores<CookingRecipesSystemDbContext>();
-
-
 
 			return services;
 		}
