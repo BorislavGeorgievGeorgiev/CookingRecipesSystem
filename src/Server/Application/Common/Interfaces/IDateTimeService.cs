@@ -2,10 +2,8 @@
 
 namespace CookingRecipesSystem.Application.Common.Interfaces
 {
-	public interface ICurrentUserService : IScopedService
+	public interface IDateTimeService : ITransientService
 	{
-		string? GetUserId { get; }
-
-		bool IsAuthenticated { get; }
+		DateTime Now { get; }
 	}
 }

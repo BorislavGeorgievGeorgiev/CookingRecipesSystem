@@ -1,5 +1,4 @@
-﻿
-using CookingRecipesSystem.Domain.Common;
+﻿using CookingRecipesSystem.Application.Common.Interfaces;
 
 namespace CookingRecipesSystem.Application.Common.Services
 {

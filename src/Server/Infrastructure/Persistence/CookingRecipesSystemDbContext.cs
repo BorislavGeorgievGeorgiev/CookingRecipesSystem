@@ -9,7 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookingRecipesSystem.Infrastructure.Persistence
 {
-	internal class CookingRecipesSystemDbContext : IdentityDbContext<ApplicationUser>, IApplicationData
+	internal class CookingRecipesSystemDbContext :
+		IdentityDbContext<ApplicationUser>, IApplicationData
 	{
 		private readonly ICurrentUserService _currentUserService;
 		private readonly IDateTimeService _dateTimeService;
@@ -35,11 +36,11 @@ namespace CookingRecipesSystem.Infrastructure.Persistence
 				switch (entry.State)
 				{
 					case EntityState.Added:
-						entry.Entity.CreatedBy ??= this._currentUserService.GetUserId;
+						entry.Entity.CreatedBy ??= this._currentUserService.GetUserId!;
 						entry.Entity.CreatedOn = this._dateTimeService.Now;
 						break;
 					case EntityState.Modified:
-						entry.Entity.ModifiedBy = this._currentUserService.GetUserId;
+						entry.Entity.ModifiedBy = this._currentUserService.GetUserId!;
 						entry.Entity.ModifiedOn = this._dateTimeService.Now;
 						break;
 				}

@@ -15,7 +15,8 @@ namespace CookingRecipesSystem.Application
 			=> services
 			.AddAutoMapper(Assembly.GetExecutingAssembly())
 			.AddMediatR(Assembly.GetExecutingAssembly())
-			.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+			.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>))
+			.AddConventionalServices(Assembly.GetExecutingAssembly());
 
 		public static IServiceCollection AddConventionalServices(
 			 this IServiceCollection services, Assembly assembly)
