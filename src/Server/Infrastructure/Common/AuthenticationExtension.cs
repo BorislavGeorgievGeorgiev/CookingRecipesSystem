@@ -25,9 +25,11 @@ namespace CookingRecipesSystem.Infrastructure.Common
 				x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 				x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 			})
-			.AddJwtBearer(x =>
+			.AddJwtBearer(bearer =>
 			{
-				x.TokenValidationParameters = new TokenValidationParameters
+				bearer.RequireHttpsMetadata = true;
+				bearer.SaveToken = true;
+				bearer.TokenValidationParameters = new TokenValidationParameters
 				{
 					IssuerSigningKey = new SymmetricSecurityKey(key),
 					ValidateIssuerSigningKey = true,

@@ -4,6 +4,7 @@ using System.Text;
 
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Infrastructure.Common;
+using CookingRecipesSystem.Infrastructure.Identity;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -14,11 +15,11 @@ namespace CookingRecipesSystem.Infrastructure.Services
 	public class JwtService : IJwtService
 	{
 		private readonly JwtConfig _jwtConfig;
-		private readonly UserManager<IApplicationUser> _userManager;
+		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IDateTimeService _dateTimeService;
 
 		public JwtService(IOptions<JwtConfig> jwtConfig,
-			UserManager<IApplicationUser> userManager,
+			UserManager<ApplicationUser> userManager,
 			IDateTimeService dateTimeService)
 		{
 			this._jwtConfig = jwtConfig.Value;
@@ -26,7 +27,7 @@ namespace CookingRecipesSystem.Infrastructure.Services
 			this._dateTimeService = dateTimeService;
 		}
 
-		public async Task<string> GenerateToken(IApplicationUser user)
+		public async Task<string> GenerateToken(ApplicationUser user)
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var key = Encoding.ASCII.GetBytes(this._jwtConfig.Secret);

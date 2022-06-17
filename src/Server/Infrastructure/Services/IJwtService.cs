@@ -1,10 +1,9 @@
-﻿using CookingRecipesSystem.Application.Common.Interfaces;
-using CookingRecipesSystem.Application.Common.Interfaces.Lifetime;
+﻿using CookingRecipesSystem.Infrastructure.Identity;
 
 namespace CookingRecipesSystem.Infrastructure.Services
 {
-	public interface IJwtService : ITransientService
+	public interface IJwtService
 	{
-		Task<string> GenerateToken(IApplicationUser user);
+		Task<string> GenerateToken(ApplicationUser user);
 	}
 }

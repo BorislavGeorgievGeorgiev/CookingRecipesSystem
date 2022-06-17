@@ -5,7 +5,9 @@ using CookingRecipesSystem.Domain.Common;
 using CookingRecipesSystem.Infrastructure.Common;
 using CookingRecipesSystem.Infrastructure.Identity;
 using CookingRecipesSystem.Infrastructure.Persistence;
+using CookingRecipesSystem.Infrastructure.Services;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +31,8 @@ namespace CookingRecipesSystem.Infrastructure
 			services.AddConventionalServices(Assembly.GetExecutingAssembly());
 
 			services
-				.AddIdentityCore<ApplicationUser>(options =>
+				.AddTransient<IJwtService, JwtService>()
+				.AddIdentity<ApplicationUser, IdentityRole>(options =>
 				 {
 					 options.Password.RequireNonAlphanumeric = false;
 					 options.Password.RequireDigit = false;
@@ -40,6 +43,9 @@ namespace CookingRecipesSystem.Infrastructure
 					 options.Password.RequiredLength = 3;
 				 })
 				 .AddEntityFrameworkStores<CookingRecipesSystemDbContext>();
+
+			services.AddTokenAuthentication(configuration);
+			services.AddAuthorization();
 
 			return services;
 		}
