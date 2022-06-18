@@ -27,7 +27,7 @@ namespace CookingRecipesSystem.Infrastructure.Services
 			this._dateTimeService = dateTimeService;
 		}
 
-		public async Task<string> GenerateToken(ApplicationUser user)
+		public async Task<string> GenerateToken(string userId, string userEmail)
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var key = Encoding.ASCII.GetBytes(this._jwtConfig.Secret);
@@ -36,8 +36,8 @@ namespace CookingRecipesSystem.Infrastructure.Services
 			{
 				Subject = new ClaimsIdentity(new[]
 				{
-					new Claim(ClaimTypes.NameIdentifier, user.Id),
-					new Claim(ClaimTypes.Email, user.Email)
+					new Claim(ClaimTypes.NameIdentifier, userId),
+					new Claim(ClaimTypes.Email, userEmail)
 				}),
 				Expires = this._dateTimeService
 				.Now
@@ -46,7 +46,8 @@ namespace CookingRecipesSystem.Infrastructure.Services
 					new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
 			};
 
-			var currentUserRoles = await this._userManager.GetRolesAsync(user);
+			var currentUser = await this._userManager.FindByIdAsync(userId);
+			var currentUserRoles = await this._userManager.GetRolesAsync(currentUser);
 
 			foreach (var role in currentUserRoles)
 			{

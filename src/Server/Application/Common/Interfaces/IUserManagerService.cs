@@ -7,7 +7,15 @@ namespace CookingRecipesSystem.Application.Common.Interfaces
 	{
 		Task<string?> GetUserName(string userId);
 
-		Task<(ApplicationResult Result, string UserId)> CreateUser(string userName, string password);
+		Task<string?> FindByEmailAsync(string email);
+
+		Task<bool> CheckPasswordAsync(string userId, string password);
+
+		Task<ApplicationResult> ChangePasswordAsync(
+			string userId, string currentPassword, string newPassowrd);
+
+		Task<(ApplicationResult Result, string UserId)> CreateUser(
+			string userName, string email, string passwordd);
 
 		Task<ApplicationResult> DeleteUser(string userId);
 	}

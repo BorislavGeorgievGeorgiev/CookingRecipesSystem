@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookingRecipesSystem.Infrastructure.Identity
 {
-	internal class UserManagerService : IUserManagerService
+	public class UserManagerService : IUserManagerService
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 
@@ -20,17 +20,45 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 						.Select(u => u.UserName)
 						.FirstOrDefaultAsync();
 
-		public async Task<(ApplicationResult Result, string UserId)> CreateUser(string userName, string password)
+		public async Task<string?> FindByEmailAsync(string email)
+		{
+			var user = await this._userManager.FindByEmailAsync(email);
+
+			return user.Email;
+		}
+
+		public async Task<bool> CheckPasswordAsync(string userId, string password)
+		{
+			var user = await this._userManager.FindByIdAsync(userId);
+
+			var isValidPassword = await this._userManager.CheckPasswordAsync(user, password);
+
+			return isValidPassword;
+		}
+
+		public async Task<ApplicationResult> ChangePasswordAsync(
+			string userId, string currentPassword, string newPassowrd)
+		{
+			var user = await this._userManager.FindByIdAsync(userId);
+
+			var identityResult = await this._userManager.ChangePasswordAsync(
+					user, currentPassword, newPassowrd);
+
+			return identityResult.ToApplicationResult();
+		}
+
+		public async Task<(ApplicationResult Result, string UserId)> CreateUser(
+			string userName, string email, string password)
 		{
 			var user = new ApplicationUser
 			{
 				UserName = userName,
-				Email = userName,
+				Email = email,
 			};
 
-			var result = await this._userManager.CreateAsync(user, password);
+			var identityResult = await this._userManager.CreateAsync(user, password);
 
-			return (result.ToApplicationResult(), user.Id);
+			return (identityResult.ToApplicationResult(), user.Id);
 		}
 
 		public async Task<ApplicationResult> DeleteUser(string userId)
@@ -53,5 +81,6 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 
 			return result.ToApplicationResult();
 		}
+
 	}
 }

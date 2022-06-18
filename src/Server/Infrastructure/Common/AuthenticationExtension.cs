@@ -20,10 +20,10 @@ namespace CookingRecipesSystem.Infrastructure.Common
 
 			var key = Encoding.ASCII.GetBytes(secret);
 
-			services.AddAuthentication(x =>
+			services.AddAuthentication(options =>
 			{
-				x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 			})
 			.AddJwtBearer(bearer =>
 			{

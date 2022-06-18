@@ -2,15 +2,15 @@
 {
 	public class ApplicationResult
 	{
-		internal ApplicationResult(bool succeeded, IEnumerable<string> errors)
+		public ApplicationResult(bool succeeded, IEnumerable<string> errors)
 		{
 			this.Succeeded = succeeded;
 			this.Errors = errors.ToArray();
 		}
 
-		public bool Succeeded { get; protected set; }
+		public bool Succeeded { get; }
 
-		public IEnumerable<string> Errors { get; set; }
+		public IEnumerable<string> Errors { get; }
 
 		public static ApplicationResult Success
 			=> new(true, Array.Empty<string>());

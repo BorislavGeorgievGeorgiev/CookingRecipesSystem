@@ -1,13 +1,12 @@
-﻿using CookingRecipesSystem.Application.Common.Interfaces.Lifetime;
-using CookingRecipesSystem.Application.Common.Models;
+﻿using CookingRecipesSystem.Application.Common.Models;
 
 namespace CookingRecipesSystem.Application.Common.Interfaces
 {
-	public interface IIdentityService : ITransientService
+	public interface IIdentityService
 	{
-		//Task<ApplicationResult<IApplicationUser>> Register(UserRequestModel userRequest);
+		Task<(ApplicationResult Result, string UserId)> Register(UserRequestModel userRequest);
 
-		//Task<ApplicationResult<UserResponseModel>> Login(UserRequestModel userRequest);
+		Task<(ApplicationResult Result, UserResponseModel response)> Login(UserRequestModel userRequest);
 
 		Task<ApplicationResult> ChangePassword(ChangePasswordRequestModel changePasswordRequest);
 	}

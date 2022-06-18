@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 
 using CookingRecipesSystem.Application;
+using CookingRecipesSystem.Application.Common.Interfaces;
+using CookingRecipesSystem.Application.Identity;
 using CookingRecipesSystem.Domain.Common;
 using CookingRecipesSystem.Infrastructure.Common;
 using CookingRecipesSystem.Infrastructure.Identity;
@@ -28,9 +30,9 @@ namespace CookingRecipesSystem.Infrastructure
 
 			services.Configure<JwtConfig>(configuration.GetSection(nameof(JwtConfig)),
 				options => options.BindNonPublicProperties = true);
-			services.AddConventionalServices(Assembly.GetExecutingAssembly());
 
 			services
+				.AddTransient<IIdentityService, IdentityService>()
 				.AddTransient<IJwtService, JwtService>()
 				.AddIdentity<ApplicationUser, IdentityRole>(options =>
 				 {
@@ -43,6 +45,8 @@ namespace CookingRecipesSystem.Infrastructure
 					 options.Password.RequiredLength = 3;
 				 })
 				 .AddEntityFrameworkStores<CookingRecipesSystemDbContext>();
+
+			services.AddConventionalServices(Assembly.GetExecutingAssembly());
 
 			services.AddTokenAuthentication(configuration);
 			services.AddAuthorization();
