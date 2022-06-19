@@ -34,20 +34,20 @@ namespace CookingRecipesSystem.Application.Identity
 			UserRequestModel userRequest)
 		{
 			UserTokenResponseModel response;
-			var userIdTupple = await this._userManagerService
+			var userIdTuple = await this._userManagerService
 				.FindUserIdByEmail(userRequest.Email);
 
-			if (userIdTupple.UserId == null)
+			if (userIdTuple.UserId == null)
 			{
 				response = new UserTokenResponseModel(string.Empty);
 
 				return (ApplicationResult.Failure(InvalidCredentials), response);
 			}
 
-			var isValidPasswordTupple = await this._userManagerService.CheckPassword(
-				userIdTupple.UserId!, userRequest.Password);
+			var isValidPasswordTuple = await this._userManagerService.CheckPassword(
+				userIdTuple.UserId!, userRequest.Password);
 
-			if (!isValidPasswordTupple.IsRightPassowrd)
+			if (!isValidPasswordTuple.IsRightPassowrd)
 			{
 				response = new UserTokenResponseModel(string.Empty);
 
@@ -55,7 +55,7 @@ namespace CookingRecipesSystem.Application.Identity
 			}
 
 			var token = await this._jwtService.GenerateToken(
-				userIdTupple.UserId!, userRequest.Email);
+				userIdTuple.UserId!, userRequest.Email);
 
 			response = new UserTokenResponseModel(token);
 
