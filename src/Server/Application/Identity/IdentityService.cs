@@ -5,6 +5,9 @@ namespace CookingRecipesSystem.Application.Identity
 {
 	public class IdentityService : IIdentityService
 	{
+		private const string InvalidCredentials = "Invalid credentials.";
+		private const string InvalidPassowrd = "Invalid passowrd.";
+
 		private readonly IUserManagerService _userManagerService;
 		private readonly IJwtService _jwtService;
 
@@ -16,40 +19,52 @@ namespace CookingRecipesSystem.Application.Identity
 			this._jwtService = jwtService;
 		}
 
-		public async Task<(ApplicationResult Result, string UserId)> Register(UserRequestModel userRequest)
+		public async Task<(ApplicationResult Result, UserIdResponseModel Response)> Register(
+			UserRequestModel userRequest)
 		{
-			var newUser = await this._userManagerService.CreateUser(
+			var newUserResult = await this._userManagerService.CreateUser(
 				userRequest.UserName, userRequest.Email, userRequest.Password);
 
-			return newUser;
+			var response = new UserIdResponseModel(newUserResult.UserId);
+
+			return (newUserResult.Result, response);
 		}
 
-		public async Task<(ApplicationResult Result, UserResponseModel response)> Login(UserRequestModel userRequest)
+		public async Task<(ApplicationResult Result, UserTokenResponseModel Response)> Login(
+			UserRequestModel userRequest)
 		{
-			var userId = await this._userManagerService.FindByEmailAsync(userRequest.Email);
+			UserTokenResponseModel response;
+			var userIdTupple = await this._userManagerService
+				.FindUserIdByEmail(userRequest.Email);
 
-			if (userId == null)
+			if (userIdTupple.UserId == null)
 			{
-				throw new ArgumentNullException("Invalid credentials.");
+				response = new UserTokenResponseModel(string.Empty);
+
+				return (ApplicationResult.Failure(InvalidCredentials), response);
 			}
 
-			var isValidPassword = await this._userManagerService.CheckPasswordAsync(userId!, userRequest.Password);
+			var isValidPasswordTupple = await this._userManagerService.CheckPassword(
+				userIdTupple.UserId!, userRequest.Password);
 
-			if (!isValidPassword)
+			if (!isValidPasswordTupple.IsRightPassowrd)
 			{
-				throw new ArgumentNullException("Invalid passowrd.");
+				response = new UserTokenResponseModel(string.Empty);
+
+				return (ApplicationResult.Failure(InvalidPassowrd), response);
 			}
 
-			var token = await this._jwtService.GenerateToken(userId!, userRequest.Email);
+			var token = await this._jwtService.GenerateToken(
+				userIdTupple.UserId!, userRequest.Email);
 
-			var result = new UserResponseModel(token);
+			response = new UserTokenResponseModel(token);
 
-			return (ApplicationResult.Success, result);
+			return (ApplicationResult.Success, response);
 		}
 
 		public Task<ApplicationResult> ChangePassword(
 			ChangePasswordRequestModel changePasswordRequest)
-			=> this._userManagerService.ChangePasswordAsync(
+			=> this._userManagerService.ChangePassword(
 				changePasswordRequest.UserId,
 				changePasswordRequest.CurrentPassword,
 				changePasswordRequest.NewPassword);

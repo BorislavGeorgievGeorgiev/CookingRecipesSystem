@@ -8,35 +8,57 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 {
 	public class UserManagerService : IUserManagerService
 	{
+		private const string NoUser = "There is no such user.";
+		private const string NoValidPassowrd = "The passowrd is not valid.";
+
 		private readonly UserManager<ApplicationUser> _userManager;
 
 		public UserManagerService(UserManager<ApplicationUser> userManager)
 				=> this._userManager = userManager;
 
-		public async Task<string?> GetUserName(string userId)
-				=> await this._userManager
-						.Users
-						.Where(u => u.Id == userId)
-						.Select(u => u.UserName)
-						.FirstOrDefaultAsync();
+		public async Task<(ApplicationResult Result, string? UserName)> GetUserName(string userId)
+		{
+			var userName = await this._userManager
+				.Users
+				.Where(u => u.Id == userId)
+				.Select(u => u.UserName)
+				.FirstOrDefaultAsync();
 
-		public async Task<string?> FindByEmailAsync(string email)
+			if (userName == null)
+			{
+				return (ApplicationResult.Failure(NoUser), null);
+			}
+
+			return (ApplicationResult.Success, userName);
+		}
+
+		public async Task<(ApplicationResult Result, string? UserId)> FindUserIdByEmail(string email)
 		{
 			var user = await this._userManager.FindByEmailAsync(email);
 
-			return user.Email;
+			if (user == null)
+			{
+				return (ApplicationResult.Failure(NoUser), null);
+			}
+
+			return (ApplicationResult.Success, user.Id);
 		}
 
-		public async Task<bool> CheckPasswordAsync(string userId, string password)
+		public async Task<(ApplicationResult Result, bool IsRightPassowrd)> CheckPassword(string userId, string password)
 		{
 			var user = await this._userManager.FindByIdAsync(userId);
 
 			var isValidPassword = await this._userManager.CheckPasswordAsync(user, password);
 
-			return isValidPassword;
+			if (!isValidPassword)
+			{
+				return (ApplicationResult.Failure(NoValidPassowrd), false);
+			}
+
+			return (ApplicationResult.Success, isValidPassword);
 		}
 
-		public async Task<ApplicationResult> ChangePasswordAsync(
+		public async Task<ApplicationResult> ChangePassword(
 			string userId, string currentPassword, string newPassowrd)
 		{
 			var user = await this._userManager.FindByIdAsync(userId);

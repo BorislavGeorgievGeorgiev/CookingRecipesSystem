@@ -5,13 +5,13 @@ namespace CookingRecipesSystem.Application.Common.Interfaces
 {
 	public interface IUserManagerService : ITransientService
 	{
-		Task<string?> GetUserName(string userId);
+		Task<(ApplicationResult Result, string? UserName)> GetUserName(string userId);
 
-		Task<string?> FindByEmailAsync(string email);
+		Task<(ApplicationResult Result, string? UserId)> FindUserIdByEmail(string email);
 
-		Task<bool> CheckPasswordAsync(string userId, string password);
+		Task<(ApplicationResult Result, bool IsRightPassowrd)> CheckPassword(string userId, string password);
 
-		Task<ApplicationResult> ChangePasswordAsync(
+		Task<ApplicationResult> ChangePassword(
 			string userId, string currentPassword, string newPassowrd);
 
 		Task<(ApplicationResult Result, string UserId)> CreateUser(

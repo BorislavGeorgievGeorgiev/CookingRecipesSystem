@@ -36,6 +36,7 @@ namespace CookingRecipesSystem.Infrastructure
 				.AddTransient<IJwtService, JwtService>()
 				.AddIdentity<ApplicationUser, IdentityRole>(options =>
 				 {
+					 options.User.RequireUniqueEmail = true;
 					 options.Password.RequireNonAlphanumeric = false;
 					 options.Password.RequireDigit = false;
 					 options.Password.RequireUppercase = false;

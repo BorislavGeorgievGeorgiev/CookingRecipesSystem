@@ -1,8 +1,8 @@
 ﻿namespace CookingRecipesSystem.Application.Common.Models
 {
-	public class UserResponseModel
+	public class UserTokenResponseModel
 	{
-		public UserResponseModel(string token)
+		public UserTokenResponseModel(string token)
 			=> this.Token = token;
 
 		public string Token { get; }
