@@ -7,7 +7,7 @@ namespace CookingRecipesSystem.Web.Common
 {
 	[ApiController]
 	[Route("api/[controller]")]
-	public abstract class ApiController : ControllerBase
+	public abstract class BaseApiController : ControllerBase
 	{
 		private IMediator? _mediator;
 

@@ -20,7 +20,7 @@ namespace CookingRecipesSystem.Application.Identity
 		}
 
 		public async Task<(ApplicationResult Result, UserIdResponseModel Response)> Register(
-			UserRequestModel userRequest)
+			UserRegisterRequestModel userRequest)
 		{
 			var newUserResult = await this._userManagerService.CreateUser(
 				userRequest.UserName, userRequest.Email, userRequest.Password);
@@ -31,16 +31,15 @@ namespace CookingRecipesSystem.Application.Identity
 		}
 
 		public async Task<(ApplicationResult Result, UserTokenResponseModel Response)> Login(
-			UserRequestModel userRequest)
+			UserLoginRequestModel userRequest)
 		{
-			UserTokenResponseModel response;
+			var response = new UserTokenResponseModel(string.Empty);
+
 			var userIdTuple = await this._userManagerService
 				.FindUserIdByEmail(userRequest.Email);
 
 			if (userIdTuple.UserId == null)
 			{
-				response = new UserTokenResponseModel(string.Empty);
-
 				return (ApplicationResult.Failure(InvalidCredentials), response);
 			}
 
@@ -49,8 +48,6 @@ namespace CookingRecipesSystem.Application.Identity
 
 			if (!isValidPasswordTuple.IsRightPassowrd)
 			{
-				response = new UserTokenResponseModel(string.Empty);
-
 				return (ApplicationResult.Failure(InvalidPassowrd), response);
 			}
 

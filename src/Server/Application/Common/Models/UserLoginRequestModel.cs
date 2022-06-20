@@ -1,15 +1,12 @@
 ﻿namespace CookingRecipesSystem.Application.Common.Models
 {
-	public class UserRequestModel
+	public class UserLoginRequestModel
 	{
-		protected UserRequestModel(string userName, string email, string password)
+		public UserLoginRequestModel(string email, string password)
 		{
-			this.UserName = userName;
 			this.Email = email;
 			this.Password = password;
 		}
-
-		public string UserName { get; }
 
 		public string Email { get; }
 
