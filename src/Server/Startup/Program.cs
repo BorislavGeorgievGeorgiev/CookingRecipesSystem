@@ -2,6 +2,7 @@ using CookingRecipesSystem.Application;
 using CookingRecipesSystem.Infrastructure;
 using CookingRecipesSystem.Infrastructure.Persistence.Initialize;
 using CookingRecipesSystem.Web;
+using CookingRecipesSystem.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,7 @@ using (var scope = app.Services.CreateScope())
 	await DataSeeder.SeedAsync(services);
 }
 
+app.UseCustomExceptionHandler();
 app.UseHttpsRedirection();
 
 app.UseRouting();

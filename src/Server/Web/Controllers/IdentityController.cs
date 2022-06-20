@@ -9,7 +9,7 @@ namespace CookingRecipesSystem.Web.Controllers
 	{
 		[HttpPost]
 		[Route(nameof(Login))]
-		public async Task<(ApplicationResult Result, UserTokenResponseModel Response)> Login(
+		public async Task<ActionResult<(ApplicationResult Result, UserTokenResponseModel Response)>> Login(
 			LoginUserCommand command)
 			=> await this.Mediator.Send(command);
 	}

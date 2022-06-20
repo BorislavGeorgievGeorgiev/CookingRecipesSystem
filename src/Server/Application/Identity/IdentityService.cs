@@ -6,7 +6,6 @@ namespace CookingRecipesSystem.Application.Identity
 	public class IdentityService : IIdentityService
 	{
 		private const string InvalidCredentials = "Invalid credentials.";
-		private const string InvalidPassowrd = "Invalid passowrd.";
 
 		private readonly IUserManagerService _userManagerService;
 		private readonly IJwtService _jwtService;
@@ -48,7 +47,7 @@ namespace CookingRecipesSystem.Application.Identity
 
 			if (!isValidPasswordTuple.IsRightPassowrd)
 			{
-				return (ApplicationResult.Failure(InvalidPassowrd), response);
+				return (ApplicationResult.Failure(InvalidCredentials), response);
 			}
 
 			var token = await this._jwtService.GenerateToken(
