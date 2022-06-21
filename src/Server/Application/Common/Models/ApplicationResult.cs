@@ -16,9 +16,32 @@
 			=> new(true, Array.Empty<string>());
 
 		public static ApplicationResult Failure(string error)
-			=> new(false, new List<string> { error });
+			=> new(false, new string[] { error });
 
 		public static ApplicationResult Failure(IEnumerable<string> errors)
 			=> new(false, errors);
+	}
+
+	public class ApplicationResult<TResponse> : ApplicationResult
+		where TResponse : class
+	{
+		private readonly TResponse _response;
+		public ApplicationResult(TResponse response, bool succeeded, IEnumerable<string> errors)
+			: base(succeeded, errors)
+		{
+			this._response = response;
+		}
+
+		public TResponse Response
+			=> this.Succeeded ? this._response : default!;
+
+		public static new ApplicationResult<TResponse> Success(TResponse response)
+			=> new(response, true, Array.Empty<string>());
+
+		public static new ApplicationResult<TResponse> Failure(string error)
+			=> new(default!, false, new string[] { error });
+
+		public static new ApplicationResult<TResponse> Failure(IEnumerable<string> errors)
+			=> new(default!, false, errors);
 	}
 }

@@ -18,7 +18,7 @@ namespace CookingRecipesSystem.Application.Identity
 			this._jwtService = jwtService;
 		}
 
-		public async Task<(ApplicationResult Result, UserIdResponseModel Response)> Register(
+		public async Task<ApplicationResult<UserIdResponseModel>> Register(
 			UserRegisterRequestModel userRequest)
 		{
 			var newUserResult = await this._userManagerService.CreateUser(
@@ -26,36 +26,37 @@ namespace CookingRecipesSystem.Application.Identity
 
 			var response = new UserIdResponseModel(newUserResult.UserId);
 
-			return (newUserResult.Result, response);
+			return ApplicationResult<UserIdResponseModel>.Success(response);
 		}
 
-		public async Task<(ApplicationResult Result, UserTokenResponseModel Response)> Login(
+		public async Task<ApplicationResult<UserTokenResponseModel>> Login(
 			UserLoginRequestModel userRequest)
 		{
-			var response = new UserTokenResponseModel(string.Empty);
-
-			var userIdTuple = await this._userManagerService
+			var resultUserId = await this._userManagerService
 				.FindUserIdByEmail(userRequest.Email);
 
-			if (userIdTuple.UserId == null)
+			var userId = resultUserId.Response;
+
+			if (userId == null)
 			{
-				return (ApplicationResult.Failure(InvalidCredentials), response);
+				return ApplicationResult<UserTokenResponseModel>.Failure(InvalidCredentials);
 			}
 
-			var isValidPasswordTuple = await this._userManagerService.CheckPassword(
-				userIdTuple.UserId!, userRequest.Password);
+			var resultCheckPassword = await this._userManagerService.CheckPassword(
+				userId, userRequest.Password);
 
-			if (!isValidPasswordTuple.IsRightPassowrd)
+			var isValidPassword = resultCheckPassword.Response.IsValidPassword;
+
+			if (!isValidPassword)
 			{
-				return (ApplicationResult.Failure(InvalidCredentials), response);
+				return ApplicationResult<UserTokenResponseModel>.Failure(InvalidCredentials);
 			}
 
-			var token = await this._jwtService.GenerateToken(
-				userIdTuple.UserId!, userRequest.Email);
+			var token = await this._jwtService.GenerateToken(userId, userRequest.Email);
 
-			response = new UserTokenResponseModel(token);
+			var response = new UserTokenResponseModel(token);
 
-			return (ApplicationResult.Success, response);
+			return ApplicationResult<UserTokenResponseModel>.Success(response);
 		}
 
 		public Task<ApplicationResult> ChangePassword(

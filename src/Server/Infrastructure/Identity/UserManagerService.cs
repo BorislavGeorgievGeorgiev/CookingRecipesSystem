@@ -16,7 +16,7 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 		public UserManagerService(UserManager<ApplicationUser> userManager)
 				=> this._userManager = userManager;
 
-		public async Task<(ApplicationResult Result, string? UserName)> GetUserName(string userId)
+		public async Task<ApplicationResult<string>> GetUserName(string userId)
 		{
 			var userName = await this._userManager
 				.Users
@@ -26,25 +26,25 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 
 			if (userName == null)
 			{
-				return (ApplicationResult.Failure(NoUser), null);
+				return ApplicationResult<string>.Failure(NoUser);
 			}
 
-			return (ApplicationResult.Success, userName);
+			return ApplicationResult<string>.Success(userName);
 		}
 
-		public async Task<(ApplicationResult Result, string? UserId)> FindUserIdByEmail(string email)
+		public async Task<ApplicationResult<string>> FindUserIdByEmail(string email)
 		{
 			var user = await this._userManager.FindByEmailAsync(email);
 
 			if (user == null)
 			{
-				return (ApplicationResult.Failure(NoUser), null);
+				return ApplicationResult<string>.Failure(NoUser);
 			}
 
-			return (ApplicationResult.Success, user.Id);
+			return ApplicationResult<string>.Success(user.Id);
 		}
 
-		public async Task<(ApplicationResult Result, bool IsRightPassowrd)> CheckPassword(string userId, string password)
+		public async Task<ApplicationResult<CheckPasswordModel>> CheckPassword(string userId, string password)
 		{
 			var user = await this._userManager.FindByIdAsync(userId);
 
@@ -52,10 +52,12 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 
 			if (!isValidPassword)
 			{
-				return (ApplicationResult.Failure(NoValidPassowrd), false);
+				return ApplicationResult<CheckPasswordModel>.Failure(NoValidPassowrd);
 			}
 
-			return (ApplicationResult.Success, isValidPassword);
+			var response = new CheckPasswordModel(isValidPassword);
+
+			return ApplicationResult<CheckPasswordModel>.Success(response);
 		}
 
 		public async Task<ApplicationResult> ChangePassword(
