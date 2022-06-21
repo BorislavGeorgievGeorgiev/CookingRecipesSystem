@@ -12,10 +12,11 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 						? ApplicationResult.Success
 						: ApplicationResult.Failure(result.Errors.Select(e => e.Description));
 
-		public static ApplicationResult<Tresponse> ToApplicationResult<Tresponse>(this IdentityResult result, Tresponse response)
-			where Tresponse : class
+		public static ApplicationResult<TResponse> ToApplicationResult<TResponse>(
+			this IdentityResult result, TResponse response)
+			where TResponse : class
 				=> result.Succeeded
-						? ApplicationResult<Tresponse>.Success(response)
-						: ApplicationResult<Tresponse>.Failure(result.Errors.Select(e => e.Description));
+						? ApplicationResult<TResponse>.Success(response)
+						: ApplicationResult<TResponse>.Failure(result.Errors.Select(e => e.Description));
 	}
 }
