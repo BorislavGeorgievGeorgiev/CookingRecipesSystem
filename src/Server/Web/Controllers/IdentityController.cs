@@ -11,7 +11,7 @@ namespace CookingRecipesSystem.Web.Controllers
 		[HttpPost]
 		[Route(nameof(Login))]
 		public async Task<ActionResult<UserTokenResponseModel>> Login(
-			LoginUserCommand command)
+			[FromBody] LoginUserCommand command)
 			=> await this.Mediator.Send(command).ToActionResult();
 	}
 }

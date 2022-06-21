@@ -13,10 +13,10 @@ namespace CookingRecipesSystem.Web.Extensions
 
 			if (!result.Succeeded)
 			{
-				return new BadRequestObjectResult(result);
+				return new BadRequestObjectResult(result.Errors);
 			}
 
-			return new OkObjectResult(result);
+			return new OkResult();
 		}
 
 		public static async Task<ActionResult<TData>> ToActionResult<TData>(this Task<ApplicationResult<TData>> resultTask)
@@ -26,10 +26,10 @@ namespace CookingRecipesSystem.Web.Extensions
 
 			if (!result.Succeeded)
 			{
-				return new BadRequestObjectResult(result);
+				return new BadRequestObjectResult(result.Errors);
 			}
 
-			return new OkObjectResult(result);
+			return new OkObjectResult(result.Response);
 		}
 	}
 }
