@@ -5,9 +5,9 @@ using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Identity;
 using CookingRecipesSystem.Domain.Common;
 using CookingRecipesSystem.Infrastructure.Common;
+using CookingRecipesSystem.Infrastructure.Common.Services;
 using CookingRecipesSystem.Infrastructure.Identity;
 using CookingRecipesSystem.Infrastructure.Persistence;
-using CookingRecipesSystem.Infrastructure.Services;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

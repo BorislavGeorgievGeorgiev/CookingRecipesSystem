@@ -16,7 +16,7 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 		public UserManagerService(UserManager<ApplicationUser> userManager)
 				=> this._userManager = userManager;
 
-		public async Task<ApplicationResult<string>> GetUserName(string userId)
+		public async Task<ApplicationResult<UserNameResponseModel>> GetUserName(string userId)
 		{
 			var userName = await this._userManager
 				.Users
@@ -26,22 +26,26 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 
 			if (userName == null)
 			{
-				return ApplicationResult<string>.Failure(NoUser);
+				return ApplicationResult<UserNameResponseModel>.Failure(NoUser);
 			}
 
-			return ApplicationResult<string>.Success(userName);
+			var response = new UserNameResponseModel(userName);
+
+			return ApplicationResult<UserNameResponseModel>.Success(response);
 		}
 
-		public async Task<ApplicationResult<string>> FindUserIdByEmail(string email)
+		public async Task<ApplicationResult<UserIdResponseModel>> FindUserIdByEmail(string email)
 		{
 			var user = await this._userManager.FindByEmailAsync(email);
 
 			if (user == null)
 			{
-				return ApplicationResult<string>.Failure(NoUser);
+				return ApplicationResult<UserIdResponseModel>.Failure(NoUser);
 			}
 
-			return ApplicationResult<string>.Success(user.Id);
+			var response = new UserIdResponseModel(user.Id);
+
+			return ApplicationResult<UserIdResponseModel>.Success(response);
 		}
 
 		public async Task<ApplicationResult<CheckPasswordModel>> CheckPassword(string userId, string password)
@@ -71,7 +75,7 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 			return identityResult.ToApplicationResult();
 		}
 
-		public async Task<(ApplicationResult Result, string UserId)> CreateUser(
+		public async Task<ApplicationResult<UserIdResponseModel>> CreateUser(
 			string userName, string email, string password)
 		{
 			var user = new ApplicationUser
@@ -82,7 +86,9 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 
 			var identityResult = await this._userManager.CreateAsync(user, password);
 
-			return (identityResult.ToApplicationResult(), user.Id);
+			var response = new UserIdResponseModel(user.Id);
+
+			return identityResult.ToApplicationResult(response);
 		}
 
 		public async Task<ApplicationResult> DeleteUser(string userId)

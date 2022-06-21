@@ -3,14 +3,14 @@ using System.Security.Claims;
 using System.Text;
 
 using CookingRecipesSystem.Application.Common.Interfaces;
-using CookingRecipesSystem.Infrastructure.Common;
+
 using CookingRecipesSystem.Infrastructure.Identity;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CookingRecipesSystem.Infrastructure.Services
+namespace CookingRecipesSystem.Infrastructure.Common.Services
 {
 	public class JwtService : IJwtService
 	{

@@ -24,7 +24,7 @@ namespace CookingRecipesSystem.Application.Identity
 			var newUserResult = await this._userManagerService.CreateUser(
 				userRequest.UserName, userRequest.Email, userRequest.Password);
 
-			var response = new UserIdResponseModel(newUserResult.UserId);
+			var response = new UserIdResponseModel(newUserResult.Response.UserId);
 
 			return ApplicationResult<UserIdResponseModel>.Success(response);
 		}
@@ -35,19 +35,17 @@ namespace CookingRecipesSystem.Application.Identity
 			var resultUserId = await this._userManagerService
 				.FindUserIdByEmail(userRequest.Email);
 
-			var userId = resultUserId.Response;
-
-			if (userId == null)
+			if (!resultUserId.Succeeded)
 			{
 				return ApplicationResult<UserTokenResponseModel>.Failure(InvalidCredentials);
 			}
 
+			var userId = resultUserId.Response.UserId;
+
 			var resultCheckPassword = await this._userManagerService.CheckPassword(
 				userId, userRequest.Password);
 
-			var isValidPassword = resultCheckPassword.Response.IsValidPassword;
-
-			if (!isValidPassword)
+			if (!resultCheckPassword.Succeeded)
 			{
 				return ApplicationResult<UserTokenResponseModel>.Failure(InvalidCredentials);
 			}
