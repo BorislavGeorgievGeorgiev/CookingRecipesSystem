@@ -1,11 +1,14 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Server/Startup/Startup.csproj", "Server/Startup/"]
-RUN dotnet restore "Server/Startup/Startup.csproj"
+COPY ["Server/src/Startup/Startup.csproj", "Server/src/Startup/"]
+RUN dotnet restore "Server/src/Startup/Startup.csproj"
 COPY . .
-WORKDIR /src/Server/Startup
+WORKDIR /src/Server/src/Startup
 RUN dotnet build "Startup.csproj" -c Release -o /app/build
 
 FROM build AS publish
@@ -14,4 +17,4 @@ RUN dotnet publish "Startup.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Startup.dll"]
+ENTRYPOINT ["dotnet", "CookingRecipesSystem.Startup.dll"]

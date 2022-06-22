@@ -41,7 +41,6 @@ namespace CookingRecipesSystem.Infrastructure.Common.Services
 				}),
 				Expires = this._dateTimeService
 				.Now
-				.ToLocalTime()
 				.AddMinutes(double.Parse(this._jwtConfig.ExpirationInMinutes)),
 				SigningCredentials = new SigningCredentials(
 					new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

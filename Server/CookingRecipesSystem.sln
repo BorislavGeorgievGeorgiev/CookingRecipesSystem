@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Startup", "Startup\Startup.csproj", "{D6EE618A-02FC-4B3C-A79A-B05FE8A64066}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Startup", "src\Startup\Startup.csproj", "{D6EE618A-02FC-4B3C-A79A-B05FE8A64066}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{DB2AEE7C-603E-4250-8EAD-778CED36AB3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\Domain\Domain.csproj", "{DB2AEE7C-603E-4250-8EAD-778CED36AB3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{DC3B6188-441C-4FDE-8E38-A135FAD6F935}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Application\Application.csproj", "{DC3B6188-441C-4FDE-8E38-A135FAD6F935}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{7FF05CDF-BF24-42E9-A6EB-9D0DE291ACB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{7FF05CDF-BF24-42E9-A6EB-9D0DE291ACB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{B8026574-6913-49CF-B0AD-2B3F74779756}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "src\Web\Web.csproj", "{B8026574-6913-49CF-B0AD-2B3F74779756}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{909F10B9-CC59-43C3-8A3C-7E2F7FF956C6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CE1DE3F8-A0D8-4AD2-9148-0B0C01F5E5EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +46,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D6EE618A-02FC-4B3C-A79A-B05FE8A64066} = {CE1DE3F8-A0D8-4AD2-9148-0B0C01F5E5EC}
+		{DB2AEE7C-603E-4250-8EAD-778CED36AB3B} = {CE1DE3F8-A0D8-4AD2-9148-0B0C01F5E5EC}
+		{DC3B6188-441C-4FDE-8E38-A135FAD6F935} = {CE1DE3F8-A0D8-4AD2-9148-0B0C01F5E5EC}
+		{7FF05CDF-BF24-42E9-A6EB-9D0DE291ACB8} = {CE1DE3F8-A0D8-4AD2-9148-0B0C01F5E5EC}
+		{B8026574-6913-49CF-B0AD-2B3F74779756} = {CE1DE3F8-A0D8-4AD2-9148-0B0C01F5E5EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {809DB3C2-3585-4D63-8921-E6BD50DB4622}
