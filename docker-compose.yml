@@ -10,6 +10,7 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=MyStrong(!)Password12
+    restart: on-failure
     volumes:
       - mssqldata:/var/opt/mssql
     networks:
@@ -25,7 +26,7 @@ services:
       - "6000:80"
     environment:
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CookingRecipesDB;User=sa;Password=MyStrong(!)Password12;MultipleActiveResultSets=true;
-
+    restart: on-failure
     networks:
       - CookingRecipesSystem-network
 
