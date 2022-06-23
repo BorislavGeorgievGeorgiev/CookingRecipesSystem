@@ -1,7 +1,5 @@
 ﻿using CookingRecipesSystem.Domain.Common;
 
-using FluentAssertions;
-
 namespace CookingRecipesSystem.Domain.UnitTests.Common
 {
 	public class ValueObjectTests
@@ -29,7 +27,7 @@ namespace CookingRecipesSystem.Domain.UnitTests.Common
 			var result = first == second;
 
 			// Assert
-			result.Should().BeTrue();
+			Assert.True(result);
 		}
 
 		[Fact]
@@ -43,7 +41,7 @@ namespace CookingRecipesSystem.Domain.UnitTests.Common
 			var result = first != second;
 
 			// Assert
-			result.Should().BeFalse();
+			Assert.False(result);
 		}
 
 		[Fact]
@@ -57,7 +55,7 @@ namespace CookingRecipesSystem.Domain.UnitTests.Common
 			var result = first == second;
 
 			// Assert
-			result.Should().BeFalse();
+			Assert.False(result);
 		}
 
 		[Fact]
@@ -71,7 +69,7 @@ namespace CookingRecipesSystem.Domain.UnitTests.Common
 			var result = first != second;
 
 			// Assert
-			result.Should().BeTrue();
+			Assert.True(result);
 		}
 	}
 }
