@@ -1,12 +1,11 @@
 ﻿using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
+using CookingRecipesSystem.Domain.Common;
 
 namespace CookingRecipesSystem.Application.Identity
 {
 	public class IdentityService : IIdentityService
 	{
-		private const string InvalidCredentials = "Invalid credentials.";
-
 		private readonly IUserManagerService _userManagerService;
 		private readonly IJwtService _jwtService;
 
@@ -37,7 +36,7 @@ namespace CookingRecipesSystem.Application.Identity
 
 			if (!resultUserId.Succeeded)
 			{
-				return ApplicationResult<UserTokenResponseModel>.Failure(InvalidCredentials);
+				return ApplicationResult<UserTokenResponseModel>.Failure(ExceptionMessages.InvalidCredentials);
 			}
 
 			var userId = resultUserId.Response.UserId;
@@ -47,7 +46,7 @@ namespace CookingRecipesSystem.Application.Identity
 
 			if (!resultCheckPassword.Succeeded)
 			{
-				return ApplicationResult<UserTokenResponseModel>.Failure(InvalidCredentials);
+				return ApplicationResult<UserTokenResponseModel>.Failure(ExceptionMessages.InvalidCredentials);
 			}
 
 			var token = await this._jwtService.GenerateToken(userId, userRequest.Email);

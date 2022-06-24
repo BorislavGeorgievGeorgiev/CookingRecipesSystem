@@ -1,5 +1,6 @@
 ﻿using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
+using CookingRecipesSystem.Domain.Common;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +9,6 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 {
 	public class UserManagerService : IUserManagerService
 	{
-		private const string NoUser = "There is no such user.";
-		private const string NoValidPassowrd = "The passowrd is not valid.";
-
 		private readonly UserManager<ApplicationUser> _userManager;
 
 		public UserManagerService(UserManager<ApplicationUser> userManager)
@@ -26,7 +24,7 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 
 			if (userName == null)
 			{
-				return ApplicationResult<UserNameResponseModel>.Failure(NoUser);
+				return ApplicationResult<UserNameResponseModel>.Failure(ExceptionMessages.NoUser);
 			}
 
 			var response = new UserNameResponseModel(userName);
@@ -40,7 +38,7 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 
 			if (user == null)
 			{
-				return ApplicationResult<UserIdResponseModel>.Failure(NoUser);
+				return ApplicationResult<UserIdResponseModel>.Failure(ExceptionMessages.NoUser);
 			}
 
 			var response = new UserIdResponseModel(user.Id);
@@ -56,7 +54,7 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 
 			if (!isValidPassword)
 			{
-				return ApplicationResult<CheckPasswordModel>.Failure(NoValidPassowrd);
+				return ApplicationResult<CheckPasswordModel>.Failure(ExceptionMessages.NoValidPassowrd);
 			}
 
 			var response = new CheckPasswordModel(isValidPassword);
