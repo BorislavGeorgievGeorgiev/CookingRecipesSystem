@@ -31,7 +31,7 @@ namespace CookingRecipesSystem.Domain.UnitTests.Common
 		}
 
 		[Fact]
-		public void ValueObjects_With_Equal_Properties_Should_Not_Be_Diferent()
+		public void ValueObjects_With_Equal_Properties_Should_Not_Be_Different()
 		{
 			// Arrange
 			var first = new TestValueObject();
@@ -59,7 +59,7 @@ namespace CookingRecipesSystem.Domain.UnitTests.Common
 		}
 
 		[Fact]
-		public void ValueObjects_With_Different_Properties_Should_Be_Diferent()
+		public void ValueObjects_With_Different_Properties_Should_Be_Different()
 		{
 			// Arrange
 			var first = new TestValueObject();

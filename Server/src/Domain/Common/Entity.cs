@@ -1,7 +1,7 @@
 ﻿namespace CookingRecipesSystem.Domain.Common
 {
 	public abstract class Entity<TKey> : IEntity<TKey>
-				where TKey : struct
+		where TKey : struct
 	{
 		public virtual TKey Id { get; protected set; } = default;
 
