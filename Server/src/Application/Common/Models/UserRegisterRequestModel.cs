@@ -2,7 +2,7 @@
 {
 	public class UserRegisterRequestModel : UserLoginRequestModel
 	{
-		protected UserRegisterRequestModel(string userName, string email, string password)
+		public UserRegisterRequestModel(string userName, string email, string password)
 			: base(email, password)
 		{
 			this.UserName = userName;
