@@ -11,6 +11,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		private const string CurrentPasswordString = "CurrentPassword12";
 		private const string NewPasswordString = "NewPassword12";
 
+		private readonly Type _returnTypeString = typeof(string);
 		private readonly ChangePasswordRequestModel _changePasswordRequestModel =
 			new ChangePasswordRequestModel(UserIdString, CurrentPasswordString, NewPasswordString);
 
@@ -19,7 +20,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		{
 			// Arrange, Act & Assert
 			Assert.True(this._changePasswordRequestModel
-				.PublicPropertyExist(UserIdStringPropertyName, typeof(string)));
+				.PublicPropertyExist(UserIdStringPropertyName, this._returnTypeString));
 		}
 
 		[Fact]
@@ -27,7 +28,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		{
 			// Arrange, Act & Assert
 			Assert.False(this._changePasswordRequestModel
-				.PublicPropertyCanWrite(UserIdStringPropertyName));
+				.PublicPropertyCanWrite(UserIdStringPropertyName, this._returnTypeString));
 		}
 
 		[Fact]
@@ -42,7 +43,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		{
 			// Arrange, Act & Assert
 			Assert.True(this._changePasswordRequestModel
-				.PublicPropertyExist(CurrentPasswordStringPropertyName, typeof(string)));
+				.PublicPropertyExist(CurrentPasswordStringPropertyName, this._returnTypeString));
 		}
 
 		[Fact]
@@ -50,7 +51,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		{
 			// Arrange, Act & Assert
 			Assert.False(this._changePasswordRequestModel
-				.PublicPropertyCanWrite(CurrentPasswordStringPropertyName));
+				.PublicPropertyCanWrite(CurrentPasswordStringPropertyName, this._returnTypeString));
 		}
 
 		[Fact]
@@ -65,7 +66,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		{
 			// Arrange, Act & Assert
 			Assert.True(this._changePasswordRequestModel
-				.PublicPropertyExist(NewPasswordStringPropertyName, typeof(string)));
+				.PublicPropertyExist(NewPasswordStringPropertyName, this._returnTypeString));
 		}
 
 		[Fact]
@@ -73,7 +74,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		{
 			// Arrange, Act & Assert
 			Assert.False(this._changePasswordRequestModel
-				.PublicPropertyCanWrite(NewPasswordStringPropertyName));
+				.PublicPropertyCanWrite(NewPasswordStringPropertyName, this._returnTypeString));
 		}
 
 		[Fact]

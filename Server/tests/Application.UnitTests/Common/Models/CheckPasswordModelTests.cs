@@ -7,6 +7,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		private const string IsValidPasswordPropertyName = "IsValidPassword";
 		private const bool ValidPassword = true;
 
+		private readonly Type _returnTypeBool = typeof(bool);
 		private readonly CheckPasswordModel _checkPasswordModelValid = new CheckPasswordModel(
 			ValidPassword);
 
@@ -15,7 +16,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		{
 			// Arrange, Act & Assert
 			Assert.True(this._checkPasswordModelValid
-				.PublicPropertyExist(IsValidPasswordPropertyName, typeof(bool)));
+				.PublicPropertyExist(IsValidPasswordPropertyName, this._returnTypeBool));
 		}
 
 		[Fact]
@@ -23,7 +24,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		{
 			// Arrange, Act & Assert
 			Assert.False(this._checkPasswordModelValid
-				.PublicPropertyCanWrite(IsValidPasswordPropertyName));
+				.PublicPropertyCanWrite(IsValidPasswordPropertyName, this._returnTypeBool));
 		}
 
 		[Fact]

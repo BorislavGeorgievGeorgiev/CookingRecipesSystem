@@ -7,6 +7,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		private const string UserIdStringPropertyName = "UserId";
 		private const string UserIdString = "1";
 
+		private readonly Type _returnTypeString = typeof(string);
 		private readonly UserIdResponseModel _userIdModel = new UserIdResponseModel(UserIdString);
 
 		[Fact]
@@ -14,14 +15,15 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		{
 			// Arrange, Act & Assert
 			Assert.True(this._userIdModel
-				.PublicPropertyExist(UserIdStringPropertyName, typeof(string)));
+				.PublicPropertyExist(UserIdStringPropertyName, this._returnTypeString));
 		}
 
 		[Fact]
 		public void Public_String_UserId_Property_Should_Has_Private_Set()
 		{
 			// Arrange, Act & Assert
-			Assert.False(this._userIdModel.PublicPropertyCanWrite(UserIdStringPropertyName));
+			Assert.False(this._userIdModel
+				.PublicPropertyCanWrite(UserIdStringPropertyName, this._returnTypeString));
 		}
 
 		[Fact]

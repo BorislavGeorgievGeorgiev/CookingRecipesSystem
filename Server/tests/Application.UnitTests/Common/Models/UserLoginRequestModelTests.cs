@@ -10,6 +10,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		private const string EmailString = "test@test.com";
 		private const string PasswordString = "strongPassword";
 
+		private readonly Type _returnTypeString = typeof(string);
 		private readonly UserLoginRequestModel _loginModel = new UserLoginRequestModel(
 			EmailString, PasswordString);
 
@@ -17,14 +18,15 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		public void Public_String_Email_Property_Should_Exist()
 		{
 			// Arrange, Act & Assert
-			Assert.True(this._loginModel.PublicPropertyExist(EmailPropertyName, typeof(string)));
+			Assert.True(this._loginModel.PublicPropertyExist(EmailPropertyName, this._returnTypeString));
 		}
 
 		[Fact]
 		public void Public_String_Email_Property_Should_Has_Private_Set()
 		{
 			// Arrange, Act & Assert
-			Assert.False(this._loginModel.PublicPropertyCanWrite(EmailPropertyName));
+			Assert.False(this._loginModel
+				.PublicPropertyCanWrite(EmailPropertyName, this._returnTypeString));
 		}
 
 		[Fact]
@@ -38,14 +40,16 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		public void Public_String_Password_Property_Should_Exist()
 		{
 			// Arrange, Act & Assert
-			Assert.True(this._loginModel.PublicPropertyExist(PasswordPropertyName, typeof(string)));
+			Assert.True(this._loginModel
+				.PublicPropertyExist(PasswordPropertyName, this._returnTypeString));
 		}
 
 		[Fact]
 		public void Public_String_Password_Property_Should_Has_Private_Set()
 		{
 			// Arrange, Act & Assert
-			Assert.False(this._loginModel.PublicPropertyCanWrite(PasswordPropertyName));
+			Assert.False(this._loginModel
+				.PublicPropertyCanWrite(PasswordPropertyName, this._returnTypeString));
 		}
 
 		[Fact]
