@@ -1,5 +1,4 @@
-﻿
-using AutoFixture;
+﻿using AutoFixture;
 
 using CookingRecipesSystem.Application.Common.Models;
 
@@ -135,9 +134,8 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		[Fact]
 		public void Failure_Should_Return_Correctly()
 		{
-			const string SingleError = "error";
-
 			// Arrange
+			const string SingleError = "error";
 			var appResFailureSingleError = ApplicationResult.Failure(SingleError);
 			var appResFailureManyErrors = ApplicationResult.Failure(this._errors);
 
