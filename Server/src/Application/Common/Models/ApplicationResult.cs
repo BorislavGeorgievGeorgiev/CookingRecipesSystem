@@ -16,7 +16,7 @@
 			=> new(true, Array.Empty<string>());
 
 		public static ApplicationResult Failure(string error)
-			=> new(false, new string[] { error });
+			=> Failure(new string[] { error });
 
 		public static ApplicationResult Failure(IEnumerable<string> errors)
 			=> new(false, errors);
@@ -39,7 +39,7 @@
 			=> new(response, true, Array.Empty<string>());
 
 		public static new ApplicationResult<TResponse> Failure(string error)
-			=> new(default!, false, new string[] { error });
+			=> Failure(new string[] { error });
 
 		public static new ApplicationResult<TResponse> Failure(IEnumerable<string> errors)
 			=> new(default!, false, errors);
