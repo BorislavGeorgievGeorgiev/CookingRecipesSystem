@@ -8,9 +8,11 @@
 
 		public const string ModelValidationFailures = "One or more validation failures have occurred.";
 
+		// UserManagerService GetUserName()
 		public const string NoUser = "There is no such user.";
+		// UserManagerService CheckPassword()
 		public const string NoValidPassowrd = "The passowrd is not valid.";
-
+		// UserManagerService GetUserName()
 		public const string InvalidCredentials = "Invalid credentials.";
 	}
 }

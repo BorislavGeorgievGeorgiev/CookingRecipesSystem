@@ -54,7 +54,7 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 
 			if (!isValidPassword)
 			{
-				return ApplicationResult<CheckPasswordModel>.Failure(ExceptionMessages.NoValidPassowrd);
+				return ApplicationResult<CheckPasswordModel>.Failure(ExceptionMessages.InvalidCredentials);
 			}
 
 			var response = new CheckPasswordModel(isValidPassword);

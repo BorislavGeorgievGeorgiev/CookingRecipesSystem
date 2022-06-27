@@ -1,5 +1,4 @@
-﻿using CookingRecipesSystem.Application.Common.Exceptions;
-
+﻿
 using FluentValidation;
 
 using MediatR;
@@ -10,29 +9,32 @@ namespace CookingRecipesSystem.Application.Common.Behaviours
 			: IPipelineBehavior<TRequest, TResponse>
 			where TRequest : IRequest<TResponse>
 	{
-		private readonly IEnumerable<IValidator<TRequest>> validators;
+		private readonly IEnumerable<IValidator<TRequest>> _validators;
 
 		public RequestValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
-				=> this.validators = validators;
+				=> this._validators = validators;
 
-		public Task<TResponse> Handle(TRequest request,
+		public async Task<TResponse> Handle(TRequest request,
 		CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
 		{
 			var context = new ValidationContext<TRequest>(request);
 
 			var failures = this
-					.validators
+					._validators
 					.Select(v => v.Validate(context))
 					.SelectMany(result => result.Errors)
 					.Where(f => f != null)
 					.ToList();
 
-			if (failures.Count != 0)
-			{
-				throw new ModelValidationException(failures);
-			}
+			//TODO: To check if it is better to use an exception !
+			//if (failures.Count != 0)
+			//{
+			//	throw new ModelValidationException(failures);
+			//}
 
-			return next();
+			var response = await next();
+
+			return response;
 		}
 	}
 }

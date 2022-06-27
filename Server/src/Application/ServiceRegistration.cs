@@ -2,6 +2,9 @@
 
 using CookingRecipesSystem.Application.Common.Behaviours;
 using CookingRecipesSystem.Application.Common.Interfaces.Lifetime;
+using CookingRecipesSystem.Application.Identity.Commands.RegisterUser;
+
+using FluentValidation;
 
 using MediatR;
 
@@ -15,8 +18,9 @@ namespace CookingRecipesSystem.Application
 			=> services
 			.AddAutoMapper(Assembly.GetExecutingAssembly())
 			.AddMediatR(Assembly.GetExecutingAssembly())
-			.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>))
-			.AddConventionalServices(Assembly.GetExecutingAssembly());
+			.AddConventionalServices(Assembly.GetExecutingAssembly())
+			.AddValidatorsFromAssemblyContaining<RegisterUserCommandValidator>(ServiceLifetime.Transient)
+			.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
 		public static IServiceCollection AddConventionalServices(
 			 this IServiceCollection services, Assembly assembly)
@@ -25,33 +29,48 @@ namespace CookingRecipesSystem.Application
 			var singletonLifetimeInterfaceType = typeof(ISingletonService);
 			var scopedLifetimeInterfaceType = typeof(IScopedService);
 
+			var types = GetConventionalTypes(assembly);
+
+			foreach (var type in types)
+			{
+				if (transientLifetimeInterfaceType.IsAssignableFrom(type.Service))
+				{
+					services.AddTransient(type.Service, type.Implementation!);
+				}
+				else if (singletonLifetimeInterfaceType.IsAssignableFrom(type.Service))
+				{
+					services.AddSingleton(type.Service, type.Implementation!);
+				}
+				else if (scopedLifetimeInterfaceType.IsAssignableFrom(type.Service))
+				{
+					services.AddScoped(type.Service, type.Implementation!);
+				}
+			}
+
+			return services;
+		}
+
+		private static IEnumerable<ServiceTypes> GetConventionalTypes(
+			Assembly assembly)
+		{
 			var types = assembly
 				.GetExportedTypes()
 				.Where(t => t.IsClass && !t.IsAbstract)
-				.Select(t => new
+				.Select(t => new ServiceTypes
 				{
 					Service = t.GetInterface($"I{t.Name}"),
 					Implementation = t
 				})
 				.Where(t => t.Service != null);
 
-			foreach (var type in types)
-			{
-				if (transientLifetimeInterfaceType.IsAssignableFrom(type.Service))
-				{
-					services.AddTransient(type.Service, type.Implementation);
-				}
-				else if (singletonLifetimeInterfaceType.IsAssignableFrom(type.Service))
-				{
-					services.AddSingleton(type.Service, type.Implementation);
-				}
-				else if (scopedLifetimeInterfaceType.IsAssignableFrom(type.Service))
-				{
-					services.AddScoped(type.Service, type.Implementation);
-				}
-			}
+			return types;
+		}
 
-			return services;
+		private class ServiceTypes
+		{
+			public Type? Service { get; set; }
+
+			public Type? Implementation { get; set; }
 		}
 	}
 }

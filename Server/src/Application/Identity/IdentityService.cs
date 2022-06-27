@@ -23,9 +23,7 @@ namespace CookingRecipesSystem.Application.Identity
 			var newUserResult = await this._userManagerService.CreateUser(
 				userRequest.UserName, userRequest.Email, userRequest.Password);
 
-			var response = new UserIdResponseModel(newUserResult.Response.UserId);
-
-			return ApplicationResult<UserIdResponseModel>.Success(response);
+			return newUserResult;
 		}
 
 		public async Task<ApplicationResult<UserTokenResponseModel>> Login(

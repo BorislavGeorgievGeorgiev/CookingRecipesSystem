@@ -37,13 +37,11 @@ namespace CookingRecipesSystem.Infrastructure
 				.AddIdentity<ApplicationUser, IdentityRole>(options =>
 				 {
 					 options.User.RequireUniqueEmail = true;
-					 options.Password.RequireNonAlphanumeric = false;
-					 options.Password.RequireDigit = false;
-					 options.Password.RequireUppercase = false;
-					 options.Password.RequireLowercase = false;
-					 options.Password.RequireUppercase = false;
-					 options.Password.RequiredUniqueChars = 0;
-					 options.Password.RequiredLength = 3;
+					 options.Password.RequireNonAlphanumeric = ApplicationConstants.PasswordRequireNonAlphanumericValue;
+					 options.Password.RequireDigit = ApplicationConstants.PasswordRequireDigitValue;
+					 options.Password.RequireUppercase = ApplicationConstants.PasswordRequireUppercaseValue;
+					 options.Password.RequiredUniqueChars = ApplicationConstants.PasswordRequiredUniqueCharsValue;
+					 options.Password.RequiredLength = ApplicationConstants.PasswordMinLength;
 				 })
 				 .AddEntityFrameworkStores<CookingRecipesSystemDbContext>();
 
