@@ -37,7 +37,9 @@ namespace CookingRecipesSystem.Infrastructure.Common.Services
 				Subject = new ClaimsIdentity(new[]
 				{
 					new Claim(ClaimTypes.NameIdentifier, userId),
-					new Claim(ClaimTypes.Email, userEmail)
+					new Claim(ClaimTypes.Email, userEmail),
+					new Claim(JwtRegisteredClaimNames.Aud, this._jwtConfig.ValidAudience),
+					new Claim(JwtRegisteredClaimNames.Iss, this._jwtConfig.ValidIssuer)
 				}),
 				Expires = this._dateTimeService
 				.Now

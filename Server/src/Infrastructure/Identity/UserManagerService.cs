@@ -46,9 +46,15 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 			return ApplicationResult<UserIdResponseModel>.Success(response);
 		}
 
-		public async Task<ApplicationResult<CheckPasswordModel>> CheckPassword(string userId, string password)
+		public async Task<ApplicationResult<CheckPasswordModel>> CheckPassword(
+			string userId, string password)
 		{
 			var user = await this._userManager.FindByIdAsync(userId);
+
+			if (user == null)
+			{
+				return ApplicationResult<CheckPasswordModel>.Failure(ExceptionMessages.NoUser);
+			}
 
 			var isValidPassword = await this._userManager.CheckPasswordAsync(user, password);
 
@@ -66,6 +72,11 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 			string userId, string currentPassword, string newPassowrd)
 		{
 			var user = await this._userManager.FindByIdAsync(userId);
+
+			if (user == null)
+			{
+				return ApplicationResult.Failure(ExceptionMessages.NoUser);
+			}
 
 			var identityResult = await this._userManager.ChangePasswordAsync(
 					user, currentPassword, newPassowrd);
@@ -95,12 +106,12 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 					.Users
 					.SingleOrDefault(u => u.Id == userId);
 
-			if (user != null)
+			if (user == null)
 			{
-				return await this.DeleteUser(user);
+				return ApplicationResult.Failure(ExceptionMessages.NoUser);
 			}
 
-			return ApplicationResult.Success;
+			return await this.DeleteUser(user);
 		}
 
 		public async Task<ApplicationResult> DeleteUser(ApplicationUser user)
@@ -109,6 +120,5 @@ namespace CookingRecipesSystem.Infrastructure.Identity
 
 			return result.ToApplicationResult();
 		}
-
 	}
 }

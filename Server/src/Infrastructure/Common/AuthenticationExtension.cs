@@ -14,9 +14,13 @@ namespace CookingRecipesSystem.Infrastructure.Common
 		{
 			const string JwtConfigName = nameof(JwtConfig);
 			const string JwtSecretName = nameof(JwtConfig.Secret);
-			const string Localhost = "localhost";
+			const string ValidIssuer = nameof(JwtConfig.ValidIssuer);
+			const string ValidAudience = nameof(JwtConfig.ValidAudience);
 
-			var secret = config.GetSection(JwtConfigName).GetSection(JwtSecretName).Value;
+			var configuration = config.GetSection(JwtConfigName);
+			var secret = configuration.GetSection(JwtSecretName).Value;
+			var validIssuer = configuration.GetSection(ValidIssuer).Value;
+			var validAudience = configuration.GetSection(ValidAudience).Value;
 
 			var key = Encoding.ASCII.GetBytes(secret);
 
@@ -24,6 +28,7 @@ namespace CookingRecipesSystem.Infrastructure.Common
 			{
 				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 			})
 			.AddJwtBearer(bearer =>
 			{
@@ -35,8 +40,8 @@ namespace CookingRecipesSystem.Infrastructure.Common
 					ValidateIssuerSigningKey = true,
 					ValidateIssuer = true,
 					ValidateAudience = true,
-					ValidIssuer = Localhost,
-					ValidAudience = Localhost
+					ValidIssuer = validIssuer,
+					ValidAudience = validAudience
 				};
 			});
 
