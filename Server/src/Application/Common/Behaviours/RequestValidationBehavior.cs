@@ -17,16 +17,16 @@ namespace CookingRecipesSystem.Application.Common.Behaviours
 		public async Task<TResponse> Handle(TRequest request,
 		CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
 		{
-			var context = new ValidationContext<TRequest>(request);
-
-			var failures = this
-					._validators
-					.Select(v => v.Validate(context))
-					.SelectMany(result => result.Errors)
-					.Where(f => f != null)
-					.ToList();
-
 			//TODO: To check if it is better to use an exception !
+			//var context = new ValidationContext<TRequest>(request);
+
+			//var failures = this
+			//		._validators
+			//		.Select(v => v.Validate(context))
+			//		.SelectMany(result => result.Errors)
+			//		.Where(f => f != null)
+			//		.ToList();
+
 			//if (failures.Count != 0)
 			//{
 			//	throw new ModelValidationException(failures);

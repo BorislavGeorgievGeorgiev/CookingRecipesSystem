@@ -11,16 +11,16 @@ namespace CookingRecipesSystem.Web.Middleware
 {
 	public class ExceptionHandlerMiddleware
 	{
-		private readonly RequestDelegate next;
+		private readonly RequestDelegate _next;
 
 		public ExceptionHandlerMiddleware(RequestDelegate next)
-				=> this.next = next;
+				=> this._next = next;
 
 		public async Task Invoke(HttpContext context)
 		{
 			try
 			{
-				await this.next(context);
+				await this._next(context);
 			}
 			catch (Exception ex)
 			{
@@ -30,6 +30,8 @@ namespace CookingRecipesSystem.Web.Middleware
 
 		private static Task HandleExceptionAsync(HttpContext context, Exception exception)
 		{
+			const string ApplicationJson = "application/json";
+
 			var code = HttpStatusCode.InternalServerError;
 
 			var result = string.Empty;
@@ -45,7 +47,7 @@ namespace CookingRecipesSystem.Web.Middleware
 					break;
 			}
 
-			context.Response.ContentType = "application/json";
+			context.Response.ContentType = ApplicationJson;
 			context.Response.StatusCode = (int)code;
 
 			if (string.IsNullOrEmpty(result))

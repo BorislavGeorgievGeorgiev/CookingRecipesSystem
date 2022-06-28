@@ -14,7 +14,7 @@ namespace CookingRecipesSystem.Infrastructure.Common
 		{
 			const string JwtConfigName = nameof(JwtConfig);
 			const string JwtSecretName = nameof(JwtConfig.Secret);
-			const string? Localhost = "localhost";
+			const string Localhost = "localhost";
 
 			var secret = config.GetSection(JwtConfigName).GetSection(JwtSecretName).Value;
 

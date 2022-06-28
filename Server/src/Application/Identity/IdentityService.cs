@@ -19,12 +19,10 @@ namespace CookingRecipesSystem.Application.Identity
 
 		public async Task<ApplicationResult<UserIdResponseModel>> Register(
 			UserRegisterRequestModel userRequest)
-		{
-			var newUserResult = await this._userManagerService.CreateUser(
-				userRequest.UserName, userRequest.Email, userRequest.Password);
-
-			return newUserResult;
-		}
+			=> await this._userManagerService.CreateUser(
+				userRequest.UserName,
+				userRequest.Email,
+				userRequest.Password);
 
 		public async Task<ApplicationResult<UserTokenResponseModel>> Login(
 			UserLoginRequestModel userRequest)
@@ -54,9 +52,9 @@ namespace CookingRecipesSystem.Application.Identity
 			return ApplicationResult<UserTokenResponseModel>.Success(response);
 		}
 
-		public Task<ApplicationResult> ChangePassword(
+		public async Task<ApplicationResult> ChangePassword(
 			ChangePasswordRequestModel changePasswordRequest)
-			=> this._userManagerService.ChangePassword(
+			=> await this._userManagerService.ChangePassword(
 				changePasswordRequest.UserId,
 				changePasswordRequest.CurrentPassword,
 				changePasswordRequest.NewPassword);

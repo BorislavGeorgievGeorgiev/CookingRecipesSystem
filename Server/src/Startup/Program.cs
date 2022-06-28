@@ -6,16 +6,18 @@ using CookingRecipesSystem.Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddWebComponents();
 
 builder.Services.AddControllers();
 
-// Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// =============================
 
 var app = builder.Build();
 
@@ -29,6 +31,7 @@ if (app.Environment.IsDevelopment())
 	var services = scope.ServiceProvider;
 	await DataSeeder.SeedAsync(services);
 }
+
 app.UseCustomExceptionHandler();
 app.UseHttpsRedirection();
 
