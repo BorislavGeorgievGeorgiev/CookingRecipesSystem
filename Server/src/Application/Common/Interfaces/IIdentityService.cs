@@ -11,10 +11,10 @@ namespace CookingRecipesSystem.Application.Common.Interfaces
 
 		Task<ApplicationResult> ChangePassword(ChangePasswordRequestModel changePasswordRequest);
 
+		Task<ApplicationResult> DeleteUser(UserIdRequestModel userIdRequest);
+
 		Task<ApplicationResult<UserNameResponseModel>> GetUserName(UserIdRequestModel userIdRequest);
 
 		Task<ApplicationResult<UserIdResponseModel>> FindUserIdByEmail(UserEmailRequestModel emailRequest);
-
-		Task<ApplicationResult> DeleteUser(UserIdRequestModel userIdRequest);
 	}
 }
