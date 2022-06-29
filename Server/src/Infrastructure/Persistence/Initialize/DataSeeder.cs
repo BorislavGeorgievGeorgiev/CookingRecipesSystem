@@ -1,4 +1,6 @@
-﻿using CookingRecipesSystem.Infrastructure.Identity;
+﻿
+using CookingRecipesSystem.Domain.Common;
+using CookingRecipesSystem.Infrastructure.Identity;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +18,7 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 				context.Database.Migrate();
 
 				var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+				var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
 				var defaultUser = new ApplicationUser
 				{
@@ -23,9 +26,16 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 					Email = "admin@test.com"
 				};
 
+				if (roleManager.Roles.All(
+					r => r.Name == ApplicationConstants.RoleNameAdministrator))
+				{
+					await roleManager.CreateAsync(new IdentityRole(ApplicationConstants.RoleNameAdministrator));
+				}
+
 				if (userManager.Users.All(u => u.Id != defaultUser.Id))
 				{
 					await userManager.CreateAsync(defaultUser, "test");
+					await userManager.AddToRoleAsync(defaultUser, ApplicationConstants.RoleNameAdministrator);
 				}
 
 				await context.SaveChangesAsync();

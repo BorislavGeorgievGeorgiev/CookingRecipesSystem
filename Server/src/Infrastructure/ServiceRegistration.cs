@@ -1,11 +1,8 @@
 ﻿using System.Reflection;
 
 using CookingRecipesSystem.Application;
-using CookingRecipesSystem.Application.Common.Interfaces;
-using CookingRecipesSystem.Application.Identity;
 using CookingRecipesSystem.Domain.Common;
 using CookingRecipesSystem.Infrastructure.Common;
-using CookingRecipesSystem.Infrastructure.Common.Services;
 using CookingRecipesSystem.Infrastructure.Identity;
 using CookingRecipesSystem.Infrastructure.Persistence;
 
@@ -32,8 +29,6 @@ namespace CookingRecipesSystem.Infrastructure
 				options => options.BindNonPublicProperties = true);
 
 			services
-				.AddTransient<IIdentityService, IdentityService>()
-				.AddTransient<IJwtService, JwtService>()
 				.AddIdentity<ApplicationUser, IdentityRole>(options =>
 				 {
 					 options.User.RequireUniqueEmail = true;

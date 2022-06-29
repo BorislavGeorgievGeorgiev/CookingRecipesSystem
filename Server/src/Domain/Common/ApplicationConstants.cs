@@ -4,6 +4,8 @@
 	{
 		public const string DefaultConnection = "DefaultConnection";
 
+		public const string RoleNameAdministrator = "Administrator ";
+
 		public const bool PasswordRequireNonAlphanumericValue = false;
 		public const bool PasswordRequireDigitValue = false;
 		public const bool PasswordRequireUppercaseValue = false;
