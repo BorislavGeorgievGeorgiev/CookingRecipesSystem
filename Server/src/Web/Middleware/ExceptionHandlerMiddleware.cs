@@ -42,6 +42,15 @@ namespace CookingRecipesSystem.Web.Middleware
 					code = HttpStatusCode.BadRequest;
 					result = JsonConvert.SerializeObject(validationException.Failures);
 					break;
+				//TODO: change to be correct
+				case ArgumentNullException argumentNullException:
+					code = HttpStatusCode.BadRequest;
+					result = JsonConvert.SerializeObject(argumentNullException.Message);
+					break;
+				case ArgumentException argumentException:
+					code = HttpStatusCode.BadRequest;
+					result = JsonConvert.SerializeObject(argumentException.Message);
+					break;
 				case NotFoundException _:
 					code = HttpStatusCode.NotFound;
 					break;

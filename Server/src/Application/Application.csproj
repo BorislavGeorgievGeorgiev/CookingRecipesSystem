@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <Folder Include="Identity\Queries\" />
+    <Folder Include="Recipes\Commands\" />
+    <Folder Include="Recipes\Queries\" />
   </ItemGroup>
 
 </Project>

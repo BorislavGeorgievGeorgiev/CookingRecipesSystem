@@ -16,14 +16,46 @@ namespace CookingRecipesSystem.Application.Identity.Commands.LoginUser
 		public class LoginUserCommandHandler
 			: IRequestHandler<LoginUserCommand, ApplicationResult<UserTokenResponseModel>>
 		{
-			private readonly IIdentityService _identity;
+			private readonly IUserManagerService _userManagerService;
+			private readonly IJwtService _jwtService;
 
-			public LoginUserCommandHandler(IIdentityService identity)
-				=> this._identity = identity;
+			public LoginUserCommandHandler(IUserManagerService userManagerService,
+				IJwtService jwtService)
+			{
+				this._userManagerService = userManagerService;
+				this._jwtService = jwtService;
+			}
 
 			public async Task<ApplicationResult<UserTokenResponseModel>>
 				Handle(LoginUserCommand request, CancellationToken cancellationToken)
-				=> await this._identity.Login(request);
+			{
+
+				var applicationResultUser = await this._userManagerService
+					.FindByEmailAsync(request.Email);
+
+				if (!applicationResultUser.Succeeded)
+				{
+					return ApplicationResult<UserTokenResponseModel>.Failure(
+						applicationResultUser.Errors);
+				}
+
+				var user = applicationResultUser.Response;
+
+				var applicationResultPassword = await this._userManagerService
+					.CheckPasswordAsync(user, request.Password);
+
+				if (!applicationResultPassword.Succeeded)
+				{
+					return ApplicationResult<UserTokenResponseModel>.Failure(
+						applicationResultPassword.Errors);
+				}
+
+				var token = await this._jwtService.GenerateToken(user.Id, request.Email);
+
+				var response = new UserTokenResponseModel(token);
+
+				return ApplicationResult<UserTokenResponseModel>.Success(response);
+			}
 		}
 	}
 }

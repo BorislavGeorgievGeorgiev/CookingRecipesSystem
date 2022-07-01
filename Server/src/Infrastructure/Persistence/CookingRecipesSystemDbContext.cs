@@ -2,6 +2,7 @@
 
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Domain.Common;
+using CookingRecipesSystem.Domain.Entities;
 using CookingRecipesSystem.Infrastructure.Identity;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -23,6 +24,8 @@ namespace CookingRecipesSystem.Infrastructure.Persistence
 			this._currentUserService = currentUserService;
 			this._dateTimeService = dateTimeService;
 		}
+
+		public DbSet<Recipe> Recipes { get; set; }
 
 		public Task<int> SaveAsync(
 			CancellationToken cancellationToken = new CancellationToken())

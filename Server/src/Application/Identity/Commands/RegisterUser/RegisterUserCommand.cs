@@ -15,14 +15,26 @@ namespace CookingRecipesSystem.Application.Identity.Commands.RegisterUser
 		public class RegisterUserCommandHandler
 			: IRequestHandler<RegisterUserCommand, ApplicationResult>
 		{
-			private readonly IIdentityService _identity;
+			private readonly IApplicationUserFactory _applicationUserFactory;
+			private readonly IUserManagerService _userManagerService;
 
-			public RegisterUserCommandHandler(IIdentityService identity)
-				=> this._identity = identity;
+			public RegisterUserCommandHandler(
+				IUserManagerService userManagerService,
+				IApplicationUserFactory applicationUserFactory)
+			{
+				this._applicationUserFactory = applicationUserFactory;
+				this._userManagerService = userManagerService;
+			}
 
 			public async Task<ApplicationResult> Handle(
 				RegisterUserCommand request, CancellationToken cancellationToken)
-				=> await this._identity.Register(request);
+			{
+				var user = this._applicationUserFactory
+					.WithUserNameAndEmail(request.UserName, request.Email)
+					.Create();
+
+				return await this._userManagerService.CreateAsync(user, request.Password);
+			}
 		}
 	}
 }
