@@ -26,6 +26,7 @@
 		where TResponse : class
 	{
 		private readonly TResponse _response;
+
 		public ApplicationResult(TResponse response, bool succeeded, IEnumerable<string> errors)
 			: base(succeeded, errors)
 		{

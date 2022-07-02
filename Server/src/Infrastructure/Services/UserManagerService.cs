@@ -4,6 +4,7 @@ using CookingRecipesSystem.Domain.Common;
 using CookingRecipesSystem.Infrastructure.Identity;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CookingRecipesSystem.Infrastructure.Services
 {
@@ -60,6 +61,20 @@ namespace CookingRecipesSystem.Infrastructure.Services
 			var user = await this._userManager.FindByIdAsync(userId);
 
 			return this.UserResult(user);
+		}
+
+		public ApplicationResult<IQueryable<IApplicationUser>> GetAllTracking()
+		{
+			var users = this._userManager.Users;
+
+			return ApplicationResult<IQueryable<IApplicationUser>>.Success(users);
+		}
+
+		public ApplicationResult<IQueryable<IApplicationUser>> GetAllNoTracking()
+		{
+			var users = this._userManager.Users.AsNoTracking();
+
+			return ApplicationResult<IQueryable<IApplicationUser>>.Success(users);
 		}
 
 		private ApplicationResult<IApplicationUser> UserResult(ApplicationUser? user)

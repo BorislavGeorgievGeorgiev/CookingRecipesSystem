@@ -8,25 +8,25 @@ namespace CookingRecipesSystem.Infrastructure.Common
 {
 	public class ApplicationUserFactory : IApplicationUserFactory
 	{
-		private string? _userName;
-		private string? _email;
+		private readonly ApplicationUser _newUser;
+
+		public ApplicationUserFactory()
+		{
+			this._newUser = Activator.CreateInstance<ApplicationUser>();
+		}
 
 		public IApplicationUser Create()
 		{
-			Guard.IsNotNullOrWhiteSpace(this._userName, nameof(ApplicationUser.UserName));
-			Guard.IsNotNullOrWhiteSpace(this._email, nameof(ApplicationUser.Email));
-
-			return new ApplicationUser
-			{
-				UserName = this._userName,
-				Email = this._email,
-			};
+			return this._newUser;
 		}
 
 		public IApplicationUserFactory WithUserNameAndEmail(string userName, string email)
 		{
-			this._userName = userName;
-			this._email = email;
+			Guard.IsNotNullOrWhiteSpace(userName, nameof(ApplicationUser.UserName));
+			Guard.IsNotNullOrWhiteSpace(email, nameof(ApplicationUser.Email));
+
+			this._newUser.UserName = userName;
+			this._newUser.Email = email;
 
 			return this;
 		}

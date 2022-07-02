@@ -16,5 +16,9 @@ namespace CookingRecipesSystem.Application.Common.Interfaces
 
 		Task<ApplicationResult<CheckPasswordModel>> CheckPasswordAsync(
 			IApplicationUser user, string password);
+
+		ApplicationResult<IQueryable<IApplicationUser>> GetAllTracking();
+
+		ApplicationResult<IQueryable<IApplicationUser>> GetAllNoTracking();
 	}
 }

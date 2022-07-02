@@ -7,12 +7,12 @@ namespace CookingRecipesSystem.Domain.Entities
 	public class Recipe : AuditableEntity<int>
 	{
 		private string? _title;
-		private string? _content;
+		private string? _description;
 
-		public Recipe(string title, string content, string createdBy)
+		public Recipe(string title, string description, string createdBy)
 		{
 			this.Title = title;
-			this.Content = content;
+			this.Description = description;
 			this.CreatedBy = createdBy;
 		}
 
@@ -26,14 +26,18 @@ namespace CookingRecipesSystem.Domain.Entities
 			}
 		}
 
-		public string Content
+		public string Description
 		{
-			get { return this._content!; }
+			get { return this._description!; }
 			private set
 			{
-				Guard.IsNotNullOrWhiteSpace(value, nameof(this.Content));
-				this._content = value;
+				Guard.IsNotNullOrWhiteSpace(value, nameof(this.Description));
+				this._description = value;
 			}
 		}
+
+		public ICollection<RecipeTask> RecipeContents { get; } = new List<RecipeTask>();
+
+		public ICollection<Ingredient> Ingredients { get; } = new List<Ingredient>();
 	}
 }
