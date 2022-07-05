@@ -8,6 +8,7 @@ namespace CookingRecipesSystem.Domain.Entities
 	{
 		private string? _title;
 		private string? _description;
+		private Photo? _mainPhoto;
 
 		public Recipe(string title, string description, string createdBy)
 		{
@@ -23,6 +24,16 @@ namespace CookingRecipesSystem.Domain.Entities
 			{
 				Guard.IsNotNullOrWhiteSpace(value, nameof(this.Title));
 				this._title = value;
+			}
+		}
+
+		public Photo MainPhoto
+		{
+			get => this._mainPhoto!;
+			set
+			{
+				Guard.IsNotNull(value, nameof(this.MainPhoto));
+				this._mainPhoto = value;
 			}
 		}
 

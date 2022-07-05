@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Diagnostics;
 
+using CookingRecipesSystem.Domain.Common;
+
 namespace CookingRecipesSystem.Domain.Entities
 {
-	public class RecipeTask
+	public class RecipeTask : AuditableEntity<int>
 	{
 		private string? _description;
 
@@ -18,5 +20,7 @@ namespace CookingRecipesSystem.Domain.Entities
 				this._description = value;
 			}
 		}
+
+		public ICollection<Photo> Photos { get; } = new List<Photo>();
 	}
 }
