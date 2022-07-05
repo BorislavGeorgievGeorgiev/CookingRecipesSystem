@@ -36,7 +36,9 @@ namespace CookingRecipesSystem.Application.Common.Mappings
 
 		private MethodInfo? GetCurrentMethodInfo(Type type)
 		{
-			if (type.GetGenericTypeDefinition() == this._iMapFromType)
+			var implementedInterfaces = type.GetTypeInfo().ImplementedInterfaces;
+
+			if (implementedInterfaces.Any(t => t.Name == this._iMapFromType.Name))
 			{
 				return type.GetMethod(_MappingFromMethodName)
 					?? type.GetInterface(this._iMapFromType.Name)!.GetMethod(_MappingFromMethodName);

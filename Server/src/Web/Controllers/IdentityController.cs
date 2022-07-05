@@ -2,6 +2,7 @@
 using CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser;
 using CookingRecipesSystem.Application.Identity.Commands.LoginUser;
 using CookingRecipesSystem.Application.Identity.Commands.RegisterUser;
+using CookingRecipesSystem.Application.Identity.Queries;
 using CookingRecipesSystem.Web.Common;
 using CookingRecipesSystem.Web.Extensions;
 
@@ -30,5 +31,11 @@ namespace CookingRecipesSystem.Web.Controllers
 		public async Task<ActionResult> ChangePassword(
 			ChangePasswordUserCommand command)
 			=> await this.Mediator.Send(command).ToActionResult();
+
+		[HttpGet]
+		[Route(nameof(GetAllTestEntities))]
+		public async Task<ApplicationResult<IEnumerable<TestEntityResponseModel>>> GetAllTestEntities(
+			[FromQuery] TestEntitiesQuery query)
+			=> await this.Mediator.Send(query);
 	}
 }
