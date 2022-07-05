@@ -1,12 +1,11 @@
-﻿
-using CookingRecipesSystem.Application.Common.Interfaces.Lifetime;
+﻿using CookingRecipesSystem.Application.Common.Interfaces.Lifetime;
+using CookingRecipesSystem.Domain.Common;
 
 namespace CookingRecipesSystem.Application.Common.Interfaces
 {
-	public interface IApplicationData : IScopedService
+	public interface IApplicationData<in TEntity> : ITransientService
+		where TEntity : class, IAggregateRoot
 	{
-		//IDbSet<Recipe> Recipes { get; set; }
-
 		Task<int> SaveAsync(CancellationToken cancellationToken);
 	}
 }

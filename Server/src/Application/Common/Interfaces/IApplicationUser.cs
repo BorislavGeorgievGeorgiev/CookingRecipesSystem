@@ -1,4 +1,6 @@
-﻿namespace CookingRecipesSystem.Application.Common.Interfaces
+﻿using CookingRecipesSystem.Domain.Common;
+
+namespace CookingRecipesSystem.Application.Common.Interfaces
 {
 	public interface IApplicationUser : IAggregateRoot
 	{

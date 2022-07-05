@@ -63,7 +63,7 @@ namespace CookingRecipesSystem.Infrastructure.Services
 			return this.UserResult(user);
 		}
 
-		public ApplicationResult<IQueryable<IApplicationUser>> GetAllTracking()
+		public ApplicationResult<IQueryable<IApplicationUser>> GetAll()
 		{
 			var users = this._userManager.Users;
 

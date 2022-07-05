@@ -1,5 +1,4 @@
-﻿
-using CommunityToolkit.Diagnostics;
+﻿using CommunityToolkit.Diagnostics;
 
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Infrastructure.Identity;

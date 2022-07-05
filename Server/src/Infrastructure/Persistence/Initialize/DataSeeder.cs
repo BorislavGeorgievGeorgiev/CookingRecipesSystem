@@ -1,5 +1,6 @@
 ﻿
 using CookingRecipesSystem.Domain.Common;
+using CookingRecipesSystem.Domain.Entities;
 using CookingRecipesSystem.Infrastructure.Identity;
 
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +14,7 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 		public static async Task SeedAsync(IServiceProvider serviceProvider)
 		{
 			using var context = serviceProvider.GetRequiredService<CookingRecipesSystemDbContext>();
+
 			try
 			{
 				context.Database.Migrate();
@@ -26,16 +28,35 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 					Email = "admin@test.com"
 				};
 
-				if (roleManager.Roles.All(
-					r => r.Name == ApplicationConstants.RoleNameAdministrator))
+				var hasAdminRole = roleManager.Roles.All(
+					r => r.Name == ApplicationConstants.RoleNameAdministrator);
+
+				if (!hasAdminRole)
 				{
 					await roleManager.CreateAsync(new IdentityRole(ApplicationConstants.RoleNameAdministrator));
 				}
 
-				if (userManager.Users.All(u => u.Id != defaultUser.Id))
+				var hasUser = userManager.Users.All(u => u.Email == defaultUser.Email);
+
+				if (!hasUser)
 				{
 					await userManager.CreateAsync(defaultUser, "test");
 					await userManager.AddToRoleAsync(defaultUser, ApplicationConstants.RoleNameAdministrator);
+				}
+
+				if (!context.TestEntities.Any())
+				{
+					var user = userManager.Users.FirstOrDefault(u => u.Email == defaultUser.Email);
+
+					for (int i = 0; i < 10; i++)
+					{
+						var testEntity = new TestEntity();
+						testEntity.Text = i + " : Test String.";
+						testEntity.CreatedBy = user.Id;
+						testEntity.CreatedOn = DateTime.UtcNow;
+
+						context.TestEntities.Add(testEntity);
+					}
 				}
 
 				await context.SaveChangesAsync();

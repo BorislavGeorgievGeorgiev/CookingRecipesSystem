@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookingRecipesSystem.Infrastructure.Persistence
 {
-	internal class CookingRecipesSystemDbContext :
-		IdentityDbContext<ApplicationUser>, IApplicationData
+	public class CookingRecipesSystemDbContext :
+		IdentityDbContext<ApplicationUser>
 	{
 		private readonly ICurrentUserService _currentUserService;
 		private readonly IDateTimeService _dateTimeService;
@@ -25,11 +25,15 @@ namespace CookingRecipesSystem.Infrastructure.Persistence
 			this._dateTimeService = dateTimeService;
 		}
 
-		public DbSet<Recipe> Recipes { get; set; }
+		public DbSet<TestEntity> TestEntities { get; set; }
 
-		public Task<int> SaveAsync(
-			CancellationToken cancellationToken = new CancellationToken())
-			=> this.SaveChangesAsync(cancellationToken);
+		//public DbSet<Recipe> Recipes { get; set; }
+
+		//public DbSet<Photo> Photos { get; set; }
+
+		//public DbSet<Ingredient> Ingredients { get; set; }
+
+		//public DbSet<RecipeTask> RecipeTasks { get; set; }
 
 		public override Task<int> SaveChangesAsync(
 			CancellationToken cancellationToken = new CancellationToken())
