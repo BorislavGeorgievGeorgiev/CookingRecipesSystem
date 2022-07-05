@@ -9,6 +9,7 @@ namespace CookingRecipesSystem.Domain.Entities
 		private string? _title;
 		private string? _description;
 		private Photo? _mainPhoto;
+		private Photo? _thumbnailPhoto;
 
 		public Recipe(string title, string description, string createdBy)
 		{
@@ -34,6 +35,16 @@ namespace CookingRecipesSystem.Domain.Entities
 			{
 				Guard.IsNotNull(value, nameof(this.MainPhoto));
 				this._mainPhoto = value;
+			}
+		}
+
+		public Photo ThumbnailPhoto
+		{
+			get => this._thumbnailPhoto!;
+			set
+			{
+				Guard.IsNotNull(value, nameof(this.ThumbnailPhoto));
+				this._thumbnailPhoto = value;
 			}
 		}
 
