@@ -42,14 +42,6 @@ namespace CookingRecipesSystem.Infrastructure
 
 			services.AddConventionalServices(Assembly.GetExecutingAssembly());
 
-			//services
-			//	.Scan(scan => scan
-			//	.FromAssemblies(Assembly.GetExecutingAssembly())
-			//	.AddClasses(classes => classes
-			//	.AssignableTo(typeof(IApplicationData<>)))
-			//	.AsImplementedInterfaces()
-			//	.WithTransientLifetime());
-
 			services.AddTokenAuthentication(configuration);
 			services.AddAuthorization();
 

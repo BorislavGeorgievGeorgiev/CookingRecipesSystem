@@ -4,6 +4,7 @@ using CookingRecipesSystem.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookingRecipesSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(CookingRecipesSystemDbContext))]
-    partial class CookingRecipesSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220706174641_Add_IDeletableEntity")]
+    partial class Add_IDeletableEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

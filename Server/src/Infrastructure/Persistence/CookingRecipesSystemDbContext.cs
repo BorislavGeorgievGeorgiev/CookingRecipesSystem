@@ -49,6 +49,7 @@ namespace CookingRecipesSystem.Infrastructure.Persistence
 					case EntityState.Modified:
 						entry.Entity.ModifiedBy = this._currentUserService.GetUserId!;
 						entry.Entity.ModifiedOn = this._dateTimeService.Now;
+						entry.Entity.DeletedOn = entry.Entity.IsDeleted ? this._dateTimeService.Now : null;
 						break;
 				}
 			}

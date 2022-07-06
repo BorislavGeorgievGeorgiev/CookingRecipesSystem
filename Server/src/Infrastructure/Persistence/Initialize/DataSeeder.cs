@@ -13,6 +13,9 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 	{
 		public static async Task SeedAsync(IServiceProvider serviceProvider)
 		{
+			const string UserEmail = "admin@test.com";
+			const string UserPassword = "test";
+
 			using var context = serviceProvider.GetRequiredService<CookingRecipesSystemDbContext>();
 
 			try
@@ -24,8 +27,8 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 
 				var defaultUser = new ApplicationUser
 				{
-					UserName = "admin@test.com",
-					Email = "admin@test.com"
+					UserName = UserEmail,
+					Email = UserEmail
 				};
 
 				var hasAdminRole = roleManager.Roles.All(
@@ -40,7 +43,7 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 
 				if (!hasUser)
 				{
-					await userManager.CreateAsync(defaultUser, "test");
+					await userManager.CreateAsync(defaultUser, UserPassword);
 					await userManager.AddToRoleAsync(defaultUser, ApplicationConstants.RoleNameAdministrator);
 				}
 

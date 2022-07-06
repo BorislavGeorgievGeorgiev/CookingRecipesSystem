@@ -1,6 +1,6 @@
 ﻿namespace CookingRecipesSystem.Domain.Common
 {
-	public interface IAuditableEntity
+	public interface IAuditableEntity : IDeletableEntity
 	{
 		public string CreatedBy { get; set; }
 

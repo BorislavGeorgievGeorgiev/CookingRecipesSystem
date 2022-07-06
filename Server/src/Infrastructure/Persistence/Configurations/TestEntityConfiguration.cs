@@ -14,7 +14,7 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 
 			builder
 				.Property(e => e.Text)
-				.HasMaxLength(50); ;
+				.HasMaxLength(1500); ;
 
 			builder
 			 .Property(r => r.CreatedBy)

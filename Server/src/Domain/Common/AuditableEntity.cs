@@ -2,7 +2,7 @@
 
 namespace CookingRecipesSystem.Domain.Common
 {
-	public abstract class AuditableEntity<TKey> : Entity<TKey>, IAuditableEntity
+	public abstract class AuditableEntity<TKey> : Entity<TKey>, IAuditableEntity, IDeletableEntity
 		where TKey : struct
 	{
 		private string? _createdBy;
@@ -11,8 +11,7 @@ namespace CookingRecipesSystem.Domain.Common
 
 		public string CreatedBy
 		{
-			get => this._createdBy ??
-				throw new InvalidEntityException(ExceptionMessages.CreatorIdNotNull);
+			get => this._createdBy!;
 			set => this._createdBy = value ??
 				throw new InvalidEntityException(ExceptionMessages.CreatorIdNotNull);
 		}
@@ -32,5 +31,9 @@ namespace CookingRecipesSystem.Domain.Common
 			set => this._modifiedOn = value ??
 				throw new InvalidEntityException(ExceptionMessages.ModifiedOnNotNull);
 		}
+
+		public bool IsDeleted { get; set; } = false;
+
+		public DateTime? DeletedOn { get; set; }
 	}
 }
