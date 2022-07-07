@@ -4,7 +4,7 @@ using CookingRecipesSystem.Domain.Common;
 
 namespace CookingRecipesSystem.Domain.Entities
 {
-	public class Photo : AuditableEntity<int>
+	public class Photo : AuditableEntity<int>, IAggregateRoot
 	{
 		private string? _title;
 		private byte[]? photoData;

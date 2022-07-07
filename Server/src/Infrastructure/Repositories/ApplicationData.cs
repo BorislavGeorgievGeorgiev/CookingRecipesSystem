@@ -39,7 +39,7 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 			return true;
 		}
 
-		public bool Update(TEntity entity)
+		public async Task<bool> Update(TEntity entity)
 		{
 			var entry = this._Context.Entry(entity);
 
@@ -50,19 +50,12 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 
 			entry.State = EntityState.Modified;
 
-			return true;
+			return await Task.FromResult(true);
 		}
 
-		public bool DeleteNoPermanent(TEntity entity)
+		public async Task<bool> DeleteNoPermanent(TEntity entity)
 		{
-			var entry = this._Context.Entry(entity);
-
-			if (entry.State == EntityState.Detached)
-			{
-				this._DbSet.Attach(entity);
-			}
-
-			entry.State = EntityState.Modified;
+			await this.Update(entity);
 
 			entity.IsDeleted = true;
 

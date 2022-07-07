@@ -5,7 +5,7 @@ using CookingRecipesSystem.Domain.Common;
 
 namespace CookingRecipesSystem.Domain.Entities
 {
-	public class Ingredient : AuditableEntity<int>
+	public class Ingredient : AuditableEntity<int>, IAggregateRoot
 	{
 		private string? _name;
 		private string? _description;

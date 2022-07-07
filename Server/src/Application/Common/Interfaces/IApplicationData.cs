@@ -16,9 +16,9 @@ namespace CookingRecipesSystem.Application.Common.Interfaces
 		Task<bool> Create(TEntity entity,
 						CancellationToken cancellationToken = default);
 
-		bool Update(TEntity entity);
+		Task<bool> Update(TEntity entity);
 
-		bool DeleteNoPermanent(TEntity entity);
+		Task<bool> DeleteNoPermanent(TEntity entity);
 
 		Task<int> SaveAsync(CancellationToken cancellationToken);
 	}
