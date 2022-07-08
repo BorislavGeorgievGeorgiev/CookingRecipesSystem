@@ -35,7 +35,7 @@ namespace CookingRecipesSystem.Web.Controllers
 
 		[HttpGet]
 		[Route(nameof(GetAllTestEntities))]
-		public async Task<ActionResult<IEnumerable<TestEntityResponseModel>>> GetAllTestEntities(
+		public async Task<ActionResult<TestEntityListResponseModel>> GetAllTestEntities(
 			[FromQuery] TestEntitiesQuery query)
 			=> await this.Mediator.Send(query).ToActionResult();
 

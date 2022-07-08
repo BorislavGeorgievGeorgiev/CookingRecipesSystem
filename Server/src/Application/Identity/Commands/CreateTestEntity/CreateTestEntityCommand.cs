@@ -17,9 +17,9 @@ namespace CookingRecipesSystem.Application.Identity.Commands.CreateTestEntity
 		public class CreateTestEntityCommandHandler
 			: IRequestHandler<CreateTestEntityCommand, ApplicationResult>
 		{
-			private readonly ITestEntityRepository _testEntityRepository;
+			private readonly IAppRepository<TestEntity> _testEntityRepository;
 
-			public CreateTestEntityCommandHandler(ITestEntityRepository testEntityRepository)
+			public CreateTestEntityCommandHandler(IAppRepository<TestEntity> testEntityRepository)
 			{
 				this._testEntityRepository = testEntityRepository;
 			}

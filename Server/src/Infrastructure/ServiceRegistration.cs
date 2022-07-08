@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 
 using CookingRecipesSystem.Application;
+using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Domain.Common;
 using CookingRecipesSystem.Infrastructure.Common;
 using CookingRecipesSystem.Infrastructure.Identity;
@@ -41,11 +42,21 @@ namespace CookingRecipesSystem.Infrastructure
 				 .AddEntityFrameworkStores<CookingRecipesSystemDbContext>();
 
 			services.AddConventionalServices(Assembly.GetExecutingAssembly());
+			services.AddRepositories(Assembly.GetExecutingAssembly());
 
 			services.AddTokenAuthentication(configuration);
 			services.AddAuthorization();
 
 			return services;
 		}
+
+		internal static IServiceCollection AddRepositories(
+			this IServiceCollection services, Assembly assembly)
+			=> services
+			.Scan(scan => scan
+			.FromAssemblies(assembly)
+			.AddClasses(classes => classes.AssignableTo(typeof(IAppRepository<>)))
+			.AsImplementedInterfaces()
+			.WithTransientLifetime());
 	}
 }

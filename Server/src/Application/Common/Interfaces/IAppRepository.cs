@@ -3,7 +3,7 @@ using CookingRecipesSystem.Domain.Common;
 
 namespace CookingRecipesSystem.Application.Common.Interfaces
 {
-	public interface IApplicationData<TEntity> : ITransientService
+	public interface IAppRepository<TEntity> : ITransientService
 		where TEntity : class, IAggregateRoot, IDeletableEntity
 	{
 		IQueryable<TEntity> GetAll();

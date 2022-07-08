@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CookingRecipesSystem.Infrastructure.Repositories
 {
-	public abstract class ApplicationData<TDbContext, TEntity> : IApplicationData<TEntity>
+	public abstract class AppRepository<TDbContext, TEntity> : IAppRepository<TEntity>
 		where TDbContext : DbContext
 		where TEntity : class, IAggregateRoot, IDeletableEntity
 	{
-		protected ApplicationData(TDbContext dbContext)
+		protected AppRepository(TDbContext dbContext)
 		{
 			Guard.IsNotNull(dbContext, nameof(dbContext));
 			this._Context = dbContext;

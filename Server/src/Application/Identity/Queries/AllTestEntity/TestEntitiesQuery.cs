@@ -2,36 +2,41 @@
 
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
+using CookingRecipesSystem.Domain.Entities;
 
 using MediatR;
 
 namespace CookingRecipesSystem.Application.Identity.Queries.AllTestEntity
 {
-	public class TestEntitiesQuery : IRequest<ApplicationResult<IEnumerable<TestEntityResponseModel>>>
+	public class TestEntitiesQuery : IRequest<ApplicationResult<TestEntityListResponseModel>>
 	{
 
 		public class TestEntitiesQueryHandler :
-			IRequestHandler<TestEntitiesQuery, ApplicationResult<IEnumerable<TestEntityResponseModel>>>
+			IRequestHandler<TestEntitiesQuery, ApplicationResult<TestEntityListResponseModel>>
 		{
-			private readonly ITestEntityRepository _testEntityRepository;
+			private readonly IAppRepository<TestEntity> _testEntityRepository;
 			private readonly IMapper? _mapper;
 
-			public TestEntitiesQueryHandler(ITestEntityRepository testEntityRepository, IMapper mapper)
+			public TestEntitiesQueryHandler(IAppRepository<TestEntity> testEntityRepository, IMapper mapper)
 			{
 				this._testEntityRepository = testEntityRepository;
 				this._mapper = mapper;
 			}
 
-			public async Task<ApplicationResult<IEnumerable<TestEntityResponseModel>>> Handle(
+			public async Task<ApplicationResult<TestEntityListResponseModel>> Handle(
 				TestEntitiesQuery request, CancellationToken cancellationToken)
 			{
 				var mappedResult = this._mapper!
 				.ProjectTo<TestEntityResponseModel>(this._testEntityRepository.GetAllAsNoTracking())
 				.ToAsyncEnumerable();
 
-				var response = await mappedResult.ToListAsync(cancellationToken);
+				var resultList = await mappedResult.ToListAsync(cancellationToken);
+				var response = new TestEntityListResponseModel
+				{
+					TextList = resultList
+				};
 
-				return ApplicationResult<IEnumerable<TestEntityResponseModel>>.Success(response);
+				return ApplicationResult<TestEntityListResponseModel>.Success(response);
 			}
 		}
 	}
