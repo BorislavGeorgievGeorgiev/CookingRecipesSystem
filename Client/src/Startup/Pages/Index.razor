@@ -1,7 +1,9 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>@Title</PageTitle>
 
-<h1>Cooking Recipes</h1>
+<h1>@Title</h1>
 
-Welcome to your new app.
+@code{
+	private const string Title = "Cooking Recipes";
+}
