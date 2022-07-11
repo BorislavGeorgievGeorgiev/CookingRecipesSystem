@@ -1,9 +1,8 @@
-﻿
-using CookingRecipesSystem.Application.Common.Models;
+﻿using CookingRecipesSystem.Application.Common.Models;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace CookingRecipesSystem.Infrastructure.Identity
+namespace CookingRecipesSystem.Infrastructure.Common.Extensions
 {
 	public static class IdentityResultExtensions
 	{

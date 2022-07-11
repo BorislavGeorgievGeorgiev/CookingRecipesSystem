@@ -1,4 +1,6 @@
 ﻿
+using CommunityToolkit.Diagnostics;
+
 using CookingRecipesSystem.Domain.Common;
 using CookingRecipesSystem.Domain.Entities;
 using CookingRecipesSystem.Infrastructure.Identity;
@@ -51,12 +53,16 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 				{
 					var user = userManager.Users.FirstOrDefault(u => u.Email == defaultUser.Email);
 
+					Guard.IsNotNull(user, nameof(user));
+
 					for (int i = 0; i < 10; i++)
 					{
-						var testEntity = new TestEntity();
-						testEntity.Text = i + " : Test String.";
-						testEntity.CreatedBy = user.Id;
-						testEntity.CreatedOn = DateTime.UtcNow;
+						var testEntity = new TestEntity
+						{
+							Text = i + " : Test String.",
+							CreatedBy = user.Id,
+							CreatedOn = DateTime.UtcNow
+						};
 
 						context.TestEntities.Add(testEntity);
 					}

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CookingRecipesSystem.Infrastructure.Common
+namespace CookingRecipesSystem.Infrastructure.Common.Extensions
 {
 	public static class AuthenticationExtension
 	{

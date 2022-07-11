@@ -4,6 +4,7 @@ using CookingRecipesSystem.Application;
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Domain.Common;
 using CookingRecipesSystem.Infrastructure.Common;
+using CookingRecipesSystem.Infrastructure.Common.Extensions;
 using CookingRecipesSystem.Infrastructure.Identity;
 using CookingRecipesSystem.Infrastructure.Persistence;
 
