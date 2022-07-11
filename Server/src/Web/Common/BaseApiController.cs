@@ -1,4 +1,8 @@
-﻿using MediatR;
+﻿
+using CookingRecipesSystem.Application.Common.Models;
+using CookingRecipesSystem.Web.Extensions;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,9 +17,21 @@ namespace CookingRecipesSystem.Web.Common
 
 		protected const string Id = "{id}";
 
-		protected IMediator Mediator
+		private IMediator Mediator
 				=> this._mediator ??= this.HttpContext
 						.RequestServices
 						.GetService<IMediator>()!;
+
+		protected async Task<ActionResult> Send(IRequest<ApplicationResult> request)
+		{
+			return await this.Mediator.Send(request).ToActionResult();
+		}
+
+		protected async Task<ActionResult<TModel>> Send<TModel>(
+			IRequest<ApplicationResult<TModel>> request)
+			where TModel : class
+		{
+			return await this.Mediator.Send(request).ToActionResult();
+		}
 	}
 }
