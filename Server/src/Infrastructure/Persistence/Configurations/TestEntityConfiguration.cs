@@ -12,7 +12,7 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 		{
 			builder.HasKey(e => e.Id);
 
-			builder.Property(e => e.Text).HasMaxLength(1500); ;
+			builder.Property(e => e.Text).HasMaxLength(1500);
 
 			this.SetAuditableEntity(builder);
 		}

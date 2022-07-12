@@ -1,5 +1,6 @@
 ﻿using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
+using CookingRecipesSystem.Domain.Common.Constants;
 
 using MediatR;
 
@@ -36,7 +37,7 @@ namespace CookingRecipesSystem.Application.Identity.Commands.LoginUser
 				if (!applicationResultUser.Succeeded)
 				{
 					return ApplicationResult<UserTokenResponseModel>.Failure(
-						applicationResultUser.Errors);
+						ExceptionMessages.InvalidCredentials);
 				}
 
 				var user = applicationResultUser.Response;
@@ -47,7 +48,7 @@ namespace CookingRecipesSystem.Application.Identity.Commands.LoginUser
 				if (!applicationResultPassword.Succeeded)
 				{
 					return ApplicationResult<UserTokenResponseModel>.Failure(
-						applicationResultPassword.Errors);
+						ExceptionMessages.InvalidCredentials);
 				}
 
 				var token = await this._jwtService.GenerateToken(user.Id, request.Email);

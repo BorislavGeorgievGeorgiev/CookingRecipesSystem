@@ -33,17 +33,17 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 					Email = UserEmail
 				};
 
-				var hasAdminRole = roleManager.Roles.All(
+				var hasAdminRole = roleManager.Roles.SingleOrDefault(
 					r => r.Name == AppConstants.RoleNameAdministrator);
 
-				if (!hasAdminRole)
+				if (hasAdminRole == null)
 				{
 					await roleManager.CreateAsync(new IdentityRole(AppConstants.RoleNameAdministrator));
 				}
 
-				var hasUser = userManager.Users.All(u => u.Email == defaultUser.Email);
+				var hasUser = userManager.Users.SingleOrDefault(u => u.Email == defaultUser.Email);
 
-				if (!hasUser)
+				if (hasUser == null)
 				{
 					await userManager.CreateAsync(defaultUser, UserPassword);
 					await userManager.AddToRoleAsync(defaultUser, AppConstants.RoleNameAdministrator);
