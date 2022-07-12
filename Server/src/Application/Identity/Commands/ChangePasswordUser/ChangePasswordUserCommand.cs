@@ -5,7 +5,8 @@ using MediatR;
 
 namespace CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser
 {
-	public class ChangePasswordUserCommand : ChangePasswordRequestModel, IRequest<ApplicationResult>
+	public class ChangePasswordUserCommand :
+		ChangePasswordRequestModel, IRequest<ApplicationResult>
 	{
 		public ChangePasswordUserCommand(
 			string userId, string currentPassword, string newPassword)
@@ -24,7 +25,8 @@ namespace CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser
 			public async Task<ApplicationResult> Handle(
 				ChangePasswordUserCommand request, CancellationToken cancellationToken)
 			{
-				var applicationResultUser = await this._userManagerService.FindByIdAsync(request.UserId);
+				var applicationResultUser = await this._userManagerService
+					.FindByIdAsync(request.UserId);
 
 				if (!applicationResultUser.Succeeded)
 				{

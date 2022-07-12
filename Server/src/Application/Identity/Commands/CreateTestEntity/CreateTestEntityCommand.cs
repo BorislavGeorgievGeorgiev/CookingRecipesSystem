@@ -7,7 +7,8 @@ using MediatR;
 
 namespace CookingRecipesSystem.Application.Identity.Commands.CreateTestEntity
 {
-	public class CreateTestEntityCommand : TestEntityRequestModel, IRequest<ApplicationResult>
+	public class CreateTestEntityCommand :
+		TestEntityRequestModel, IRequest<ApplicationResult>
 	{
 		public CreateTestEntityCommand(string text)
 			: base(text)
@@ -19,7 +20,8 @@ namespace CookingRecipesSystem.Application.Identity.Commands.CreateTestEntity
 		{
 			private readonly IAppRepository<TestEntity> _testEntityRepository;
 
-			public CreateTestEntityCommandHandler(IAppRepository<TestEntity> testEntityRepository)
+			public CreateTestEntityCommandHandler(
+				IAppRepository<TestEntity> testEntityRepository)
 			{
 				this._testEntityRepository = testEntityRepository;
 			}

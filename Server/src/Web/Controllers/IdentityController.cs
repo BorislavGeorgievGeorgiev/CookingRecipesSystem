@@ -1,5 +1,4 @@
-﻿using CookingRecipesSystem.Application.Common.Models;
-using CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser;
+﻿using CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser;
 using CookingRecipesSystem.Application.Identity.Commands.CreateTestEntity;
 using CookingRecipesSystem.Application.Identity.Commands.LoginUser;
 using CookingRecipesSystem.Application.Identity.Commands.RegisterUser;

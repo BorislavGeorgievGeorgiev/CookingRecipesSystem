@@ -1,4 +1,6 @@
-﻿namespace CookingRecipesSystem.Application.Common.Models
+﻿using CookingRecipesSystem.Application.Identity.Commands.LoginUser;
+
+namespace CookingRecipesSystem.Application.Identity.Commands.RegisterUser
 {
 	public class UserRegisterRequestModel : UserLoginRequestModel
 	{

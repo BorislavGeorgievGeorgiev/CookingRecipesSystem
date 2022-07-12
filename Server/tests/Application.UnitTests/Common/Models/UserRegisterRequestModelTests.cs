@@ -1,5 +1,4 @@
-﻿
-using CookingRecipesSystem.Application.Common.Models;
+﻿using CookingRecipesSystem.Application.Identity.Commands.RegisterUser;
 
 namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 {

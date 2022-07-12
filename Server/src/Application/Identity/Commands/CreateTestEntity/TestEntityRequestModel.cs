@@ -1,4 +1,4 @@
-﻿namespace CookingRecipesSystem.Application.Common.Models
+﻿namespace CookingRecipesSystem.Application.Identity.Commands.CreateTestEntity
 {
 	public class TestEntityRequestModel
 	{

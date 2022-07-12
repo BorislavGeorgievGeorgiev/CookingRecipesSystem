@@ -18,16 +18,6 @@ namespace CookingRecipesSystem.Domain.UnitTests.Common
 		}
 
 		[Fact]
-		public void CreatedBy_Should_Throw_InvalidEntityException_When_Is_Not_Set()
-		{
-			// Arrange
-			var auditableEntity = new TestAuditableEntity().SetId(1);
-
-			// Act & Assert
-			Assert.Throws<InvalidEntityException>(() => auditableEntity.CreatedBy);
-		}
-
-		[Fact]
 		public void CreatedOn_Should_Return_Properly_When_Is_Set()
 		{
 			// Arrange

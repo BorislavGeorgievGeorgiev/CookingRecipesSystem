@@ -1,4 +1,4 @@
-﻿namespace CookingRecipesSystem.Application.Common.Models
+﻿namespace CookingRecipesSystem.Application.Identity.Queries.AllTestEntity
 {
 	public class TestEntityListResponseModel
 	{
