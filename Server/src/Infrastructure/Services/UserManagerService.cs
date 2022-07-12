@@ -1,6 +1,6 @@
 ﻿using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
-using CookingRecipesSystem.Domain.Common;
+using CookingRecipesSystem.Domain.Common.Constants;
 using CookingRecipesSystem.Infrastructure.Common.Extensions;
 using CookingRecipesSystem.Infrastructure.Identity;
 

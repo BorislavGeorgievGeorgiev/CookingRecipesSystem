@@ -1,6 +1,4 @@
 ﻿
-using FluentValidation;
-
 using MediatR;
 
 namespace CookingRecipesSystem.Application.Common.Behaviours
@@ -9,10 +7,10 @@ namespace CookingRecipesSystem.Application.Common.Behaviours
 			: IPipelineBehavior<TRequest, TResponse>
 			where TRequest : IRequest<TResponse>
 	{
-		private readonly IEnumerable<IValidator<TRequest>> _validators;
+		//private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-		public RequestValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
-				=> this._validators = validators;
+		//public RequestValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
+		//		=> this._validators = validators;
 
 		public async Task<TResponse> Handle(TRequest request,
 		CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)

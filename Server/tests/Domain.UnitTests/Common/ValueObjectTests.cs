@@ -12,8 +12,6 @@ namespace CookingRecipesSystem.Domain.UnitTests.Common
 		private class TestValueObject2 : ValueObject
 		{
 			public string Test { get; } = default!;
-
-			private bool Test2 { get; } = false;
 		}
 
 		[Fact]

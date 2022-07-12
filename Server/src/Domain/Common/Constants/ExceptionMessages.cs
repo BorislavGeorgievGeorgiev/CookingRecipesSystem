@@ -1,4 +1,4 @@
-﻿namespace CookingRecipesSystem.Domain.Common
+﻿namespace CookingRecipesSystem.Domain.Common.Constants
 {
 	public static class ExceptionMessages
 	{

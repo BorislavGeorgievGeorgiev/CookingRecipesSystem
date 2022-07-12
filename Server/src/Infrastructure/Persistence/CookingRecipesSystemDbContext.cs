@@ -27,13 +27,11 @@ namespace CookingRecipesSystem.Infrastructure.Persistence
 
 		public DbSet<TestEntity> TestEntities { get; set; }
 
-		//public DbSet<Recipe> Recipes { get; set; }
+		public DbSet<Recipe> Recipes { get; set; }
 
-		//public DbSet<Photo> Photos { get; set; }
+		public DbSet<Ingredient> Ingredients { get; set; }
 
-		//public DbSet<Ingredient> Ingredients { get; set; }
-
-		//public DbSet<RecipeTask> RecipeTasks { get; set; }
+		public DbSet<RecipeTask> RecipeTasks { get; set; }
 
 		public override Task<int> SaveChangesAsync(
 			CancellationToken cancellationToken = new CancellationToken())

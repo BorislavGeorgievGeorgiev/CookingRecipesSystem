@@ -1,4 +1,5 @@
-﻿using CookingRecipesSystem.Domain.Exceptions;
+﻿using CookingRecipesSystem.Domain.Common.Constants;
+using CookingRecipesSystem.Domain.Exceptions;
 
 namespace CookingRecipesSystem.Domain.Common
 {

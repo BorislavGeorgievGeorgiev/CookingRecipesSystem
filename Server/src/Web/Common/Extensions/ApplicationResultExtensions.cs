@@ -1,9 +1,8 @@
-﻿
-using CookingRecipesSystem.Application.Common.Models;
+﻿using CookingRecipesSystem.Application.Common.Models;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace CookingRecipesSystem.Web.Extensions
+namespace CookingRecipesSystem.Web.Common.Extensions
 {
 	public static class ApplicationResultExtensions
 	{

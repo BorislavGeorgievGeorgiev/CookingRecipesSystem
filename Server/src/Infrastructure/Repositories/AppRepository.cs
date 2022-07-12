@@ -15,17 +15,17 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 		protected AppRepository(TDbContext dbContext)
 		{
 			Guard.IsNotNull(dbContext, nameof(dbContext));
-			this._Context = dbContext;
-			this._DbSet = dbContext.Set<TEntity>();
+			this.Context = dbContext;
+			this.DbSet = dbContext.Set<TEntity>();
 		}
 
-		private TDbContext _Context { get; }
+		private TDbContext Context { get; }
 
-		private DbSet<TEntity> _DbSet { get; }
+		private DbSet<TEntity> DbSet { get; }
 
 		public async Task<bool> Create(TEntity entity, CancellationToken cancellationToken = default)
 		{
-			var entry = this._Context.Entry(entity);
+			var entry = this.Context.Entry(entity);
 
 			if (entry.State != EntityState.Detached)
 			{
@@ -33,7 +33,7 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 			}
 			else
 			{
-				await this._DbSet.AddAsync(entity, cancellationToken);
+				await this.DbSet.AddAsync(entity, cancellationToken);
 			}
 
 			return true;
@@ -41,11 +41,11 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 
 		public async Task<bool> Update(TEntity entity)
 		{
-			var entry = this._Context.Entry(entity);
+			var entry = this.Context.Entry(entity);
 
 			if (entry.State == EntityState.Detached)
 			{
-				this._DbSet.Attach(entity);
+				this.DbSet.Attach(entity);
 			}
 
 			entry.State = EntityState.Modified;
@@ -64,12 +64,12 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 
 		public async Task<TEntity?> GetById<TKey>(TKey id, CancellationToken cancellationToken = default)
 		{
-			return await this._DbSet.FindAsync(new TKey[] { id }, cancellationToken);
+			return await this.DbSet.FindAsync(new object?[] { new TKey[] { id } }, cancellationToken: cancellationToken);
 		}
 
 		public IQueryable<TEntity> GetAll()
 		{
-			return this._DbSet.Where(x => !x.IsDeleted);
+			return this.DbSet.Where(x => !x.IsDeleted);
 		}
 
 		public IQueryable<TEntity> GetAllAsNoTracking()
@@ -80,7 +80,7 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 		public async Task<int> SaveAsync(
 			CancellationToken cancellationToken = new CancellationToken())
 		{
-			return await this._Context.SaveChangesAsync(cancellationToken);
+			return await this.Context.SaveChangesAsync(cancellationToken);
 		}
 	}
 }

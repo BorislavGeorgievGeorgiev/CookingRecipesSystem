@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Diagnostics;
 
 using CookingRecipesSystem.Domain.Common;
+using CookingRecipesSystem.Domain.Common.Constants;
 
 namespace CookingRecipesSystem.Domain.Entities
 {
@@ -8,19 +9,27 @@ namespace CookingRecipesSystem.Domain.Entities
 	{
 		private string? _description;
 
-		public RecipeTask(string description)
-			=> this.Description = description;
+		public RecipeTask(byte position, string description, string createdBy)
+		{
+			this.Description = description;
+			this.CreatedBy = createdBy;
+			this.Position = position;
+		}
+
+		public byte Position { get; set; }
 
 		public string Description
 		{
 			get { return this._description!; }
-			private set
+			set
 			{
 				Guard.IsNotNullOrWhiteSpace(value, nameof(this.Description));
+				Guard.HasSizeLessThanOrEqualTo(
+					value, EntityConstants.RecipeTaskDescriptionMaxLength, nameof(this.Description));
 				this._description = value;
 			}
 		}
 
-		public ICollection<Photo> Photos { get; } = new List<Photo>();
+		public byte[] DemoPhoto { get; set; }
 	}
 }

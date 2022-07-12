@@ -1,4 +1,4 @@
-﻿using CookingRecipesSystem.Domain.Common;
+﻿using CookingRecipesSystem.Domain.Common.Constants;
 
 using FluentValidation;
 
@@ -13,8 +13,8 @@ namespace CookingRecipesSystem.Application.Identity.Commands.LoginUser
 				.NotEmpty();
 
 			this.RuleFor(u => u.Password)
-				.MinimumLength(ApplicationConstants.PasswordMinLength)
-				.MaximumLength(ApplicationConstants.PasswordMaxLength)
+				.MinimumLength(AppConstants.PasswordMinLength)
+				.MaximumLength(AppConstants.PasswordMaxLength)
 				.NotEmpty();
 		}
 	}

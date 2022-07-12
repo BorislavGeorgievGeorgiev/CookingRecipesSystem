@@ -2,6 +2,7 @@
 using CommunityToolkit.Diagnostics;
 
 using CookingRecipesSystem.Domain.Common;
+using CookingRecipesSystem.Domain.Common.Constants;
 
 namespace CookingRecipesSystem.Domain.Entities
 {
@@ -9,10 +10,9 @@ namespace CookingRecipesSystem.Domain.Entities
 	{
 		private string? _name;
 		private string? _description;
-		private Photo? _ingredientPhoto;
-		private Photo? _thumbnailPhoto;
 
-		public Ingredient(string name, string description, string createdBy)
+		public Ingredient(
+			string name, string description, string createdBy)
 		{
 			this.Name = name;
 			this.Description = description;
@@ -22,41 +22,31 @@ namespace CookingRecipesSystem.Domain.Entities
 		public string Name
 		{
 			get { return this._name!; }
-			private set
+			set
 			{
 				Guard.IsNotNullOrWhiteSpace(value, nameof(this.Name));
+				Guard.HasSizeLessThanOrEqualTo(
+					value, EntityConstants.IngredientNameMaxLength, nameof(this.Name));
 				this._name = value;
-			}
-		}
-
-		public Photo IngredientPhoto
-		{
-			get => this._ingredientPhoto!;
-			set
-			{
-				Guard.IsNotNull(value, nameof(this.IngredientPhoto));
-				this._ingredientPhoto = value;
-			}
-		}
-
-		public Photo ThumbnailPhoto
-		{
-			get => this._thumbnailPhoto!;
-			set
-			{
-				Guard.IsNotNull(value, nameof(this.ThumbnailPhoto));
-				this._thumbnailPhoto = value;
 			}
 		}
 
 		public string Description
 		{
 			get { return this._description!; }
-			private set
+			set
 			{
 				Guard.IsNotNullOrWhiteSpace(value, nameof(this.Description));
+				Guard.HasSizeLessThanOrEqualTo(
+					value, EntityConstants.IngredientDescriptionMaxLength, nameof(this.Description));
 				this._description = value;
 			}
 		}
+
+		public byte[] MainPhoto { get; set; }
+
+		public byte[] ThumbnailPhoto { get; set; }
+
+		public ICollection<Recipe> Recipes { get; } = new HashSet<Recipe>();
 	}
 }

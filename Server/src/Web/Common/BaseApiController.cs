@@ -1,6 +1,6 @@
 ﻿
 using CookingRecipesSystem.Application.Common.Models;
-using CookingRecipesSystem.Web.Extensions;
+using CookingRecipesSystem.Web.Common.Extensions;
 
 using MediatR;
 

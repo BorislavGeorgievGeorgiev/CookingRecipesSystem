@@ -5,20 +5,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 {
-	public class TestEntityConfiguration : IEntityTypeConfiguration<TestEntity>
+	public class TestEntityConfiguration :
+		AuditableEntityConfiguration<TestEntity>, IEntityTypeConfiguration<TestEntity>
 	{
 		public void Configure(EntityTypeBuilder<TestEntity> builder)
 		{
-			builder
-				.HasKey(e => e.Id);
+			builder.HasKey(e => e.Id);
 
-			builder
-				.Property(e => e.Text)
-				.HasMaxLength(1500); ;
+			builder.Property(e => e.Text).HasMaxLength(1500); ;
 
-			builder
-			 .Property(r => r.CreatedBy)
-			 .IsRequired();
+			this.SetAuditableEntity(builder);
 		}
 	}
 }

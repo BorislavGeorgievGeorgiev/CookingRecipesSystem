@@ -1,9 +1,8 @@
 ﻿using CommunityToolkit.Diagnostics;
 
 using CookingRecipesSystem.Application.Common.Interfaces;
-using CookingRecipesSystem.Infrastructure.Identity;
 
-namespace CookingRecipesSystem.Infrastructure.Common
+namespace CookingRecipesSystem.Infrastructure.Identity
 {
 	public class ApplicationUserFactory : IApplicationUserFactory
 	{

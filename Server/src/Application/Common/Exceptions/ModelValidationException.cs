@@ -1,5 +1,4 @@
-﻿
-using CookingRecipesSystem.Domain.Common;
+﻿using CookingRecipesSystem.Domain.Common.Constants;
 
 using FluentValidation.Results;
 

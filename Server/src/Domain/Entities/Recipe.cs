@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Diagnostics;
 
 using CookingRecipesSystem.Domain.Common;
+using CookingRecipesSystem.Domain.Common.Constants;
 
 namespace CookingRecipesSystem.Domain.Entities
 {
@@ -8,10 +9,9 @@ namespace CookingRecipesSystem.Domain.Entities
 	{
 		private string? _title;
 		private string? _description;
-		private Photo? _mainPhoto;
-		private Photo? _thumbnailPhoto;
 
-		public Recipe(string title, string description, string createdBy)
+		public Recipe(
+			string title, string description, string createdBy)
 		{
 			this.Title = title;
 			this.Description = description;
@@ -21,45 +21,33 @@ namespace CookingRecipesSystem.Domain.Entities
 		public string Title
 		{
 			get { return this._title!; }
-			private set
+			set
 			{
 				Guard.IsNotNullOrWhiteSpace(value, nameof(this.Title));
+				Guard.HasSizeLessThanOrEqualTo(
+					value, EntityConstants.RecipeTitleMaxLength, nameof(this.Title));
 				this._title = value;
-			}
-		}
-
-		public Photo MainPhoto
-		{
-			get => this._mainPhoto!;
-			set
-			{
-				Guard.IsNotNull(value, nameof(this.MainPhoto));
-				this._mainPhoto = value;
-			}
-		}
-
-		public Photo ThumbnailPhoto
-		{
-			get => this._thumbnailPhoto!;
-			set
-			{
-				Guard.IsNotNull(value, nameof(this.ThumbnailPhoto));
-				this._thumbnailPhoto = value;
 			}
 		}
 
 		public string Description
 		{
 			get { return this._description!; }
-			private set
+			set
 			{
 				Guard.IsNotNullOrWhiteSpace(value, nameof(this.Description));
+				Guard.HasSizeLessThanOrEqualTo(
+					value, EntityConstants.RecipeDescriptionMaxLength, nameof(this.Description));
 				this._description = value;
 			}
 		}
 
-		public ICollection<RecipeTask> RecipeContents { get; } = new List<RecipeTask>();
+		public byte[] MainPhoto { get; set; }
 
-		public ICollection<Ingredient> Ingredients { get; } = new List<Ingredient>();
+		public byte[] ThumbnailPhoto { get; set; }
+
+		public ICollection<Ingredient> Ingredients { get; } = new HashSet<Ingredient>();
+
+		public ICollection<RecipeTask> RecipeTasks { get; } = new HashSet<RecipeTask>();
 	}
 }

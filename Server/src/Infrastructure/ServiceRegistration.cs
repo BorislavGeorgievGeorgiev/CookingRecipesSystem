@@ -2,7 +2,7 @@
 
 using CookingRecipesSystem.Application;
 using CookingRecipesSystem.Application.Common.Interfaces;
-using CookingRecipesSystem.Domain.Common;
+using CookingRecipesSystem.Domain.Common.Constants;
 using CookingRecipesSystem.Infrastructure.Common;
 using CookingRecipesSystem.Infrastructure.Common.Extensions;
 using CookingRecipesSystem.Infrastructure.Identity;
@@ -23,7 +23,7 @@ namespace CookingRecipesSystem.Infrastructure
 			services
 				.AddDbContext<CookingRecipesSystemDbContext>(options => options
 				.UseSqlServer(
-					configuration.GetConnectionString(ApplicationConstants.DefaultConnection),
+					configuration.GetConnectionString(AppConstants.DefaultConnection),
 					bilder => bilder.MigrationsAssembly(
 						typeof(CookingRecipesSystemDbContext).Assembly.FullName)));
 
@@ -34,11 +34,11 @@ namespace CookingRecipesSystem.Infrastructure
 				.AddIdentity<ApplicationUser, IdentityRole>(options =>
 				 {
 					 options.User.RequireUniqueEmail = true;
-					 options.Password.RequireNonAlphanumeric = ApplicationConstants.PasswordRequireNonAlphanumericValue;
-					 options.Password.RequireDigit = ApplicationConstants.PasswordRequireDigitValue;
-					 options.Password.RequireUppercase = ApplicationConstants.PasswordRequireUppercaseValue;
-					 options.Password.RequiredUniqueChars = ApplicationConstants.PasswordRequiredUniqueCharsValue;
-					 options.Password.RequiredLength = ApplicationConstants.PasswordMinLength;
+					 options.Password.RequireNonAlphanumeric = AppConstants.PasswordRequireNonAlphanumericValue;
+					 options.Password.RequireDigit = AppConstants.PasswordRequireDigitValue;
+					 options.Password.RequireUppercase = AppConstants.PasswordRequireUppercaseValue;
+					 options.Password.RequiredUniqueChars = AppConstants.PasswordRequiredUniqueCharsValue;
+					 options.Password.RequiredLength = AppConstants.PasswordMinLength;
 				 })
 				 .AddEntityFrameworkStores<CookingRecipesSystemDbContext>();
 

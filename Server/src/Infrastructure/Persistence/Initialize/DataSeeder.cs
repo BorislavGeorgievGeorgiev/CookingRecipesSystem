@@ -1,7 +1,7 @@
 ﻿
 using CommunityToolkit.Diagnostics;
 
-using CookingRecipesSystem.Domain.Common;
+using CookingRecipesSystem.Domain.Common.Constants;
 using CookingRecipesSystem.Domain.Entities;
 using CookingRecipesSystem.Infrastructure.Identity;
 
@@ -34,11 +34,11 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 				};
 
 				var hasAdminRole = roleManager.Roles.All(
-					r => r.Name == ApplicationConstants.RoleNameAdministrator);
+					r => r.Name == AppConstants.RoleNameAdministrator);
 
 				if (!hasAdminRole)
 				{
-					await roleManager.CreateAsync(new IdentityRole(ApplicationConstants.RoleNameAdministrator));
+					await roleManager.CreateAsync(new IdentityRole(AppConstants.RoleNameAdministrator));
 				}
 
 				var hasUser = userManager.Users.All(u => u.Email == defaultUser.Email);
@@ -46,7 +46,7 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 				if (!hasUser)
 				{
 					await userManager.CreateAsync(defaultUser, UserPassword);
-					await userManager.AddToRoleAsync(defaultUser, ApplicationConstants.RoleNameAdministrator);
+					await userManager.AddToRoleAsync(defaultUser, AppConstants.RoleNameAdministrator);
 				}
 
 				if (!context.TestEntities.Any())

@@ -1,0 +1,40 @@
+﻿
+using CookingRecipesSystem.Domain.Common.Constants;
+using CookingRecipesSystem.Domain.Entities;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
+{
+	public class RecipeConfiguration :
+		AuditableEntityConfiguration<Recipe>, IEntityTypeConfiguration<Recipe>
+	{
+		public void Configure(EntityTypeBuilder<Recipe> builder)
+		{
+			builder.HasKey(r => r.Id);
+
+			builder.Property(r => r.Title).IsRequired()
+				.HasMaxLength(EntityConstants.RecipeTitleMaxLength);
+
+			builder.HasIndex(r => r.Title);
+
+			builder.Property(r => r.Description).IsRequired()
+				.HasMaxLength(EntityConstants.RecipeDescriptionMaxLength);
+
+			builder.Property(r => r.MainPhoto).IsRequired()
+				.HasColumnType(AppConstants.ColumnTypeImage);
+
+			builder.Property(r => r.ThumbnailPhoto).IsRequired()
+				.HasColumnType(AppConstants.ColumnTypeImage);
+
+			builder.HasMany(r => r.Ingredients).WithMany(i => i.Recipes)
+				.UsingEntity(j => j.ToTable(nameof(Recipe) + "_" + nameof(Ingredient)));
+
+			builder.HasMany(r => r.RecipeTasks).WithOne()
+				.HasForeignKey(nameof(Recipe) + "Id");
+
+			this.SetAuditableEntity(builder);
+		}
+	}
+}

@@ -42,7 +42,7 @@ namespace CookingRecipesSystem.Web.Middleware
 					code = HttpStatusCode.BadRequest;
 					result = JsonConvert.SerializeObject(validationException.Failures);
 					break;
-				//TODO: change to be correct
+				//TODO: Change to use correct exception like ModelValidationException !
 				case ArgumentNullException argumentNullException:
 					code = HttpStatusCode.BadRequest;
 					result = JsonConvert.SerializeObject(argumentNullException.Message);

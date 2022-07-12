@@ -1,5 +1,4 @@
-﻿
-using CookingRecipesSystem.Domain.Common;
+﻿using CookingRecipesSystem.Domain.Common.Constants;
 
 using FluentValidation;
 
@@ -10,8 +9,8 @@ namespace CookingRecipesSystem.Application.Identity.Commands.RegisterUser
 		public RegisterUserCommandValidator()
 		{
 			this.RuleFor(u => u.UserName)
-				.MinimumLength(ApplicationConstants.UserNameMinLength)
-				.MaximumLength(ApplicationConstants.UserNameMaxLength)
+				.MinimumLength(AppConstants.UserNameMinLength)
+				.MaximumLength(AppConstants.UserNameMaxLength)
 				.NotEmpty();
 
 			this.RuleFor(u => u.Email)
@@ -19,8 +18,8 @@ namespace CookingRecipesSystem.Application.Identity.Commands.RegisterUser
 				.NotEmpty();
 
 			this.RuleFor(u => u.Password)
-				.MinimumLength(ApplicationConstants.PasswordMinLength)
-				.MaximumLength(ApplicationConstants.PasswordMaxLength)
+				.MinimumLength(AppConstants.PasswordMinLength)
+				.MaximumLength(AppConstants.PasswordMaxLength)
 				.NotEmpty();
 		}
 	}
