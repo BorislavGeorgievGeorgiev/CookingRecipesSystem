@@ -12,17 +12,56 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookingRecipesSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(CookingRecipesSystemDbContext))]
-    [Migration("20220712155420_Start_Again")]
+    [Migration("20220713112204_Start_Again")]
     partial class Start_Again
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "6.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("Original")
+                        .IsRequired()
+                        .HasColumnType("image");
+
+                    b.Property<byte[]>("Thumbnail")
+                        .IsRequired()
+                        .HasColumnType("image");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Images");
+                });
 
             modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.Ingredient", b =>
                 {
@@ -51,10 +90,6 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<byte[]>("MainPhoto")
-                        .IsRequired()
-                        .HasColumnType("image");
-
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -66,10 +101,6 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<byte[]>("ThumbnailPhoto")
-                        .IsRequired()
-                        .HasColumnType("image");
 
                     b.HasKey("Id");
 
@@ -105,20 +136,12 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<byte[]>("MainPhoto")
-                        .IsRequired()
-                        .HasColumnType("image");
-
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<byte[]>("ThumbnailPhoto")
-                        .IsRequired()
-                        .HasColumnType("image");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -150,10 +173,6 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<byte[]>("DemoPhoto")
-                        .IsRequired()
-                        .HasColumnType("image");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -434,6 +453,27 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.Image", b =>
+                {
+                    b.HasOne("CookingRecipesSystem.Domain.Entities.Ingredient", null)
+                        .WithOne("Image")
+                        .HasForeignKey("CookingRecipesSystem.Domain.Entities.Image", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CookingRecipesSystem.Domain.Entities.Recipe", null)
+                        .WithOne("Image")
+                        .HasForeignKey("CookingRecipesSystem.Domain.Entities.Image", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CookingRecipesSystem.Domain.Entities.RecipeTask", null)
+                        .WithOne("Image")
+                        .HasForeignKey("CookingRecipesSystem.Domain.Entities.Image", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.RecipeTask", b =>
                 {
                     b.HasOne("CookingRecipesSystem.Domain.Entities.Recipe", null)
@@ -507,9 +547,24 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.Ingredient", b =>
+                {
+                    b.Navigation("Image")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.Recipe", b =>
                 {
+                    b.Navigation("Image")
+                        .IsRequired();
+
                     b.Navigation("RecipeTasks");
+                });
+
+            modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.RecipeTask", b =>
+                {
+                    b.Navigation("Image")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

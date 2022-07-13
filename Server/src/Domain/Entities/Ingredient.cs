@@ -1,5 +1,4 @@
-﻿
-using CommunityToolkit.Diagnostics;
+﻿using CommunityToolkit.Diagnostics;
 
 using CookingRecipesSystem.Domain.Common;
 using CookingRecipesSystem.Domain.Common.Constants;
@@ -11,8 +10,13 @@ namespace CookingRecipesSystem.Domain.Entities
 		private string? _name;
 		private string? _description;
 
-		public Ingredient(
-			string name, string description, string createdBy)
+		public Ingredient(string name, string description, string createdBy, Image image) :
+			this(name, description, createdBy)
+		{
+			this.Image = image;
+		}
+
+		private Ingredient(string name, string description, string createdBy)
 		{
 			this.Name = name;
 			this.Description = description;
@@ -43,9 +47,7 @@ namespace CookingRecipesSystem.Domain.Entities
 			}
 		}
 
-		public byte[] MainPhoto { get; set; }
-
-		public byte[] ThumbnailPhoto { get; set; }
+		public Image Image { get; set; }
 
 		public ICollection<Recipe> Recipes { get; } = new HashSet<Recipe>();
 	}
