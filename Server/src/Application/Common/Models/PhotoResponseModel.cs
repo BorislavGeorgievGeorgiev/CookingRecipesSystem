@@ -2,13 +2,16 @@
 {
 	public class PhotoResponseModel
 	{
-		public PhotoResponseModel(byte[] original, byte[] thumbnail)
+		public PhotoResponseModel(byte[] mainPhoto, byte[] phonePhoto, byte[] thumbnail)
 		{
-			this.Original = original;
+			this.MainPhoto = mainPhoto;
+			this.PhonePhoto = phonePhoto;
 			this.Thumbnail = thumbnail;
 		}
 
-		public byte[] Original { get; }
+		public byte[] MainPhoto { get; }
+
+		public byte[] PhonePhoto { get; }
 
 		public byte[] Thumbnail { get; }
 	}

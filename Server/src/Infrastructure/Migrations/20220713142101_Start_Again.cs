@@ -268,7 +268,8 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    Original = table.Column<byte[]>(type: "image", nullable: false),
+                    MainPhoto = table.Column<byte[]>(type: "image", nullable: false),
+                    PhonePhoto = table.Column<byte[]>(type: "image", nullable: false),
                     Thumbnail = table.Column<byte[]>(type: "image", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),

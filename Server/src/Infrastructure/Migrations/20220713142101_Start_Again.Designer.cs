@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CookingRecipesSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(CookingRecipesSystemDbContext))]
-    [Migration("20220713134229_Start_Again")]
+    [Migration("20220713142101_Start_Again")]
     partial class Start_Again
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,6 +89,10 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<byte[]>("MainPhoto")
+                        .IsRequired()
+                        .HasColumnType("image");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -96,7 +100,7 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte[]>("Original")
+                    b.Property<byte[]>("PhonePhoto")
                         .IsRequired()
                         .HasColumnType("image");
 

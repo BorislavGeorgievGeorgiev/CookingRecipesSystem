@@ -4,13 +4,16 @@ namespace CookingRecipesSystem.Domain.Entities
 {
 	public class Photo : AuditableEntity<int>, IAggregateRoot
 	{
-		public Photo(byte[] original, byte[] thumbnail)
+		public Photo(byte[] mainPhoto, byte[] phonePhoto, byte[] thumbnail)
 		{
-			this.Original = original;
+			this.MainPhoto = mainPhoto;
+			this.PhonePhoto = phonePhoto;
 			this.Thumbnail = thumbnail;
 		}
 
-		public byte[] Original { get; }
+		public byte[] MainPhoto { get; }
+
+		public byte[] PhonePhoto { get; }
 
 		public byte[] Thumbnail { get; }
 	}

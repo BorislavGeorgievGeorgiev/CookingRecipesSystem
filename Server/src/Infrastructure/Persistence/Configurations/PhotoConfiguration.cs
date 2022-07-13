@@ -13,7 +13,10 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 		{
 			builder.HasKey(i => i.Id);
 
-			builder.Property(i => i.Original).IsRequired()
+			builder.Property(i => i.MainPhoto).IsRequired()
+				.HasColumnType(AppConstants.ColumnTypeImage);
+
+			builder.Property(i => i.PhonePhoto).IsRequired()
 				.HasColumnType(AppConstants.ColumnTypeImage);
 
 			builder.Property(i => i.Thumbnail).IsRequired()

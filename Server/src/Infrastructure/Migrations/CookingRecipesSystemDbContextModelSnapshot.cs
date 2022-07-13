@@ -87,6 +87,10 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<byte[]>("MainPhoto")
+                        .IsRequired()
+                        .HasColumnType("image");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -94,7 +98,7 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte[]>("Original")
+                    b.Property<byte[]>("PhonePhoto")
                         .IsRequired()
                         .HasColumnType("image");
 
