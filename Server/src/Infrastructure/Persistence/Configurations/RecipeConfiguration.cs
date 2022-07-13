@@ -22,8 +22,8 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 			builder.Property(r => r.Description).IsRequired()
 				.HasMaxLength(EntityConstants.RecipeDescriptionMaxLength);
 
-			builder.HasOne(r => r.Image).WithOne()
-				.HasForeignKey<Image>(im => im.Id).IsRequired();
+			builder.HasOne(r => r.Photo).WithOne()
+				.HasForeignKey<Photo>(im => im.Id).IsRequired();
 
 			builder.HasMany(r => r.Ingredients).WithMany(i => i.Recipes)
 				.UsingEntity(j => j.ToTable(nameof(Recipe) + "_" + nameof(Ingredient)));

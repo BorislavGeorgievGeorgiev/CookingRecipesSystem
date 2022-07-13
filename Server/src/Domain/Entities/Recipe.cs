@@ -10,13 +10,10 @@ namespace CookingRecipesSystem.Domain.Entities
 		private string? _title;
 		private string? _description;
 
-		public Recipe(string title, string description, string createdBy, Image image) :
+		public Recipe(string title, string description, string createdBy, Photo photo) :
 			this(title, description, createdBy)
 		{
-			this.Title = title;
-			this.Description = description;
-			this.CreatedBy = createdBy;
-			this.Image = image;
+			this.Photo = photo;
 		}
 
 		private Recipe(string title, string description, string createdBy)
@@ -52,7 +49,7 @@ namespace CookingRecipesSystem.Domain.Entities
 			}
 		}
 
-		public Image Image { get; set; }
+		public Photo Photo { get; set; }
 
 		public ICollection<Ingredient> Ingredients { get; } = new HashSet<Ingredient>();
 

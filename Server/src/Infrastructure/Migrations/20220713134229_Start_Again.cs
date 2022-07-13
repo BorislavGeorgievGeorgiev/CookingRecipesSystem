@@ -264,7 +264,7 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Images",
+                name: "Photos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
@@ -279,21 +279,21 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.PrimaryKey("PK_Photos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Images_Ingredients_Id",
+                        name: "FK_Photos_Ingredients_Id",
                         column: x => x.Id,
                         principalTable: "Ingredients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Images_Recipes_Id",
+                        name: "FK_Photos_Recipes_Id",
                         column: x => x.Id,
                         principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Images_RecipeTasks_Id",
+                        name: "FK_Photos_RecipeTasks_Id",
                         column: x => x.Id,
                         principalTable: "RecipeTasks",
                         principalColumn: "Id",
@@ -378,7 +378,7 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Images");
+                name: "Photos");
 
             migrationBuilder.DropTable(
                 name: "Recipe_Ingredient");

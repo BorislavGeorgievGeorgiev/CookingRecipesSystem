@@ -33,7 +33,7 @@ namespace CookingRecipesSystem.Infrastructure.Persistence
 
 		public DbSet<RecipeTask> RecipeTasks { get; set; }
 
-		public DbSet<Image> Images { get; set; }
+		public DbSet<Photo> Photos { get; set; }
 
 		public override Task<int> SaveChangesAsync(
 			CancellationToken cancellationToken = new CancellationToken())

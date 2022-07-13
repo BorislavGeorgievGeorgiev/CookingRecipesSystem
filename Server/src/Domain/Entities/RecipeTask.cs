@@ -9,13 +9,10 @@ namespace CookingRecipesSystem.Domain.Entities
 	{
 		private string? _description;
 
-		public RecipeTask(byte position, string description, string createdBy, Image image) :
+		public RecipeTask(byte position, string description, string createdBy, Photo photo) :
 			this(position, description, createdBy)
 		{
-			this.Description = description;
-			this.CreatedBy = createdBy;
-			this.Position = position;
-			this.Image = image;
+			this.Photo = photo;
 		}
 
 		private RecipeTask(byte position, string description, string createdBy)
@@ -41,6 +38,6 @@ namespace CookingRecipesSystem.Domain.Entities
 			}
 		}
 
-		public Image Image { get; set; }
+		public Photo Photo { get; set; }
 	}
 }

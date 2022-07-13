@@ -2,9 +2,9 @@
 
 namespace CookingRecipesSystem.Domain.Entities
 {
-	public class Image : AuditableEntity<int>, IAggregateRoot
+	public class Photo : AuditableEntity<int>, IAggregateRoot
 	{
-		public Image(byte[] original, byte[] thumbnail)
+		public Photo(byte[] original, byte[] thumbnail)
 		{
 			this.Original = original;
 			this.Thumbnail = thumbnail;

@@ -6,10 +6,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 {
-	public class ImageConfiguration :
-		AuditableEntityConfiguration<Image>, IEntityTypeConfiguration<Image>
+	public class PhotoConfiguration :
+		AuditableEntityConfiguration<Photo>, IEntityTypeConfiguration<Photo>
 	{
-		public void Configure(EntityTypeBuilder<Image> builder)
+		public void Configure(EntityTypeBuilder<Photo> builder)
 		{
 			builder.HasKey(i => i.Id);
 

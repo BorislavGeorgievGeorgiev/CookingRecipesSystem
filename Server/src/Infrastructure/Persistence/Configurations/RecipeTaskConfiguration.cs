@@ -18,8 +18,8 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 			builder.Property(rt => rt.Description).IsRequired()
 				.HasMaxLength(EntityConstants.RecipeTaskDescriptionMaxLength);
 
-			builder.HasOne(rt => rt.Image).WithOne()
-				.HasForeignKey<Image>(im => im.Id).IsRequired();
+			builder.HasOne(rt => rt.Photo).WithOne()
+				.HasForeignKey<Photo>(im => im.Id).IsRequired();
 
 			this.SetAuditableEntity(builder);
 		}
