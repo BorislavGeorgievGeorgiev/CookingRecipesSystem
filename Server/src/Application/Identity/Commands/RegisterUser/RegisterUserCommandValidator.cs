@@ -14,8 +14,8 @@ namespace CookingRecipesSystem.Application.Identity.Commands.RegisterUser
 				.NotEmpty();
 
 			this.RuleFor(u => u.Email)
-				.EmailAddress()
-				.NotEmpty();
+				.NotEmpty()
+				.Matches(AppConstants.EmailRegEx);
 
 			this.RuleFor(u => u.Password)
 				.MinimumLength(AppConstants.PasswordMinLength)
