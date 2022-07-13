@@ -21,6 +21,8 @@ namespace CookingRecipesSystem.Domain.Entities
 
 		private Recipe(string title, string description, string createdBy)
 		{
+			// Entity Framework cannot bind value object in entity constructor
+			// https://stackoverflow.com/questions/55749717/entity-framework-cannot-bind-value-object-in-entity-constructor
 			this.Title = title;
 			this.Description = description;
 			this.CreatedBy = createdBy;
