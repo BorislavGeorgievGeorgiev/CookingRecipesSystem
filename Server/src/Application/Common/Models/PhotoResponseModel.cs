@@ -1,6 +1,9 @@
-﻿namespace CookingRecipesSystem.Application.Common.Models
+﻿using CookingRecipesSystem.Application.Common.Mappings;
+using CookingRecipesSystem.Domain.Entities;
+
+namespace CookingRecipesSystem.Application.Common.Models
 {
-	public class PhotoResponseModel
+	public class PhotoResponseModel : IMapTo<Photo>
 	{
 		public PhotoResponseModel(byte[] mainPhoto, byte[] phonePhoto, byte[] thumbnail)
 		{

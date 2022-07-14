@@ -15,9 +15,10 @@ namespace CookingRecipesSystem.Application.Identity.Queries.AllTestEntity
 			IRequestHandler<TestEntitiesQuery, ApplicationResult<TestEntityListResponseModel>>
 		{
 			private readonly IAppRepository<TestEntity> _testEntityRepository;
-			private readonly IMapper? _mapper;
+			private readonly IMapper _mapper;
 
-			public TestEntitiesQueryHandler(IAppRepository<TestEntity> testEntityRepository, IMapper mapper)
+			public TestEntitiesQueryHandler(
+				IAppRepository<TestEntity> testEntityRepository, IMapper mapper)
 			{
 				this._testEntityRepository = testEntityRepository;
 				this._mapper = mapper;
@@ -26,7 +27,7 @@ namespace CookingRecipesSystem.Application.Identity.Queries.AllTestEntity
 			public async Task<ApplicationResult<TestEntityListResponseModel>> Handle(
 				TestEntitiesQuery request, CancellationToken cancellationToken)
 			{
-				var mappedResult = this._mapper!
+				var mappedResult = this._mapper
 				.ProjectTo<TestEntityResponseModel>(this._testEntityRepository.GetAllAsNoTracking())
 				.ToAsyncEnumerable();
 

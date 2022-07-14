@@ -13,7 +13,7 @@ namespace CookingRecipesSystem.Application.Common.Interfaces
 		Task<TEntity?> GetById<TKey>(TKey id,
 						CancellationToken cancellationToken = default);
 
-		Task<bool> Create(TEntity entity,
+		Task<TEntity> Create(TEntity entity,
 						CancellationToken cancellationToken = default);
 
 		Task<bool> Update(TEntity entity);

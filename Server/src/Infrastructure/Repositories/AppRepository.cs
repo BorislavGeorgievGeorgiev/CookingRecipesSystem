@@ -23,7 +23,7 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 
 		private DbSet<TEntity> DbSet { get; }
 
-		public async Task<bool> Create(TEntity entity, CancellationToken cancellationToken = default)
+		public async Task<TEntity> Create(TEntity entity, CancellationToken cancellationToken = default)
 		{
 			var entry = this.Context.Entry(entity);
 
@@ -36,7 +36,7 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 				await this.DbSet.AddAsync(entity, cancellationToken);
 			}
 
-			return true;
+			return entry.Entity;
 		}
 
 		public async Task<bool> Update(TEntity entity)

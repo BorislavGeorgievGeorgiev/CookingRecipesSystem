@@ -1,4 +1,5 @@
 ﻿using CookingRecipesSystem.Application.Common.Interfaces;
+using CookingRecipesSystem.Application.Common.Interfaces.Factories;
 using CookingRecipesSystem.Application.Common.Models;
 
 using MediatR;
@@ -30,7 +31,7 @@ namespace CookingRecipesSystem.Application.Identity.Commands.RegisterUser
 				RegisterUserCommand request, CancellationToken cancellationToken)
 			{
 				var user = this._applicationUserFactory
-					.WithUserNameAndEmail(request.UserName, request.Email)
+					.With(request.UserName, request.Email)
 					.Create();
 
 				return await this._userManagerService.CreateAsync(user, request.Password);
