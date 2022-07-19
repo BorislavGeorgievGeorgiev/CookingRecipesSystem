@@ -2,7 +2,6 @@
 using CookingRecipesSystem.Web.Common;
 
 using Microsoft.AspNetCore.Authorization;
-
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesSystem.Web.Controllers
@@ -13,7 +12,7 @@ namespace CookingRecipesSystem.Web.Controllers
 		[HttpPost]
 		[Route(nameof(Create))]
 		public async Task<ActionResult> Create(
-			CreateIngredientCommand command)
+			[FromForm] CreateIngredientCommand command)
 		{
 			return await this.Send(command);
 		}

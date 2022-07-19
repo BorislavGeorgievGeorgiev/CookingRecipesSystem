@@ -10,21 +10,6 @@ namespace CookingRecipesSystem.Domain.Entities
 		private string? _name;
 		private string? _description;
 
-		public Ingredient(string name, string description, string createdBy, Photo photo) :
-			this(name, description, createdBy)
-		{
-			this.Photo = photo;
-		}
-
-		private Ingredient(string name, string description, string createdBy)
-		{
-			// Entity Framework cannot bind value object in entity constructor
-			// https://stackoverflow.com/questions/55749717/entity-framework-cannot-bind-value-object-in-entity-constructor
-			this.Name = name;
-			this.Description = description;
-			this.CreatedBy = createdBy;
-		}
-
 		public string Name
 		{
 			get { return this._name!; }

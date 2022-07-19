@@ -11,11 +11,11 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands
 	public class CreateIngredientCommand :
 		IngredientRequestModel, IRequest<ApplicationResult>
 	{
-		public CreateIngredientCommand(
-			string name, string description, PhotoRequestModel photo)
-			: base(name, description, photo)
-		{
-		}
+		//public CreateIngredientCommand(
+		//	string name, string description, IFormFile photo)
+		//	: base(name, description, photo)
+		//{
+		//}
 
 		public class CreateIngredientCommandHandler
 			: IRequestHandler<CreateIngredientCommand, ApplicationResult>
@@ -40,25 +40,21 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands
 			public async Task<ApplicationResult> Handle(
 				CreateIngredientCommand request, CancellationToken cancellationToken)
 			{
-				throw new NotImplementedException();
+				PhotoResponseModel processedPhoto = await this._photoService
+					.Process(request.PhotoFile, cancellationToken);
 
-				//PhotoResponseModel processedPhoto = await this._photoService
-				//	.Process(request.Photo, cancellationToken);
+				var mappedPhoto = this._mapper!.Map<Photo>(processedPhoto);
 
-				//Photo mappedPhoto = this._mapper!.Map<Photo>(processedPhoto);
+				var photo = await this._photoRepository.Create(mappedPhoto, cancellationToken);
 
-				//Photo photo = await this._photoRepository.Create(mappedPhoto, cancellationToken);
+				var mappedIngredient = this._mapper!.Map<Ingredient>(request);
+				mappedIngredient.Photo = photo;
 
-				//Ingredient mappedIngredient = this._mapper!.Map<Ingredient>(request);
+				await this._ingredientRepository.Create(mappedIngredient, cancellationToken);
 
-				//mappedIngredient.Photo = mappedPhoto;
+				await this._ingredientRepository.SaveAsync(cancellationToken);
 
-				//Ingredient ingredient = await this._ingredientRepository
-				//	.Create(mappedIngredient, cancellationToken);
-
-				//await this._ingredientRepository.SaveAsync(cancellationToken);
-
-				//return ApplicationResult.Success;
+				return ApplicationResult.Success;
 			}
 		}
 	}

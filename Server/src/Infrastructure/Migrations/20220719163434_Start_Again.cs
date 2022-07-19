@@ -267,10 +267,14 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 name: "Photos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    MainPhoto = table.Column<byte[]>(type: "image", nullable: false),
-                    PhonePhoto = table.Column<byte[]>(type: "image", nullable: false),
-                    Thumbnail = table.Column<byte[]>(type: "image", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MainPhoto = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    PhonePhoto = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Thumbnail = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    IngredientPhotoId = table.Column<int>(type: "int", nullable: true),
+                    RecipePhotoId = table.Column<int>(type: "int", nullable: true),
+                    RecipeTaskPhotoId = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -282,23 +286,20 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Photos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Photos_Ingredients_Id",
-                        column: x => x.Id,
+                        name: "IngredientPhotoId",
+                        column: x => x.IngredientPhotoId,
                         principalTable: "Ingredients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Photos_Recipes_Id",
-                        column: x => x.Id,
+                        name: "RecipePhotoId",
+                        column: x => x.RecipePhotoId,
                         principalTable: "Recipes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Photos_RecipeTasks_Id",
-                        column: x => x.Id,
+                        name: "RecipeTaskPhotoId",
+                        column: x => x.RecipeTaskPhotoId,
                         principalTable: "RecipeTasks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -344,6 +345,27 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 name: "IX_Ingredients_Name",
                 table: "Ingredients",
                 column: "Name");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_IngredientPhotoId",
+                table: "Photos",
+                column: "IngredientPhotoId",
+                unique: true,
+                filter: "[IngredientPhotoId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_RecipePhotoId",
+                table: "Photos",
+                column: "RecipePhotoId",
+                unique: true,
+                filter: "[RecipePhotoId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_RecipeTaskPhotoId",
+                table: "Photos",
+                column: "RecipeTaskPhotoId",
+                unique: true,
+                filter: "[RecipeTaskPhotoId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recipe_Ingredient_RecipesId",

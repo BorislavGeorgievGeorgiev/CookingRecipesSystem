@@ -1,6 +1,8 @@
 ﻿using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
 
+using Microsoft.AspNetCore.Http;
+
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 
@@ -16,15 +18,20 @@ namespace CookingRecipesSystem.Infrastructure.Services
 		private const int ThumbnailHeight = 100;
 
 		public async Task<PhotoResponseModel> Process(
-			PhotoRequestModel photo, CancellationToken cancellationToken = default)
+			IFormFile photo, CancellationToken cancellationToken = default)
 		{
-			using var imageResult = await Image.LoadAsync(photo.Content, cancellationToken);
+			using var imageResult = await Image.LoadAsync(photo.OpenReadStream(), cancellationToken);
 
 			var mainPhoto = await this.SaveImage(imageResult, MainPhotoWidth, MainPhotoHeight);
 			var phonePhoto = await this.SaveImage(imageResult, PhonePhotoWidth, PhonePhotoHeight);
 			var thumbnail = await this.SaveImage(imageResult, ThumbnailWidth, ThumbnailHeight);
 
-			return new PhotoResponseModel(mainPhoto, phonePhoto, thumbnail);
+			return new PhotoResponseModel
+			{
+				MainPhoto = mainPhoto,
+				PhonePhoto = phonePhoto,
+				Thumbnail = thumbnail
+			};
 		}
 
 		private async Task<byte[]> SaveImage(Image image, int resizeWidth, int resizeHeight)
