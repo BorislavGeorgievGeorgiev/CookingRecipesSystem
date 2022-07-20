@@ -1,8 +1,5 @@
 ﻿
-using CommunityToolkit.Diagnostics;
-
 using CookingRecipesSystem.Domain.Common.Constants;
-using CookingRecipesSystem.Domain.Entities;
 using CookingRecipesSystem.Infrastructure.Identity;
 
 using Microsoft.AspNetCore.Identity;
@@ -47,25 +44,6 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 				{
 					await userManager.CreateAsync(defaultUser, UserPassword);
 					await userManager.AddToRoleAsync(defaultUser, AppConstants.RoleNameAdministrator);
-				}
-
-				if (!context.TestEntities.Any())
-				{
-					var user = userManager.Users.FirstOrDefault(u => u.Email == defaultUser.Email);
-
-					Guard.IsNotNull(user, nameof(user));
-
-					for (int i = 0; i < 10; i++)
-					{
-						var testEntity = new TestEntity
-						{
-							Text = i + " : Test String.",
-							CreatedBy = user.Id,
-							CreatedOn = DateTime.UtcNow
-						};
-
-						context.TestEntities.Add(testEntity);
-					}
 				}
 
 				await context.SaveChangesAsync();

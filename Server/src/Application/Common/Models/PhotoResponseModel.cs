@@ -3,7 +3,7 @@ using CookingRecipesSystem.Domain.Entities;
 
 namespace CookingRecipesSystem.Application.Common.Models
 {
-	public class PhotoResponseModel : IMapTo<Photo>
+	public class PhotoResponseModel : IMapFrom<Photo>, IMapTo<Photo>
 	{
 		public byte[] MainPhoto { get; set; }
 

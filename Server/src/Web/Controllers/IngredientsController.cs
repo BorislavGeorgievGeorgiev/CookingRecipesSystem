@@ -1,4 +1,5 @@
 ﻿using CookingRecipesSystem.Application.Ingredients.Commands;
+using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredientsAll;
 using CookingRecipesSystem.Web.Common;
 
 using Microsoft.AspNetCore.Authorization;
@@ -16,5 +17,11 @@ namespace CookingRecipesSystem.Web.Controllers
 		{
 			return await this.Send(command);
 		}
+
+		[HttpGet]
+		[Route(nameof(GetAll))]
+		public async Task<ActionResult<IngredientsListResponseModel>> GetAll(
+			[FromQuery] GetIngredientsAllQuery query)
+			=> await this.Send(query);
 	}
 }

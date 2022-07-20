@@ -1,8 +1,6 @@
 ﻿using CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser;
-using CookingRecipesSystem.Application.Identity.Commands.CreateTestEntity;
 using CookingRecipesSystem.Application.Identity.Commands.LoginUser;
 using CookingRecipesSystem.Application.Identity.Commands.RegisterUser;
-using CookingRecipesSystem.Application.Identity.Queries.AllTestEntity;
 using CookingRecipesSystem.Web.Common;
 
 using Microsoft.AspNetCore.Authorization;
@@ -30,20 +28,5 @@ namespace CookingRecipesSystem.Web.Controllers
 		public async Task<ActionResult> ChangePassword(
 			ChangePasswordUserCommand command)
 			=> await this.Send(command);
-
-		[HttpGet]
-		[Route(nameof(GetAllTestEntities))]
-		public async Task<ActionResult<TestEntityListResponseModel>> GetAllTestEntities(
-			[FromQuery] TestEntitiesQuery query)
-			=> await this.Send(query);
-
-		[Authorize]
-		[HttpPost]
-		[Route(nameof(CreateTestEntity))]
-		public async Task<ActionResult> CreateTestEntity(
-			CreateTestEntityCommand command)
-		{
-			return await this.Send(command);
-		}
 	}
 }

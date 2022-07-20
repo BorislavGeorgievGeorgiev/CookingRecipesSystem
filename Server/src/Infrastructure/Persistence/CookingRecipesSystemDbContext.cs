@@ -25,8 +25,6 @@ namespace CookingRecipesSystem.Infrastructure.Persistence
 			this._dateTimeService = dateTimeService;
 		}
 
-		public DbSet<TestEntity> TestEntities { get; set; }
-
 		public DbSet<Recipe> Recipes { get; set; }
 
 		public DbSet<Ingredient> Ingredients { get; set; }
