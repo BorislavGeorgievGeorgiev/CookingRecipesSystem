@@ -10,7 +10,7 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=MyStrong(!)Password12
-    restart: on-failure
+    restart: unless-stopped
     volumes:
       - mssqldata:/var/opt/mssql
     networks:
@@ -18,7 +18,7 @@ services:
 
   server:
     container_name: ServerStartup
-    image: borislavgeorgievgeorgiev/cooking-recipes-system-server:1.0
+    image: borislavgeorgievgeorgiev/cooking-recipes-system-server:1.1
     build:
       context: ./
       dockerfile: Server/src/Startup/Dockerfile
@@ -26,19 +26,19 @@ services:
       - "6000:80"
     environment:
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CookingRecipesDB;User=sa;Password=MyStrong(!)Password12;MultipleActiveResultSets=true;
-    restart: on-failure
+    restart: unless-stopped
     networks:
       - CookingRecipesSystem-network
 
   client:
     container_name: ClientStartup
-    image: borislavgeorgievgeorgiev/cooking-recipes-system-client:1.0
+    image: borislavgeorgievgeorgiev/cooking-recipes-system-client:1.01
     build:
       context: ./
       dockerfile: Client/src/Startup/Dockerfile
     ports:
       - "80:80"
-    restart: on-failure
+    restart: unless-stopped
 
 networks:
   CookingRecipesSystem-network:
