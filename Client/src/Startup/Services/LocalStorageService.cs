@@ -26,10 +26,10 @@ namespace CookingRecipesSystem.Startup.Services
 
 			if (json == null)
 			{
-				return default;
+				return default!;
 			}
 
-			return JsonSerializer.Deserialize<T>(json);
+			return JsonSerializer.Deserialize<T>(json)!;
 		}
 
 		public async Task SetItem<T>(string key, T value)

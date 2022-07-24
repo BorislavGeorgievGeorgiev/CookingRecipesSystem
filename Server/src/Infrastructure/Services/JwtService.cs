@@ -35,22 +35,24 @@ namespace CookingRecipesSystem.Infrastructure.Services
 
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
+				Issuer = this._jwtConfig.ValidIssuer,
+				Audience = this._jwtConfig.ValidAudience,
 				Subject = new ClaimsIdentity(new[]
 				{
 					new Claim(ClaimTypes.NameIdentifier, userId),
-					new Claim(ClaimTypes.Email, userEmail),
-					new Claim(JwtRegisteredClaimNames.Aud, this._jwtConfig.ValidAudience),
-					new Claim(JwtRegisteredClaimNames.Iss, this._jwtConfig.ValidIssuer)
+					new Claim(ClaimTypes.Email, userEmail)
 				}),
-				Expires = this._dateTimeService
-				.Now
-				.AddMinutes(double.Parse(this._jwtConfig.ExpirationInMinutes)),
+				NotBefore = this._dateTimeService.Now,
+				Expires = this._dateTimeService.Now.AddMinutes(
+					double.Parse(this._jwtConfig.ExpirationInMinutes)),
 				SigningCredentials = new SigningCredentials(
 					new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
 			};
 
 			var currentUser = await this._userManager.FindByIdAsync(userId);
 			var currentUserRoles = await this._userManager.GetRolesAsync(currentUser);
+
+			tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Name, currentUser.UserName));
 
 			foreach (var role in currentUserRoles)
 			{
