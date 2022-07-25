@@ -2,14 +2,8 @@
 {
 	public class UserLoginRequestModel
 	{
-		public UserLoginRequestModel(string email, string password)
-		{
-			this.Email = email;
-			this.Password = password;
-		}
+		public string Email { get; set; }
 
-		public string Email { get; }
-
-		public string Password { get; }
+		public string Password { get; set; }
 	}
 }

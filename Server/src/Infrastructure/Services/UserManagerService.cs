@@ -71,7 +71,7 @@ namespace CookingRecipesSystem.Infrastructure.Services
 			return ApplicationResult<IQueryable<IApplicationUser>>.Success(users);
 		}
 
-		public ApplicationResult<IQueryable<IApplicationUser>> GetAllNoTracking()
+		public ApplicationResult<IQueryable<IApplicationUser>> GetAllAsNoTracking()
 		{
 			var users = this._userManager.Users.AsNoTracking();
 

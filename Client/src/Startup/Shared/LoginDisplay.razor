@@ -2,17 +2,19 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 @inject NavigationManager Navigation
-@inject AuthStateProvider AuthStateProvider
+@inject IAuthService AuthService
+@*@inject AuthStateProvider authStateProvider*@
 
 <AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity?.Name!
+       <a href="authentication/profile">Hello, @context.User.Identity?.Name!</a>
         <button class="nav-link btn btn-link" @onclick="LogoutClick">Log out</button>
     </Authorized>
     <Authorizing>
         <h1>Loading ...</h1>
     </Authorizing>
     <NotAuthorized>
+        <a href="authentication/register">Register</a>
         <a href="authentication/login">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
@@ -20,7 +22,7 @@
 @code{   
     async Task LogoutClick()
     {
-        await AuthStateProvider.Logout();
+        await AuthService.Logout();
         Navigation.NavigateTo("authentication/logout");
     }
 }

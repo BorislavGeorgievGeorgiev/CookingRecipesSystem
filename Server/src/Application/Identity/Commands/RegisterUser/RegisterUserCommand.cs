@@ -8,11 +8,6 @@ namespace CookingRecipesSystem.Application.Identity.Commands.RegisterUser
 {
 	public class RegisterUserCommand : UserRegisterRequestModel, IRequest<ApplicationResult>
 	{
-		public RegisterUserCommand(string userName, string email, string password)
-					: base(userName, email, password)
-		{
-		}
-
 		public class RegisterUserCommandHandler
 			: IRequestHandler<RegisterUserCommand, ApplicationResult>
 		{

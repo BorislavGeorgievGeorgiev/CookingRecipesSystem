@@ -19,6 +19,6 @@ namespace CookingRecipesSystem.Application.Common.Interfaces
 
 		ApplicationResult<IQueryable<IApplicationUser>> GetAll();
 
-		ApplicationResult<IQueryable<IApplicationUser>> GetAllNoTracking();
+		ApplicationResult<IQueryable<IApplicationUser>> GetAllAsNoTracking();
 	}
 }

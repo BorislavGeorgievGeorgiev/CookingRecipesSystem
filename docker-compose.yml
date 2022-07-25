@@ -4,12 +4,13 @@ services:
 
   data:
     container_name: MsSqlServer
-    image: mcr.microsoft.com/mssql/server:latest
+    hostname: mssql-server
+    image: mcr.microsoft.com/mssql/server:2019-latest
     ports:
-      - "1435:1433"
+      - "1433:1433"
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=MyStrong(!)Password12
+      - SA_PASSWORD=MyStrong(!)Password123
     restart: unless-stopped
     volumes:
       - mssqldata:/var/opt/mssql
@@ -24,9 +25,12 @@ services:
       dockerfile: Server/src/Startup/Dockerfile
     ports:
       - "6000:80"
+      - "6001:443"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CookingRecipesDB;User=sa;Password=MyStrong(!)Password12;MultipleActiveResultSets=true;
+      - ConnectionStrings__DefaultConnection=Server=mssql-server;Database=CookingRecipesDB;User=sa;Password=MyStrong(!)Password123;MultipleActiveResultSets=true;
     restart: unless-stopped
+    depends_on:
+      - "data"
     networks:
       - CookingRecipesSystem-network
 
@@ -38,7 +42,12 @@ services:
       dockerfile: Client/src/Startup/Dockerfile
     ports:
       - "80:80"
+      - "443:443"
     restart: unless-stopped
+    depends_on:
+      - "server"
+    networks:
+      - CookingRecipesSystem-network
 
 networks:
   CookingRecipesSystem-network:

@@ -10,8 +10,12 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		private const string PasswordString = "strongPassword";
 
 		private readonly Type _returnTypeString = typeof(string);
-		private readonly UserRegisterRequestModel _registerModel = new UserRegisterRequestModel(
-			UserNameString, EmailString, PasswordString);
+		private readonly UserRegisterRequestModel _registerModel = new UserRegisterRequestModel
+		{
+			UserName = UserNameString,
+			Email = EmailString,
+			Password = PasswordString
+		};
 
 		[Fact]
 		public void Public_String_UserName_Property_Should_Exist()

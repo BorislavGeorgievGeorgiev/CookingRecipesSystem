@@ -4,18 +4,18 @@ using Microsoft.JSInterop;
 
 namespace CookingRecipesSystem.Startup.Services
 {
-	public interface ILocalStorageService
+	public interface ILocalStorageService1
 	{
 		Task<T> GetItem<T>(string key);
 		Task SetItem<T>(string key, T value);
 		Task RemoveItem(string key);
 	}
 
-	public class LocalStorageService : ILocalStorageService
+	public class LocalStorageService1 : ILocalStorageService1
 	{
 		private IJSRuntime _jsRuntime;
 
-		public LocalStorageService(IJSRuntime jsRuntime)
+		public LocalStorageService1(IJSRuntime jsRuntime)
 		{
 			this._jsRuntime = jsRuntime;
 		}

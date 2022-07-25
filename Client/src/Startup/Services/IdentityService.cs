@@ -15,7 +15,7 @@ namespace CookingRecipesSystem.Startup.Services
 
 	public class IdentityService : IIdentityService
 	{
-		private const string ApiIdentity = "https://localhost:6000/api/identity/";
+		private const string ApiIdentity = "https://localhost:7290/api/identity/";
 		private readonly HttpClient _httpClient;
 
 		public IdentityService(HttpClient httpClient)
@@ -34,6 +34,8 @@ namespace CookingRecipesSystem.Startup.Services
 		public async Task Login(
 			UserLoginModel loginRequest, CancellationToken cancellationToken = default)
 		{
+			this._httpClient.DefaultRequestHeaders.Add("mode", "no-cors");
+
 			var result = await this._httpClient
 				.PostAsJsonAsync(GetRequestUri(nameof(Login)), loginRequest, cancellationToken);
 
@@ -67,7 +69,8 @@ namespace CookingRecipesSystem.Startup.Services
 
 		private static string GetRequestUri(string action)
 		{
-			return ApiIdentity + action.ToLower();
+			string uri = ApiIdentity + action;
+			return uri.ToLower();
 		}
 	}
 }

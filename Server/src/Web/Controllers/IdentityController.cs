@@ -1,6 +1,7 @@
 ﻿using CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser;
 using CookingRecipesSystem.Application.Identity.Commands.LoginUser;
 using CookingRecipesSystem.Application.Identity.Commands.RegisterUser;
+using CookingRecipesSystem.Application.Identity.Queries.GetUsersAll;
 using CookingRecipesSystem.Web.Common;
 
 using Microsoft.AspNetCore.Authorization;
@@ -13,20 +14,26 @@ namespace CookingRecipesSystem.Web.Controllers
 		[HttpPost]
 		[Route(nameof(Register))]
 		public async Task<ActionResult> Register(
-			[FromForm] RegisterUserCommand command)
+			[FromBody] RegisterUserCommand command)
 			=> await this.Send(command);
 
 		[HttpPost]
 		[Route(nameof(Login))]
 		public async Task<ActionResult<UserTokenResponseModel>> Login(
-			[FromForm] LoginUserCommand command)
+			[FromBody] LoginUserCommand command)
 			=> await this.Send(command);
 
 		[Authorize]
 		[HttpPost]
 		[Route(nameof(ChangePassword))]
 		public async Task<ActionResult> ChangePassword(
-			[FromForm] ChangePasswordUserCommand command)
+			[FromBody] ChangePasswordUserCommand command)
 			=> await this.Send(command);
+
+		[HttpGet]
+		[Route(nameof(GetAll))]
+		public async Task<ActionResult<UsersListResponseModel>> GetAll(
+			[FromQuery] GetUsersAllQuery query)
+			=> await this.Send(query);
 	}
 }

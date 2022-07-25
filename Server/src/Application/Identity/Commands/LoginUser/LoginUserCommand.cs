@@ -9,11 +9,6 @@ namespace CookingRecipesSystem.Application.Identity.Commands.LoginUser
 	public class LoginUserCommand
 		: UserLoginRequestModel, IRequest<ApplicationResult<UserTokenResponseModel>>
 	{
-		public LoginUserCommand(string email, string password)
-			: base(email, password)
-		{
-		}
-
 		public class LoginUserCommandHandler
 			: IRequestHandler<LoginUserCommand, ApplicationResult<UserTokenResponseModel>>
 		{
