@@ -13,6 +13,20 @@ builder.Services.AddWebComponents();
 
 builder.Services.AddControllers();
 
+var MyAllowTestOrigins = "_myAllowTestOrigins";
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(
+		MyAllowTestOrigins,
+		policy =>
+		{
+			policy.WithOrigins("https://localhost:7072", "http://localhost:5072")
+			.AllowAnyHeader()
+			.AllowAnyMethod();
+		});
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -58,6 +72,9 @@ app.UseCustomExceptionHandler();
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseCors(MyAllowTestOrigins);
+
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -7,8 +7,6 @@ using Blazored.LocalStorage;
 
 using CookingRecipesSystem.Startup.Models;
 
-using Microsoft.AspNetCore.Components.Authorization;
-
 namespace CookingRecipesSystem.Startup.Services
 {
 	public interface IAuthService
@@ -16,20 +14,22 @@ namespace CookingRecipesSystem.Startup.Services
 		Task<LoginResult> Login(UserLoginModel loginModel);
 		Task Logout();
 		Task<RegisterResult> Register(UserRegisterModel registerModel);
+
+		Task<UsersListModel> GetAll();
 	}
 
 	public class AuthService : IAuthService
 	{
 		private readonly string? _apiIdentity;
 		private readonly HttpClient _httpClient;
-		private readonly AuthenticationStateProvider _authenticationStateProvider;
+		private readonly ApiAuthenticationStateProvider _authenticationStateProvider;
 		private readonly ILocalStorageService _localStorage;
 
 		public AuthService(HttpClient httpClient,
-											 AuthenticationStateProvider authenticationStateProvider,
+											 ApiAuthenticationStateProvider authenticationStateProvider,
 											 ILocalStorageService localStorage)
 		{
-			this._apiIdentity = "http://localhost:6000/";
+			this._apiIdentity = "https://localhost:7290/api/Identity/";
 			this._httpClient = httpClient;
 			this._authenticationStateProvider = authenticationStateProvider;
 			this._localStorage = localStorage;
@@ -51,8 +51,6 @@ namespace CookingRecipesSystem.Startup.Services
 		{
 			var loginAsJson = JsonSerializer.Serialize(loginModel);
 
-			this._httpClient.DefaultRequestHeaders.Add("mode", "no-cors");
-
 			var response = await this._httpClient
 				.PostAsync(this.GetRequestUri(nameof(Login)), new StringContent(
 					loginAsJson, Encoding.UTF8, "application/json"));
@@ -67,8 +65,17 @@ namespace CookingRecipesSystem.Startup.Services
 			}
 
 			await this._localStorage.SetItemAsync("authToken", loginResult.Token);
-			((ApiAuthenticationStateProvider)this._authenticationStateProvider)
-				.MarkUserAsAuthenticated(loginModel.Email);
+
+			var authenticationState = await this._authenticationStateProvider
+				.GetAuthenticationStateAsync();
+
+			var keyValuePair = authenticationState.User.Claims
+				.FirstOrDefault(c => c.Type == "unique_name");
+
+			var userName = keyValuePair.Value;
+
+			this._authenticationStateProvider.MarkUserAsAuthenticated(userName);
+
 			this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
 				"bearer", loginResult.Token);
 
@@ -78,9 +85,18 @@ namespace CookingRecipesSystem.Startup.Services
 		public async Task Logout()
 		{
 			await this._localStorage.RemoveItemAsync("authToken");
-			((ApiAuthenticationStateProvider)this._authenticationStateProvider)
-				.MarkUserAsLoggedOut();
+
+			this._authenticationStateProvider.MarkUserAsLoggedOut();
+
 			this._httpClient.DefaultRequestHeaders.Authorization = null;
+		}
+
+		public async Task<UsersListModel> GetAll()
+		{
+			var response = await this._httpClient
+				.GetFromJsonAsync<UsersListModel>(this.GetRequestUri(nameof(GetAll)));
+
+			return response;
 		}
 
 		private string GetRequestUri(string action)

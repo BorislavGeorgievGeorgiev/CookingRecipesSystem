@@ -1,0 +1,44 @@
+﻿@page "/authentication/getall"
+
+@inject IAuthService AuthService
+
+<h3>GetAllUsers</h3>
+
+<button class="btn btn-lg btn-primary btn-block" type="submit" @onclick="@GetAll">Get all users</button>
+
+<div>
+  <ul>
+    @foreach (var user in UsersList.Users)
+   {
+      <li>
+        @user.UserName
+    </li>
+   }   
+  </ul>
+</div>
+
+
+
+@code {
+  UsersListModel UsersList { get; set; } = new UsersListModel
+  {
+    Users = new List<UserModel>()
+  };
+
+  string? error { get; set; }
+
+  async Task GetAll()
+  {
+    error = null!;
+
+    try
+    {
+      UsersList = await AuthService.GetAll();
+      error = "";
+    }
+    catch (Exception ex)
+    {
+      error = ex.Message;
+    }
+	}
+}

@@ -3,7 +3,6 @@
 
 @inject NavigationManager Navigation
 @inject IAuthService AuthService
-@*@inject AuthStateProvider authStateProvider*@
 
 <AuthorizeView>
     <Authorized>
@@ -23,6 +22,6 @@
     async Task LogoutClick()
     {
         await AuthService.Logout();
-        Navigation.NavigateTo("authentication/logout");
+        Navigation.NavigateTo("");
     }
 }

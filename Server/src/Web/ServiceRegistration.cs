@@ -8,8 +8,10 @@ namespace CookingRecipesSystem.Web
 	{
 		public static IServiceCollection AddWebComponents(
 			this IServiceCollection services)
-			=> services
-			.AddHttpContextAccessor()
-			.AddConventionalServices(typeof(ServiceRegistration).Assembly);
+		{
+			return services
+					.AddHttpContextAccessor()
+					.AddConventionalServices(typeof(ServiceRegistration).Assembly);
+		}
 	}
 }

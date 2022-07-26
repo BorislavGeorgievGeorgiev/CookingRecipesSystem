@@ -18,6 +18,7 @@ namespace CookingRecipesSystem.Startup.Services
 			this._httpClient = httpClient;
 			this._localStorage = localStorage;
 		}
+
 		public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 		{
 			var savedToken = await this._localStorage.GetItemAsync<string>("authToken");
@@ -32,9 +33,9 @@ namespace CookingRecipesSystem.Startup.Services
 			return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(this.ParseClaimsFromJwt(savedToken), "jwt")));
 		}
 
-		public void MarkUserAsAuthenticated(string email)
+		public void MarkUserAsAuthenticated(string UserName)
 		{
-			var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }, "apiauth"));
+			var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, UserName) }, "apiauth"));
 			var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
 			this.NotifyAuthenticationStateChanged(authState);
 		}
