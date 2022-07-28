@@ -7,7 +7,7 @@ You must have already installed [Docker Desktop](https://docs.docker.com/docker-
 ```
 git clone https://github.com/BorislavGeorgievGeorgiev/CookingRecipesSystem.git
 cd CookingRecipesSystem
-docker-compose up --build -d
+docker-compose -f "docker-compose.debug.yml" up --build -d
 ```
 
 ***Note 1 :***
@@ -15,3 +15,11 @@ docker-compose up --build -d
 
 ***Note 2 :***
   To prevent "nginx: [emerg] unknown directive" error,  "nginx.conf" file must be with "UTF-8" encoding and "LF" end of line(EOL).
+
+***Note 3 :***
+  Setup docker ssl:<https://docs.microsoft.com/en-us/aspnet/core/security/docker-compose-https?view=aspnetcore-6.0>
+  
+  ```
+  dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\CookingRecipesSystem.pfx -p MyStrong(!)Password123
+  dotnet dev-certs https --trust
+  ```

@@ -29,6 +29,9 @@ services:
     environment:
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - ASPNETCORE_HTTPS_PORT=6001
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=MyStrong(!)Password123
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/CookingRecipesSystem.pfx
       - ConnectionStrings__DefaultConnection=Server=MsSqlServer;Database=CookingRecipesDB;User=sa;Password=MyStrong(!)Password123;MultipleActiveResultSets=true;
     volumes:
       - ~/.aspnet/https:/https:ro
