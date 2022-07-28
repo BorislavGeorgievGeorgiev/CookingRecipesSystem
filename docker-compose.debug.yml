@@ -38,6 +38,8 @@ services:
     restart: unless-stopped
     networks:
       - CookingRecipesSystem-network
+    depends_on:
+      - data
 
   client:
     container_name: ClientStartup
@@ -50,6 +52,8 @@ services:
     restart: unless-stopped
     networks:
       - CookingRecipesSystem-network
+    depends_on:
+      - server
 
 networks:
   CookingRecipesSystem-network:
