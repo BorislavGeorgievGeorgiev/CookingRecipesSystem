@@ -9,100 +9,107 @@ using CookingRecipesSystem.Startup.Models;
 
 namespace CookingRecipesSystem.Startup.Services
 {
-  public interface IAuthService
-  {
-    Task<LoginResult> Login(UserLoginModel loginModel);
-    Task Logout();
-    Task<RegisterResult> Register(UserRegisterModel registerModel);
+	public interface IAuthService
+	{
+		Task<LoginResult> Login(UserLoginModel loginModel);
+		Task Logout();
+		Task<RegisterResult> Register(UserRegisterModel registerModel);
 
-    Task<UsersListModel> GetAll();
-  }
+		Task<UsersListModel> GetAll();
+	}
 
-  public class AuthService : IAuthService
-  {
-    private readonly string? _apiIdentity;
-    private readonly HttpClient _httpClient;
-    private readonly ApiAuthenticationStateProvider _authenticationStateProvider;
-    private readonly ILocalStorageService _localStorage;
+	public class AuthService : IAuthService
+	{
+		private const string IdentityPath = "api/Identity/";
 
-    public AuthService(HttpClient httpClient,
-                       ApiAuthenticationStateProvider authenticationStateProvider,
-                       ILocalStorageService localStorage)
-    {
-      this._apiIdentity = "https://localhost:6001/api/Identity/";
-      this._httpClient = httpClient;
-      this._authenticationStateProvider = authenticationStateProvider;
-      this._localStorage = localStorage;
-    }
+		private readonly string? _apiIdentityUri;
+		private readonly HttpClient _httpClient;
+		private readonly IConfiguration _configuration;
+		private readonly ApiAuthenticationStateProvider _authenticationStateProvider;
+		private readonly ILocalStorageService _localStorage;
 
-    public async Task<RegisterResult> Register(UserRegisterModel registerModel)
-    {
-      var response = await this._httpClient
-        .PostAsJsonAsync(this.GetRequestUri(nameof(Register)), registerModel);
+		public AuthService(
+			HttpClient httpClient, IConfiguration configuration,
+			ApiAuthenticationStateProvider authenticationStateProvider,
+			ILocalStorageService localStorage)
+		{
+			this._httpClient = httpClient;
+			this._configuration = configuration;
+			this._apiIdentityUri = this._configuration
+				.GetSection(nameof(ApiConfig))
+				.GetSection(nameof(ApiConfig.ApiUrl)).Value + IdentityPath;
+			this._authenticationStateProvider = authenticationStateProvider;
+			this._localStorage = localStorage;
+		}
 
-      var registerResult = JsonSerializer
-        .Deserialize<RegisterResult>(await response.Content.ReadAsStringAsync(),
-        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+		public async Task<RegisterResult> Register(UserRegisterModel registerModel)
+		{
+			var response = await this._httpClient
+				.PostAsJsonAsync(this.GetRequestUri(nameof(Register)), registerModel);
 
-      return registerResult;
-    }
+			var registerResult = JsonSerializer
+				.Deserialize<RegisterResult>(await response.Content.ReadAsStringAsync(),
+				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-    public async Task<LoginResult> Login(UserLoginModel loginModel)
-    {
-      var loginAsJson = JsonSerializer.Serialize(loginModel);
+			return registerResult;
+		}
 
-      var response = await this._httpClient
-        .PostAsync(this.GetRequestUri(nameof(Login)), new StringContent(
-          loginAsJson, Encoding.UTF8, "application/json"));
+		public async Task<LoginResult> Login(UserLoginModel loginModel)
+		{
+			var loginAsJson = JsonSerializer.Serialize(loginModel);
 
-      var loginResult = JsonSerializer
-        .Deserialize<LoginResult>(await response.Content.ReadAsStringAsync(),
-        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+			var response = await this._httpClient
+				.PostAsync(this.GetRequestUri(nameof(Login)), new StringContent(
+					loginAsJson, Encoding.UTF8, "application/json"));
 
-      if (!response.IsSuccessStatusCode)
-      {
-        return loginResult;
-      }
+			var loginResult = JsonSerializer
+				.Deserialize<LoginResult>(await response.Content.ReadAsStringAsync(),
+				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-      await this._localStorage.SetItemAsync("authToken", loginResult.Token);
+			if (!response.IsSuccessStatusCode)
+			{
+				return loginResult;
+			}
 
-      var authenticationState = await this._authenticationStateProvider
-        .GetAuthenticationStateAsync();
+			await this._localStorage.SetItemAsync("authToken", loginResult.Token);
 
-      var keyValuePair = authenticationState.User.Claims
-        .FirstOrDefault(c => c.Type == "unique_name");
+			var authenticationState = await this._authenticationStateProvider
+				.GetAuthenticationStateAsync();
 
-      var userName = keyValuePair.Value;
+			var keyValuePair = authenticationState.User.Claims
+				.FirstOrDefault(c => c.Type == "unique_name");
 
-      this._authenticationStateProvider.MarkUserAsAuthenticated(userName);
+			var userName = keyValuePair.Value;
 
-      this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-        "bearer", loginResult.Token);
+			this._authenticationStateProvider.MarkUserAsAuthenticated(userName);
 
-      return loginResult;
-    }
+			this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+				"bearer", loginResult.Token);
 
-    public async Task Logout()
-    {
-      await this._localStorage.RemoveItemAsync("authToken");
+			return loginResult;
+		}
 
-      this._authenticationStateProvider.MarkUserAsLoggedOut();
+		public async Task Logout()
+		{
+			await this._localStorage.RemoveItemAsync("authToken");
 
-      this._httpClient.DefaultRequestHeaders.Authorization = null;
-    }
+			this._authenticationStateProvider.MarkUserAsLoggedOut();
 
-    public async Task<UsersListModel> GetAll()
-    {
-      var response = await this._httpClient
-        .GetFromJsonAsync<UsersListModel>(this.GetRequestUri(nameof(GetAll)));
+			this._httpClient.DefaultRequestHeaders.Authorization = null;
+		}
 
-      return response;
-    }
+		public async Task<UsersListModel> GetAll()
+		{
+			var uri = this.GetRequestUri(nameof(GetAll));
+			var response = await this._httpClient.GetFromJsonAsync<UsersListModel>(uri);
 
-    private string GetRequestUri(string action)
-    {
-      string uri = this._apiIdentity + action;
-      return uri.ToLower();
-    }
-  }
+			return response;
+		}
+
+		private string GetRequestUri(string action)
+		{
+			string uri = this._apiIdentityUri + action;
+			return uri.ToLower();
+		}
+	}
 }
