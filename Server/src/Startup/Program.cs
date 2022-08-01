@@ -13,7 +13,8 @@ builder.Services.AddWebComponents();
 
 builder.Services.AddControllers();
 
-var MyAllowTestOrigins = "_myAllowTestOrigins";
+const string MyAllowTestOrigins = "_myAllowTestOrigins";
+const string MyAllowProductionOrigins = "_myAllowProductionOrigins";
 
 builder.Services.AddCors(options =>
 {
@@ -21,9 +22,14 @@ builder.Services.AddCors(options =>
 		MyAllowTestOrigins,
 		policy =>
 		{
-			policy.AllowAnyOrigin()
-			.AllowAnyMethod()
-			.AllowAnyHeader();
+			policy.WithOrigins("https://localhost:7072", "http://localhost:5072",
+				"https://localhost", "http://localhost");
+		});
+	options.AddPolicy(
+		MyAllowProductionOrigins,
+		policy =>
+		{
+			policy.WithOrigins("https://localhost", "http://localhost");
 		});
 });
 
@@ -57,23 +63,27 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+app.UseCustomExceptionHandler();
+app.UseHttpsRedirection();
+
+app.UseRouting();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
 	app.UseSwaggerUI();
 
+	app.UseCors(MyAllowTestOrigins);
+
 	using var scope = app.Services.CreateScope();
 	var services = scope.ServiceProvider;
 	await DataSeeder.SeedAsync(services);
 }
-
-app.UseCustomExceptionHandler();
-app.UseHttpsRedirection();
-
-app.UseRouting();
-
-app.UseCors(MyAllowTestOrigins);
+if (app.Environment.IsProduction())
+{
+	app.UseCors(MyAllowProductionOrigins);
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
