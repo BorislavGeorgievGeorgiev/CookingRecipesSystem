@@ -12,6 +12,8 @@
 
 		public IEnumerable<string> Errors { get; }
 
+		public EmptyObject Response => default!;
+
 		public static ApplicationResult Success
 			=> new(true, Array.Empty<string>());
 

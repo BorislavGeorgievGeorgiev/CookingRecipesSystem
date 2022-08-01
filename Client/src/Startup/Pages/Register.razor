@@ -4,51 +4,54 @@
 @inject IAuthService AuthService
 
 <h1 class="h2 font-weight-normal login-title">
-   Register
+  Register
 </h1>
 
 <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="registerRequest">
-    <DataAnnotationsValidator />
+  <DataAnnotationsValidator />
 
-    <label for="inputUsername" class="sr-only">User Name</label>
-    <InputText id="inputUsername" class="form-control" placeholder="Username" autofocus @bind-Value="@registerRequest.UserName" />
-    <ValidationMessage For="@(() => registerRequest.UserName)" />
+  <label for="inputUsername" class="sr-only">User Name</label>
+  <InputText id="inputUsername" class="form-control" placeholder="Username" autofocus @bind-Value="@registerRequest.UserName" />
+  <ValidationMessage For="@(() => registerRequest.UserName)" />
 
-    <label for="inputUsername" class="sr-only">Email</label>
-    <InputText id="inputUsername" class="form-control" placeholder="Email" autofocus @bind-Value="@registerRequest.Email" />
-    <ValidationMessage For="@(() => registerRequest.Email)" />
+  <label for="inputUsername" class="sr-only">Email</label>
+  <InputText id="inputUsername" class="form-control" placeholder="Email" autofocus @bind-Value="@registerRequest.Email" />
+  <ValidationMessage For="@(() => registerRequest.Email)" />
 
-    <label for="inputPassword" class="sr-only">Password</label>
-    <InputText type="password" id="inputPassword" class="form-control" placeholder="Password" @bind-Value="@registerRequest.Password" />
-    <ValidationMessage For="@(() => registerRequest.Password)" />
+  <label for="inputPassword" class="sr-only">Password</label>
+  <InputText type="password" id="inputPassword" class="form-control" placeholder="Password" @bind-Value="@registerRequest.Password" />
+  <ValidationMessage For="@(() => registerRequest.Password)" />
 
-    <label for="inputPasswordConfirm" class="sr-only">Password Confirmation</label>
-    <InputText type="password" id="inputPasswordConfirm" class="form-control" placeholder="Password Confirmation" @bind-Value="@registerRequest.PasswordConfirm" />
-    <ValidationMessage For="@(() => registerRequest.PasswordConfirm)" />
+  <label for="inputPasswordConfirm" class="sr-only">Password Confirmation</label>
+  <InputText type="password" id="inputPasswordConfirm" class="form-control" placeholder="Password Confirmation" @bind-Value="@registerRequest.PasswordConfirm" />
+  <ValidationMessage For="@(() => registerRequest.PasswordConfirm)" />
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Create account</button>
+  <div>
+     @foreach (var error in Errors)
+     {
+       <label class="text-danger">@error</label> 
+     }    
+  </div>
 
-    <label class="text-danger">@error</label>    
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Create account</button
+  
 </EditForm>
 
 @code{
 
     UserRegisterModel registerRequest { get; set; } = new UserRegisterModel();
 
-    string? error { get; set; }
+    IEnumerable<string> Errors { get; set; } = new List<string>();
 
     async Task OnSubmit()
-    {
-        error = null;
-
-        try
-        {
-            await AuthService.Register(registerRequest);
-            navigationManager.NavigateTo("");
-        }
-        catch (Exception ex)
-        {
-            error = ex.Message;
-        }
+    {       
+       var result = await AuthService.Register(registerRequest);
+       
+       if (result.Succeeded)
+       {
+         navigationManager.NavigateTo("");
+       }       
+       
+       Errors = result.Errors;
     }
 }

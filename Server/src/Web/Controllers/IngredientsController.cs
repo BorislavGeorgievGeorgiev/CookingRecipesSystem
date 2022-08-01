@@ -1,4 +1,5 @@
-﻿using CookingRecipesSystem.Application.Ingredients.Commands;
+﻿using CookingRecipesSystem.Application.Common.Models;
+using CookingRecipesSystem.Application.Ingredients.Commands;
 using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredientsAll;
 using CookingRecipesSystem.Web.Common;
 
@@ -12,7 +13,7 @@ namespace CookingRecipesSystem.Web.Controllers
 		[Authorize]
 		[HttpPost]
 		[Route(nameof(Create))]
-		public async Task<ActionResult> Create(
+		public async Task<ActionResult<ApplicationResult>> Create(
 			[FromForm] CreateIngredientCommand command)
 		{
 			return await this.Send(command);
@@ -20,7 +21,7 @@ namespace CookingRecipesSystem.Web.Controllers
 
 		[HttpGet]
 		[Route(nameof(GetAll))]
-		public async Task<ActionResult<IngredientsListResponseModel>> GetAll(
+		public async Task<ActionResult<ApplicationResult<IngredientsListResponseModel>>> GetAll(
 			[FromQuery] GetIngredientsAllQuery query)
 			=> await this.Send(query);
 	}

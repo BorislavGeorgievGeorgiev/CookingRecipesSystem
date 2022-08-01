@@ -22,12 +22,12 @@ namespace CookingRecipesSystem.Web.Common
 						.RequestServices
 						.GetService<IMediator>()!;
 
-		protected async Task<ActionResult> Send(IRequest<ApplicationResult> request)
+		protected async Task<ActionResult<ApplicationResult>> Send(IRequest<ApplicationResult> request)
 		{
 			return await this.Mediator.Send(request).ToActionResult();
 		}
 
-		protected async Task<ActionResult<TModel>> Send<TModel>(
+		protected async Task<ActionResult<ApplicationResult<TModel>>> Send<TModel>(
 			IRequest<ApplicationResult<TModel>> request)
 			where TModel : class
 		{

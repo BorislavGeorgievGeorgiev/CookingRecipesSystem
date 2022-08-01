@@ -23,13 +23,15 @@ builder.Services.AddCors(options =>
 		policy =>
 		{
 			policy.WithOrigins("https://localhost:7072", "http://localhost:5072",
-				"https://localhost", "http://localhost");
+				"https://localhost", "http://localhost")
+			.AllowAnyHeader();
 		});
 	options.AddPolicy(
 		MyAllowProductionOrigins,
 		policy =>
 		{
-			policy.WithOrigins("https://localhost", "http://localhost");
+			policy.WithOrigins("https://localhost", "http://localhost")
+			.AllowAnyHeader();
 		});
 });
 

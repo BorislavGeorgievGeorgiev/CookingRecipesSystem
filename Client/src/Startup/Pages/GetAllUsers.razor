@@ -9,36 +9,35 @@
 <div>
   <ul>
     @foreach (var user in UsersList.Users)
-   {
+    {
       <li>
         @user.UserName
-    </li>
-   }   
+      </li>
+    }
   </ul>
+
+  <div>
+    @foreach (var error in Errors)
+    {
+      <label class="text-danger">@error</label>
+    }
+  </div>
 </div>
 
 
 
 @code {
   UsersListModel UsersList { get; set; } = new UsersListModel
-  {
-    Users = new List<UserModel>()
-  };
+    {
+      Users = new List<UserModel>()
+    };
 
-  string? error { get; set; }
+  IEnumerable<string> Errors { get; set; } = new List<string>();
 
   async Task GetAll()
   {
-    error = null!;
-
-    try
-    {
-      UsersList = await AuthService.GetAll();
-      error = "";
-    }
-    catch (Exception ex)
-    {
-      error = ex.Message;
-    }
-	}
+    var result = await AuthService.GetAll();
+    UsersList = result.Response;
+    Errors = result.Errors;
+  }
 }

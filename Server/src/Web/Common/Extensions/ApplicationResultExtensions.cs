@@ -6,20 +6,20 @@ namespace CookingRecipesSystem.Web.Common.Extensions
 {
 	public static class ApplicationResultExtensions
 	{
-		public static async Task<ActionResult> ToActionResult(
+		public static async Task<ActionResult<ApplicationResult>> ToActionResult(
 			this Task<ApplicationResult> resultTask)
 		{
 			var result = await resultTask;
 
 			if (!result.Succeeded)
 			{
-				return new BadRequestObjectResult(result.Errors);
+				return new BadRequestObjectResult(result);
 			}
 
-			return new OkResult();
+			return new OkObjectResult(result);
 		}
 
-		public static async Task<ActionResult<TData>> ToActionResult<TData>(
+		public static async Task<ActionResult<ApplicationResult<TData>>> ToActionResult<TData>(
 			this Task<ApplicationResult<TData>> resultTask)
 			where TData : class
 		{
@@ -27,10 +27,10 @@ namespace CookingRecipesSystem.Web.Common.Extensions
 
 			if (!result.Succeeded)
 			{
-				return new BadRequestObjectResult(result.Errors);
+				return new BadRequestObjectResult(result);
 			}
 
-			return new OkObjectResult(result.Response);
+			return new OkObjectResult(result);
 		}
 	}
 }
