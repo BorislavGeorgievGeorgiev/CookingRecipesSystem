@@ -12,7 +12,7 @@ namespace CookingRecipesSystem.Startup.Services
 	{
 		Task<AppResult<LoginResult>> Login(UserLoginModel loginModel);
 		Task Logout();
-		Task<AppResult<EmptyModel>> Register(UserRegisterModel registerModel);
+		Task<AppResult> Register(UserRegisterModel registerModel);
 
 		Task<AppResult<UsersListModel>> GetAll();
 	}
@@ -43,13 +43,13 @@ namespace CookingRecipesSystem.Startup.Services
 			this._localStorage = localStorage;
 		}
 
-		public async Task<AppResult<EmptyModel>> Register(UserRegisterModel registerModel)
+		public async Task<AppResult> Register(UserRegisterModel registerModel)
 		{
 			var response = await this._httpClient
 				.PostAsJsonAsync(this.GetRequestUri(nameof(Register)), registerModel);
 
 			var registerResult = JsonSerializer
-				.Deserialize<AppResult<EmptyModel>>(await response.Content.ReadAsStringAsync(),
+				.Deserialize<AppResult>(await response.Content.ReadAsStringAsync(),
 				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
 			return registerResult!;
