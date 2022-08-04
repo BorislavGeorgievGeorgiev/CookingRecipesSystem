@@ -35,7 +35,7 @@
 			this._response = response;
 		}
 
-		public TResponse Response
+		public new TResponse Response
 			=> this.Succeeded ? this._response : default!;
 
 		public static new ApplicationResult<TResponse> Success(TResponse response)

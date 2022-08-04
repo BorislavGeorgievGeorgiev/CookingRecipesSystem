@@ -1,6 +1,6 @@
 ﻿namespace CookingRecipesSystem.Startup.Models
 {
-	public class EmptyModel
+	public class EmptyObject
 	{
 	}
 }

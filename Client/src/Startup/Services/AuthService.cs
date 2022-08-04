@@ -79,7 +79,7 @@ namespace CookingRecipesSystem.Startup.Services
 			if (authenticationState.User.Identity.IsAuthenticated == false)
 			{
 				await this.Logout();
-				return new AppResult<LoginResult>();
+				return AppResult<LoginResult>.Failure("User is not authenticated.");
 			}
 
 			this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
@@ -107,12 +107,7 @@ namespace CookingRecipesSystem.Startup.Services
 			}
 			catch (Exception ex)
 			{
-				response = new AppResult<UsersListModel>
-				{
-					Errors = new List<string> { ex.Message },
-					Succeeded = false,
-					Response = new UsersListModel { Users = new List<UserModel>() }
-				};
+				response = AppResult<UsersListModel>.Failure(ex.Message);
 			}
 
 			return response!;
