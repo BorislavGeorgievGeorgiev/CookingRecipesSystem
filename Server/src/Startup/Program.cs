@@ -65,11 +65,6 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-app.UseCustomExceptionHandler();
-app.UseHttpsRedirection();
-
-app.UseRouting();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -82,10 +77,16 @@ if (app.Environment.IsDevelopment())
 	var services = scope.ServiceProvider;
 	await DataSeeder.SeedAsync(services);
 }
+
 if (app.Environment.IsProduction())
 {
 	app.UseCors(MyAllowProductionOrigins);
 }
+
+app.UseCustomExceptionHandler();
+app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();

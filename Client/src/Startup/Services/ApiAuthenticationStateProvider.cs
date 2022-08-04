@@ -1,8 +1,9 @@
-﻿using System.Net.Http.Headers;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text.Json;
 
 using Blazored.LocalStorage;
+
+using CookingRecipesSystem.Startup.Shared;
 
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -10,84 +11,77 @@ namespace CookingRecipesSystem.Startup.Services
 {
 	public class ApiAuthenticationStateProvider : AuthenticationStateProvider
 	{
-		private readonly HttpClient _httpClient;
+		private const string AuthenticationType = "jwt";
 		private readonly ILocalStorageService _localStorage;
 
-		public ApiAuthenticationStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
+		public ApiAuthenticationStateProvider(ILocalStorageService localStorage)
 		{
-			this._httpClient = httpClient;
 			this._localStorage = localStorage;
 		}
 
 		public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 		{
-			var savedToken = await this._localStorage.GetItemAsync<string>("authToken");
+			var savedToken = await this._localStorage.GetItemAsync<string>(AppConstants.AuthTokenName);
 
 			if (string.IsNullOrWhiteSpace(savedToken))
 			{
-				return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+				return new AuthenticationState(GetAnonymousUser());
 			}
 
-			this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", savedToken);
+			var claims = ParseClaimsFromJwt(savedToken);
+			var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, AuthenticationType));
+			var authenticationState = new AuthenticationState(claimsPrincipal);
 
-			return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(this.ParseClaimsFromJwt(savedToken), "jwt")));
-		}
+			var authenticationStateTask = Task.FromResult(authenticationState);
+			this.NotifyAuthenticationStateChanged(authenticationStateTask);
 
-		public void MarkUserAsAuthenticated(string UserName)
-		{
-			var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, UserName) }, "apiauth"));
-			var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
-			this.NotifyAuthenticationStateChanged(authState);
+			return authenticationState;
 		}
 
 		public void MarkUserAsLoggedOut()
 		{
-			var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
-			var authState = Task.FromResult(new AuthenticationState(anonymousUser));
-			this.NotifyAuthenticationStateChanged(authState);
+			var anonymousUser = GetAnonymousUser();
+			var authenticationStateTask = Task.FromResult(new AuthenticationState(anonymousUser));
+			this.NotifyAuthenticationStateChanged(authenticationStateTask);
 		}
 
-		private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+		private static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
 		{
-			var claims = new List<Claim>();
-			var payload = jwt.Split('.')[1];
-			var jsonBytes = this.ParseBase64WithoutPadding(payload);
-			var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+			var handler = new JwtSecurityTokenHandler();
 
-			keyValuePairs.TryGetValue(ClaimTypes.Role, out object roles);
+			var token = handler.ReadJwtToken(jwt);
+			var claims = token.Claims;
 
-			if (roles != null)
+			var newClaims = new List<Claim>();
+
+			foreach (var claim in claims)
 			{
-				if (roles.ToString().Trim().StartsWith("["))
+				switch (claim.Type)
 				{
-					var parsedRoles = JsonSerializer.Deserialize<string[]>(roles.ToString());
-
-					foreach (var parsedRole in parsedRoles)
-					{
-						claims.Add(new Claim(ClaimTypes.Role, parsedRole));
-					}
+					case nameof(ClaimTypes.Name):
+						newClaims.Add(new Claim(ClaimTypes.Name, claim.Value));
+						break;
+					case nameof(ClaimTypes.NameIdentifier):
+						newClaims.Add(new Claim(ClaimTypes.NameIdentifier, claim.Value));
+						break;
+					case nameof(ClaimTypes.Email):
+						newClaims.Add(new Claim(ClaimTypes.Email, claim.Value));
+						break;
+					case nameof(ClaimTypes.Role):
+						newClaims.Add(new Claim(ClaimTypes.Role, claim.Value));
+						break;
+					default:
+						newClaims.Add(new Claim(claim.Type, claim.Value));
+						break;
 				}
-				else
-				{
-					claims.Add(new Claim(ClaimTypes.Role, roles.ToString()));
-				}
-
-				keyValuePairs.Remove(ClaimTypes.Role);
 			}
 
-			claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
-
-			return claims;
+			return newClaims;
 		}
 
-		private byte[] ParseBase64WithoutPadding(string base64)
+		private static ClaimsPrincipal GetAnonymousUser()
 		{
-			switch (base64.Length % 4)
-			{
-				case 2: base64 += "=="; break;
-				case 3: base64 += "="; break;
-			}
-			return Convert.FromBase64String(base64);
+			return new ClaimsPrincipal(new ClaimsIdentity());
 		}
 	}
 }

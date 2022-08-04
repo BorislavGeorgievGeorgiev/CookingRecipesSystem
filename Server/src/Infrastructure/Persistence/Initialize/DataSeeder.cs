@@ -46,6 +46,15 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Initialize
 					await userManager.AddToRoleAsync(defaultUser, AppConstants.RoleNameAdministrator);
 				}
 
+				var hasModeratorRole = roleManager.Roles.SingleOrDefault(
+					r => r.Name == AppConstants.RoleNameModerator);
+
+				if (hasModeratorRole == null)
+				{
+					await roleManager.CreateAsync(new IdentityRole(AppConstants.RoleNameModerator));
+					await userManager.AddToRoleAsync(defaultUser, AppConstants.RoleNameModerator);
+				}
+
 				await context.SaveChangesAsync();
 			}
 			catch (Exception ex)

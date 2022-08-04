@@ -5,9 +5,6 @@ using System.Text;
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Infrastructure.Common;
 
-using CookingRecipesSystem.Infrastructure.Identity;
-
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -15,12 +12,17 @@ namespace CookingRecipesSystem.Infrastructure.Services
 {
 	public class JwtService : IJwtService
 	{
+		private const string ClaimId = nameof(ClaimTypes.NameIdentifier);
+		private const string ClaimEmail = nameof(ClaimTypes.Email);
+		private const string ClaimName = nameof(ClaimTypes.Name);
+		private const string ClaimRole = nameof(ClaimTypes.Role);
+
 		private readonly JwtConfig _jwtConfig;
-		private readonly UserManager<ApplicationUser> _userManager;
+		private readonly IUserManagerService _userManager;
 		private readonly IDateTimeService _dateTimeService;
 
 		public JwtService(IOptions<JwtConfig> jwtConfig,
-			UserManager<ApplicationUser> userManager,
+			IUserManagerService userManager,
 			IDateTimeService dateTimeService)
 		{
 			this._jwtConfig = jwtConfig.Value;
@@ -32,6 +34,8 @@ namespace CookingRecipesSystem.Infrastructure.Services
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var key = Encoding.ASCII.GetBytes(this._jwtConfig.Secret);
+			var currentUser = await this._userManager.FindByIdAsync(userId);
+			var currentUserRoles = await this._userManager.GetRolesAsync(currentUser.Response);
 
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
@@ -39,8 +43,9 @@ namespace CookingRecipesSystem.Infrastructure.Services
 				Audience = this._jwtConfig.ValidAudience,
 				Subject = new ClaimsIdentity(new[]
 				{
-					new Claim(ClaimTypes.NameIdentifier, userId),
-					new Claim(ClaimTypes.Email, userEmail)
+					new Claim(ClaimId, userId),
+					new Claim(ClaimEmail, userEmail),
+					new Claim(ClaimName, currentUser.Response.UserName)
 				}),
 				NotBefore = this._dateTimeService.Now,
 				Expires = this._dateTimeService.Now.AddMinutes(
@@ -49,17 +54,13 @@ namespace CookingRecipesSystem.Infrastructure.Services
 					new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
 			};
 
-			var currentUser = await this._userManager.FindByIdAsync(userId);
-			var currentUserRoles = await this._userManager.GetRolesAsync(currentUser);
-
-			tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Name, currentUser.UserName));
-
-			foreach (var role in currentUserRoles)
+			foreach (var role in currentUserRoles.Response)
 			{
-				tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role));
+				var claimRole = new Claim(ClaimRole, role);
+				tokenDescriptor.Subject.AddClaim(claimRole);
 			}
 
-			var token = tokenHandler.CreateToken(tokenDescriptor);
+			var token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
 			var encryptedToken = tokenHandler.WriteToken(token);
 
 			return encryptedToken;

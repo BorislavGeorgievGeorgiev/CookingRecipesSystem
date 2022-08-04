@@ -14,8 +14,8 @@
   <InputText id="inputUsername" class="form-control" placeholder="Username" autofocus @bind-Value="@registerRequest.UserName" />
   <ValidationMessage For="@(() => registerRequest.UserName)" />
 
-  <label for="inputUsername" class="sr-only">Email</label>
-  <InputText id="inputUsername" class="form-control" placeholder="Email" autofocus @bind-Value="@registerRequest.Email" />
+  <label for="inputEmail" class="sr-only">Email</label>
+  <InputText id="inputEmail" class="form-control" placeholder="Email" autofocus @bind-Value="@registerRequest.Email" />
   <ValidationMessage For="@(() => registerRequest.Email)" />
 
   <label for="inputPassword" class="sr-only">Password</label>
@@ -33,7 +33,7 @@
      }    
   </div>
 
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Create account</button
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Create account</button>
   
 </EditForm>
 

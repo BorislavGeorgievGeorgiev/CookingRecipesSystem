@@ -9,9 +9,9 @@
 
 <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="loginRequest">
   <DataAnnotationsValidator />
-
-  <label for="inputUsername" class="sr-only">User Name</label>
-  <InputText id="inputUsername" class="form-control" @bind-Value="loginRequest.Email" autofocus placeholder="Email" />
+  
+  <label for="inputEmail" class="sr-only">Email</label>
+  <InputText id="inputEmail" class="form-control" placeholder="Email" autofocus @bind-Value="@loginRequest.Email" />
   <ValidationMessage For="@(() => loginRequest.Email)" />
 
   <label for="inputPassword" class="sr-only">Password</label>

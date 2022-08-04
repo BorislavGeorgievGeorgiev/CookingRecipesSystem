@@ -64,6 +64,13 @@ namespace CookingRecipesSystem.Infrastructure.Services
 			return this.UserResult(user);
 		}
 
+		public async Task<ApplicationResult<IList<string>>> GetRolesAsync(IApplicationUser user)
+		{
+			var roles = await this._userManager.GetRolesAsync((ApplicationUser)user);
+
+			return ApplicationResult<IList<string>>.Success(roles);
+		}
+
 		public ApplicationResult<IQueryable<IApplicationUser>> GetAll()
 		{
 			var users = this._userManager.Users;
