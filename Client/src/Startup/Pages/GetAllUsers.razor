@@ -37,7 +37,12 @@
   async Task GetAll()
   {
     var result = await AuthService.GetAll();
-    UsersList = result.Response;
+
+    if(result.Succeeded)
+    {
+       UsersList = result.Response;
+    }
+    
     Errors = result.Errors;
   }
 }
