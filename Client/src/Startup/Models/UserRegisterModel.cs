@@ -1,26 +1,30 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using CookingRecipesSystem.Startup.Shared;
+
 namespace CookingRecipesSystem.Startup.Models
 {
 	public class UserRegisterModel
 	{
 		[Required]
+		[StringLength(AppConstants.UserNameMaxLength, ErrorMessage = ErrorMessages.InvalidStringLength,
+			MinimumLength = AppConstants.UserNameMinLength)]
+		[Display(Name = AppConstants.UserNameDisplay)]
 		public string? UserName { get; set; }
 
 		[Required]
-		[EmailAddress]
-		[Display(Name = "Email")]
+		[RegularExpression(AppConstants.EmailRegEx, ErrorMessage = ErrorMessages.InvalidEmail)]
 		public string? Email { get; set; }
 
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
+		[StringLength(AppConstants.PasswordMaxLength, ErrorMessage = ErrorMessages.InvalidStringLength,
+			MinimumLength = AppConstants.PasswordMinLength)]
 		[DataType(DataType.Password)]
-		[Display(Name = "Password")]
 		public string? Password { get; set; }
 
 		[DataType(DataType.Password)]
-		[Display(Name = "Confirm password")]
-		[Compare(nameof(Password), ErrorMessage = "The password and confirmation password do not match.")]
+		[Display(Name = AppConstants.PasswordConfirmDisplay)]
+		[Compare(nameof(Password), ErrorMessage = ErrorMessages.InvalidPasswordConfirm)]
 		public string? PasswordConfirm { get; set; }
 	}
 }

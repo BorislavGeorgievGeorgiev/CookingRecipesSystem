@@ -1,6 +1,6 @@
 ﻿@page "/authentication/login"
 
-@inject NavigationManager navigationManager
+@inject NavigationManager Navigation
 @inject IAuthService AuthService
 
 <h1 class="h2 font-weight-normal login-title">
@@ -10,12 +10,12 @@
 <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="loginRequest">
   <DataAnnotationsValidator />
   
-  <label for="inputEmail" class="sr-only">Email</label>
-  <InputText id="inputEmail" class="form-control" placeholder="Email" autofocus @bind-Value="@loginRequest.Email" />
+  <label for="inputEmail" class="sr-only">@nameof(loginRequest.Email)</label>
+  <InputText id="inputEmail" class="form-control" placeholder="@nameof(loginRequest.Email)" autofocus @bind-Value="@loginRequest.Email" />
   <ValidationMessage For="@(() => loginRequest.Email)" />
 
-  <label for="inputPassword" class="sr-only">Password</label>
-  <InputText type="password" id="inputPassword" class="form-control" placeholder="Password" @bind-Value="loginRequest.Password" />
+  <label for="inputPassword" class="sr-only">@nameof(loginRequest.Password)</label>
+  <InputText type="password" id="inputPassword" class="form-control" placeholder="@nameof(loginRequest.Password)" @bind-Value="loginRequest.Password" />
   <ValidationMessage For="@(() => loginRequest.Password)" />
 
   <div>
@@ -24,23 +24,28 @@
       <label class="text-danger">@error</label>
     }
   </div>
-
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-
+  <div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  </div>
 </EditForm>
 
 @code {
+  [Parameter]
+  [SupplyParameterFromQuery]
+  public string? ReturnUrl { get; set; }
+
   UserLoginModel loginRequest { get; set; } = new UserLoginModel();
 
-  IEnumerable<string> Errors { get; set; } = new List<string>();
+  IEnumerable<string> Errors { get; set; } = new List<string>();  
 
   async Task OnSubmit()
   {
     var result = await AuthService.Login(loginRequest);
 
     if (result.Succeeded)
-    {
-      navigationManager.NavigateTo("");
+    {     
+      ReturnUrl ??= "";
+      Navigation.NavigateTo(ReturnUrl);
     }
 
     Errors = result.Errors;

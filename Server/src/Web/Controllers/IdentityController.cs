@@ -31,6 +31,7 @@ namespace CookingRecipesSystem.Web.Controllers
 			[FromBody] ChangePasswordUserCommand command)
 			=> await this.Send(command);
 
+		[Authorize]
 		[HttpGet]
 		[Route(nameof(GetAll))]
 		public async Task<ActionResult<ApplicationResult<UsersListResponseModel>>> GetAll(

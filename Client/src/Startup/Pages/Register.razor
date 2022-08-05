@@ -1,6 +1,6 @@
 ﻿@page "/authentication/register"
 
-@inject NavigationManager navigationManager
+@inject NavigationManager Navigation
 @inject IAuthService AuthService
 
 <h1 class="h2 font-weight-normal login-title">
@@ -10,20 +10,20 @@
 <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="registerRequest">
   <DataAnnotationsValidator />
 
-  <label for="inputUsername" class="sr-only">User Name</label>
-  <InputText id="inputUsername" class="form-control" placeholder="Username" autofocus @bind-Value="@registerRequest.UserName" />
+  <label for="inputUsername" class="sr-only">@AppConstants.UserNameDisplay</label>
+  <InputText id="inputUsername" class="form-control" placeholder="@AppConstants.UserNameDisplay" autofocus @bind-Value="@registerRequest.UserName" />
   <ValidationMessage For="@(() => registerRequest.UserName)" />
 
-  <label for="inputEmail" class="sr-only">Email</label>
-  <InputText id="inputEmail" class="form-control" placeholder="Email" autofocus @bind-Value="@registerRequest.Email" />
+  <label for="inputEmail" class="sr-only">@nameof(registerRequest.Email)</label>
+  <InputText id="inputEmail" class="form-control" placeholder="@nameof(registerRequest.Email)" @bind-Value="@registerRequest.Email" />
   <ValidationMessage For="@(() => registerRequest.Email)" />
 
-  <label for="inputPassword" class="sr-only">Password</label>
-  <InputText type="password" id="inputPassword" class="form-control" placeholder="Password" @bind-Value="@registerRequest.Password" />
+  <label for="inputPassword" class="sr-only">@nameof(registerRequest.Password)</label>
+  <InputText type="password" id="inputPassword" class="form-control" placeholder="@nameof(registerRequest.Password)" @bind-Value="@registerRequest.Password" />
   <ValidationMessage For="@(() => registerRequest.Password)" />
 
-  <label for="inputPasswordConfirm" class="sr-only">Password Confirmation</label>
-  <InputText type="password" id="inputPasswordConfirm" class="form-control" placeholder="Password Confirmation" @bind-Value="@registerRequest.PasswordConfirm" />
+  <label for="inputPasswordConfirm" class="sr-only">@AppConstants.PasswordConfirmDisplay</label>
+  <InputText type="password" id="inputPasswordConfirm" class="form-control" placeholder="@AppConstants.PasswordConfirmDisplay" @bind-Value="@registerRequest.PasswordConfirm" />
   <ValidationMessage For="@(() => registerRequest.PasswordConfirm)" />
 
   <div>
@@ -32,9 +32,9 @@
        <label class="text-danger">@error</label> 
      }    
   </div>
-
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Create account</button>
-  
+  <div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Create account</button>
+  </div>
 </EditForm>
 
 @code{
@@ -49,7 +49,7 @@
        
        if (result.Succeeded)
        {
-         navigationManager.NavigateTo("");
+         Navigation.NavigateTo("");
        }       
        
        Errors = result.Errors;
