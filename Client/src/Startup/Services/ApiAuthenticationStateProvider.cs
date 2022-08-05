@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 using Blazored.LocalStorage;
 
-using CookingRecipesSystem.Startup.Shared;
+using CookingRecipesSystem.Startup.Constants;
 
 using Microsoft.AspNetCore.Components.Authorization;
 

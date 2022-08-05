@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using CookingRecipesSystem.Startup.Shared;
+using CookingRecipesSystem.Startup.Constants;
 
 namespace CookingRecipesSystem.Startup.Models
 {

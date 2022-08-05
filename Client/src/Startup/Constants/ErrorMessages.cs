@@ -1,4 +1,4 @@
-﻿namespace CookingRecipesSystem.Startup.Shared
+﻿namespace CookingRecipesSystem.Startup.Constants
 {
 	public static class ErrorMessages
 	{

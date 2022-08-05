@@ -4,8 +4,8 @@ using System.Text.Json;
 
 using Blazored.LocalStorage;
 
+using CookingRecipesSystem.Startup.Constants;
 using CookingRecipesSystem.Startup.Models;
-using CookingRecipesSystem.Startup.Shared;
 
 namespace CookingRecipesSystem.Startup.Services
 {
