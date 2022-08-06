@@ -1,54 +1,52 @@
 ﻿@page "/authentication/getall"
 
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
 @inject NavigationManager Navigation
 @inject IAuthService AuthService
 
-<AuthorizeView>
-   <Authorized>
-    <h3>GetAllUsers</h3>
+<h1 class="h2 font-weight-normal login-title">
+  Get All Users
+</h1>
 
-    <button class="btn btn-lg btn-primary btn-block" type="submit" @onclick="@GetAll">Get all users</button>
+<button class="btn btn-lg btn-primary btn-block" type="submit" @onclick="@GetAll">Get all users</button>
 
-    <div>
-      <ul>
-        @foreach (var user in UsersList.Users)
-        {
-          <li>
-            @user.UserName
-          </li>
-        }
-      </ul>
+<div>
+  <ul>
+    @foreach (var user in UsersList.Users)
+    {
+      <li>
+        @user.UserName
+      </li>
+    }
+  </ul>
 
-      <div>
-        @foreach (var error in Errors)
-        {
-          <label class="text-danger">@error</label>
-        }
-      </div>
-    </div>
-  </Authorized>
-  <NotAuthorized>
-    <RedirectToLogin/>
-  </NotAuthorized>
-</AuthorizeView>
+  <div>
+    @foreach (var error in Errors)
+    {
+      <label class="text-danger">@error</label>
+    }
+  </div>
+</div>
 
 @code {
-  UsersListModel UsersList { get; set; } = new UsersListModel
-    {
-      Users = new List<UserModel>()
-    };
-
-  IEnumerable<string> Errors { get; set; } = new List<string>();
-
-  async Task GetAll()
+    UsersListModel UsersList { get; set; } = new UsersListModel
   {
+    Users = new List<UserModel>()
+  };
+
+    IEnumerable<string> Errors { get; set; } = new List<string>();       
+
+    async Task GetAll()
+    {
     var result = await AuthService.GetAll();
 
-    if(result.Succeeded)
+    if (result.Succeeded)
     {
-       UsersList = result.Response;
+      UsersList = result.Response;      
     }
-    
+
     Errors = result.Errors;
   }
 }

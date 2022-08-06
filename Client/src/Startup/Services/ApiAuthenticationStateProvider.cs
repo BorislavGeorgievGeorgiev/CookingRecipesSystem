@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 
 using Blazored.LocalStorage;
@@ -13,10 +14,14 @@ namespace CookingRecipesSystem.Startup.Services
 	{
 		private const string AuthenticationType = "jwt";
 		private readonly ILocalStorageService _localStorage;
+		private readonly HttpClient _httpClient;
 
-		public ApiAuthenticationStateProvider(ILocalStorageService localStorage)
+		public ApiAuthenticationStateProvider(
+			ILocalStorageService localStorage,
+			HttpClient httpClient)
 		{
 			this._localStorage = localStorage;
+			this._httpClient = httpClient;
 		}
 
 		public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -32,16 +37,21 @@ namespace CookingRecipesSystem.Startup.Services
 			var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, AuthenticationType));
 			var authenticationState = new AuthenticationState(claimsPrincipal);
 
-			var authenticationStateTask = Task.FromResult(authenticationState);
-			this.NotifyAuthenticationStateChanged(authenticationStateTask);
+			this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+				AppConstants.BearerName, savedToken);
 
 			return authenticationState;
 		}
 
+		public void MarkUserAsAuthenticated(AuthenticationState authenticationState)
+		{
+			var authenticationStateTask = Task.FromResult(authenticationState);
+			this.NotifyAuthenticationStateChanged(authenticationStateTask);
+		}
+
 		public void MarkUserAsLoggedOut()
 		{
-			var anonymousUser = GetAnonymousUser();
-			var authenticationStateTask = Task.FromResult(new AuthenticationState(anonymousUser));
+			var authenticationStateTask = Task.FromResult(new AuthenticationState(GetAnonymousUser()));
 			this.NotifyAuthenticationStateChanged(authenticationStateTask);
 		}
 

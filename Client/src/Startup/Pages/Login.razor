@@ -9,7 +9,7 @@
 
 <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="loginRequest">
   <DataAnnotationsValidator />
-  
+
   <label for="inputEmail" class="sr-only">@nameof(loginRequest.Email)</label>
   <InputText id="inputEmail" class="form-control" placeholder="@nameof(loginRequest.Email)" autofocus @bind-Value="@loginRequest.Email" />
   <ValidationMessage For="@(() => loginRequest.Email)" />
@@ -36,18 +36,22 @@
 
   UserLoginModel loginRequest { get; set; } = new UserLoginModel();
 
-  IEnumerable<string> Errors { get; set; } = new List<string>();  
+  IEnumerable<string> Errors { get; set; } = new List<string>();
 
   async Task OnSubmit()
   {
     var result = await AuthService.Login(loginRequest);
 
     if (result.Succeeded)
-    {     
+    {
       ReturnUrl ??= "";
-      Navigation.NavigateTo(ReturnUrl);
+      Navigation.NavigateTo(ReturnUrl, forceLoad: true, replace: true);
     }
-
-    Errors = result.Errors;
+    else
+    {
+      //TODO: Show the Errors !
+      Errors = result.Errors;
+      Navigation.NavigateTo(Navigation.Uri, forceLoad: true, replace: true);
+    }
   }
 }

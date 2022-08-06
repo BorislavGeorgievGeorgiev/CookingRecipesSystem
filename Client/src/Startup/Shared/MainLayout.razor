@@ -1,6 +1,8 @@
 ﻿@inherits LayoutComponentBase
 
-@inject NavigationManager NavigationManager
+@inject NavigationManager Navigation
+
+<PageTitle>@Title</PageTitle>
 
 <div class="page">
     <header class="sidebar">
@@ -21,3 +23,7 @@
       
     </footer>
 </div>
+
+@code {
+  private const string Title = "Cooking Recipes";  
+}

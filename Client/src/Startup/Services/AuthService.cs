@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Text.Json;
 
 using Blazored.LocalStorage;
@@ -45,33 +44,49 @@ namespace CookingRecipesSystem.Startup.Services
 
 		public async Task<AppResult> Register(UserRegisterModel registerModel)
 		{
-			var response = await this._httpClient
+			HttpResponseMessage? response = null;
+			AppResult result;
+
+			try
+			{
+				response = await this._httpClient
 				.PostAsJsonAsync(this.GetRequestUri(nameof(Register)), registerModel);
+			}
+			catch (Exception ex)
+			{
+				return AppResult.Failure(ex.Message);
+			}
 
-			var registerResult = JsonSerializer
-				.Deserialize<AppResult>(await response.Content.ReadAsStringAsync(),
-				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+			result = await DeserializeResponseAsync(response);
 
-			return registerResult!;
+			return result!;
 		}
 
 		public async Task<AppResult<LoginResult>> Login(UserLoginModel loginModel)
 		{
-			var response = await this._httpClient
-				.PostAsJsonAsync(this.GetRequestUri(nameof(Login)), loginModel);
+			HttpResponseMessage? response = null;
+			AppResult<LoginResult> result;
 
-			var loginResult = JsonSerializer
-				.Deserialize<AppResult<LoginResult>>(await response.Content.ReadAsStringAsync(),
-				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+			try
+			{
+				response = await this._httpClient
+				.PostAsJsonAsync(this.GetRequestUri(nameof(Login)), loginModel);
+			}
+			catch (Exception ex)
+			{
+				return AppResult<LoginResult>.Failure(ex.Message);
+			}
+
+			result = await DeserializeResponseAsync<LoginResult>(response);
 
 			if (response.IsSuccessStatusCode == false)
 			{
 				await this.Logout();
-				return loginResult;
+				return result;
 			}
 
 			await this._localStorage.SetItemAsync(
-				AppConstants.AuthTokenName, loginResult.Response.Token);
+				AppConstants.AuthTokenName, result.Response.Token);
 
 			var authenticationState = await this._authenticationStateProvider
 				.GetAuthenticationStateAsync();
@@ -82,10 +97,9 @@ namespace CookingRecipesSystem.Startup.Services
 				return AppResult<LoginResult>.Failure("User is not authenticated.");
 			}
 
-			this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-				AppConstants.BearerName, loginResult.Response.Token);
+			this._authenticationStateProvider.MarkUserAsAuthenticated(authenticationState);
 
-			return loginResult;
+			return result;
 		}
 
 		public async Task Logout()
@@ -99,24 +113,45 @@ namespace CookingRecipesSystem.Startup.Services
 		public async Task<AppResult<UsersListModel>> GetAll()
 		{
 			var uri = this.GetRequestUri(nameof(GetAll));
-			AppResult<UsersListModel>? response;
+			AppResult<UsersListModel>? result;
 
 			try
 			{
-				response = await this._httpClient.GetFromJsonAsync<AppResult<UsersListModel>>(uri);
+				result = await this._httpClient.GetFromJsonAsync<AppResult<UsersListModel>>(uri);
 			}
 			catch (Exception ex)
 			{
-				response = AppResult<UsersListModel>.Failure(ex.Message);
+				result = AppResult<UsersListModel>.Failure(ex.Message);
 			}
 
-			return response!;
+			return result;
 		}
 
 		private string GetRequestUri(string action)
 		{
 			string uri = this._apiIdentityUri + action;
 			return uri.ToLower();
+		}
+
+		private static async Task<AppResult> DeserializeResponseAsync(
+			HttpResponseMessage? response)
+		{
+			var result = JsonSerializer
+				.Deserialize<AppResult>(await response.Content.ReadAsStringAsync(),
+				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+			return result;
+		}
+
+		private static async Task<AppResult<TModel>> DeserializeResponseAsync<TModel>(
+			HttpResponseMessage? response)
+			where TModel : class
+		{
+			var result = JsonSerializer
+				.Deserialize<AppResult<TModel>>(await response.Content.ReadAsStringAsync(),
+				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+			return result;
 		}
 	}
 }

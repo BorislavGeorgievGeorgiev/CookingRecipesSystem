@@ -27,31 +27,35 @@
   <ValidationMessage For="@(() => registerRequest.PasswordConfirm)" />
 
   <div>
-     @foreach (var error in Errors)
-     {
-       <label class="text-danger">@error</label> 
-     }    
+    @foreach (var error in Errors)
+    {
+      <label class="text-danger">@error</label>
+    }
   </div>
   <div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Create account</button>
   </div>
 </EditForm>
 
-@code{
+@code {
 
-    UserRegisterModel registerRequest { get; set; } = new UserRegisterModel();
+  UserRegisterModel registerRequest { get; set; } = new UserRegisterModel();
 
-    IEnumerable<string> Errors { get; set; } = new List<string>();
+  IEnumerable<string> Errors { get; set; } = new List<string>();
 
-    async Task OnSubmit()
-    {       
-       var result = await AuthService.Register(registerRequest);
-       
-       if (result.Succeeded)
-       {
-         Navigation.NavigateTo("");
-       }       
-       
-       Errors = result.Errors;
+  async Task OnSubmit()
+  {
+    var result = await AuthService.Register(registerRequest);
+
+    if (result.Succeeded)
+    {
+      Navigation.NavigateTo("/authentication/login", forceLoad: true, replace: true);
     }
+    else
+    {
+      //TODO: Show the Errors !
+      Errors = result.Errors;
+      Navigation.NavigateTo(Navigation.Uri, forceLoad: true, replace: true);
+    }
+  }
 }
