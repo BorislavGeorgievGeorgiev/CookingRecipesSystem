@@ -10,12 +10,12 @@
 <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="loginRequest">
   <DataAnnotationsValidator />
 
-  <label for="inputEmail" class="sr-only">@nameof(loginRequest.Email)</label>
-  <InputText id="inputEmail" class="form-control" placeholder="@nameof(loginRequest.Email)" autofocus @bind-Value="@loginRequest.Email" />
+  <label for="inputEmail" class="sr-only">@AppConstants.EmailDisplay</label>
+  <InputText id="inputEmail" class="form-control" placeholder="@AppConstants.EmailDisplay" autofocus @bind-Value="@loginRequest.Email" />
   <ValidationMessage For="@(() => loginRequest.Email)" />
 
-  <label for="inputPassword" class="sr-only">@nameof(loginRequest.Password)</label>
-  <InputText type="password" id="inputPassword" class="form-control" placeholder="@nameof(loginRequest.Password)" @bind-Value="loginRequest.Password" />
+  <label for="inputPassword" class="sr-only">@AppConstants.PasswordDisplay</label>
+  <InputText type="password" id="inputPassword" class="form-control" placeholder="@AppConstants.PasswordDisplay" @bind-Value="loginRequest.Password" />
   <ValidationMessage For="@(() => loginRequest.Password)" />
 
   <div>
