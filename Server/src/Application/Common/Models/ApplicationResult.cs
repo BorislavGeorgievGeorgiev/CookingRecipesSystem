@@ -8,7 +8,7 @@
 			this.Errors = errors.ToArray();
 		}
 
-		public bool Succeeded { get; }
+		public bool Succeeded { get; } = false;
 
 		public IEnumerable<string> Errors { get; }
 

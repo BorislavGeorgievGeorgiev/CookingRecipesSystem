@@ -34,6 +34,10 @@
   [SupplyParameterFromQuery]
   public string? ReturnUrl { get; set; }
 
+  [Parameter]
+  [SupplyParameterFromQuery]
+  public string? Error { get; set; }
+
   UserLoginModel loginRequest { get; set; } = new UserLoginModel();
 
   IEnumerable<string> Errors { get; set; } = new List<string>();
@@ -41,17 +45,27 @@
   async Task OnSubmit()
   {
     var result = await AuthService.Login(loginRequest);
+    var escapedUri = string.Empty;
 
     if (result.Succeeded)
-    {
-      ReturnUrl ??= "";
-      Navigation.NavigateTo(ReturnUrl, forceLoad: true, replace: true);
+    {    
+      ReturnUrl ??= string.Empty;
+      escapedUri = Uri.EscapeDataString(ReturnUrl);
+      Navigation.NavigateTo(Uri.UnescapeDataString(escapedUri), forceLoad: true, replace: true);
     }
     else
     {
-      //TODO: Show the Errors !
-      Errors = result.Errors;
-      Navigation.NavigateTo(Navigation.Uri, forceLoad: true, replace: true);
+      var queryChar = ReturnUrl != null ? "&" : "?";
+      escapedUri = Uri.EscapeDataString(Navigation.Uri) 
+      + queryChar + nameof(Error) + "=" + result.Errors.FirstOrDefault();
+
+      Navigation.NavigateTo(Uri.UnescapeDataString(escapedUri), forceLoad: true, replace: true);
     }
+  }
+
+  protected override void OnInitialized()
+  {
+    Error ??= string.Empty;
+    Errors = new string[] { Error };
   }
 }
