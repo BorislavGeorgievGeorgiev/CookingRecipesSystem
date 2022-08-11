@@ -7,16 +7,16 @@
   Login
 </h1>
 
-<EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="loginRequest">
+<EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="LoginRequest">
   <DataAnnotationsValidator />
 
   <label for="inputEmail" class="sr-only">@AppConstants.EmailDisplay</label>
-  <InputText id="inputEmail" class="form-control" placeholder="@AppConstants.EmailDisplay" autofocus @bind-Value="@loginRequest.Email" />
-  <ValidationMessage For="@(() => loginRequest.Email)" />
+  <InputText id="inputEmail" class="form-control" placeholder="@AppConstants.EmailDisplay" autofocus @bind-Value="@LoginRequest.Email" />
+  <ValidationMessage For="@(() => LoginRequest.Email)" />
 
   <label for="inputPassword" class="sr-only">@AppConstants.PasswordDisplay</label>
-  <InputText type="password" id="inputPassword" class="form-control" placeholder="@AppConstants.PasswordDisplay" @bind-Value="loginRequest.Password" />
-  <ValidationMessage For="@(() => loginRequest.Password)" />
+  <InputText type="password" id="inputPassword" class="form-control" placeholder="@AppConstants.PasswordDisplay" @bind-Value="LoginRequest.Password" />
+  <ValidationMessage For="@(() => LoginRequest.Password)" />
 
   <div>
     @foreach (var error in Errors)
@@ -38,13 +38,13 @@
   [SupplyParameterFromQuery]
   public string? Error { get; set; }
 
-  UserLoginModel loginRequest { get; set; } = new UserLoginModel();
+  UserLoginModel LoginRequest { get; set; } = new UserLoginModel();
 
   IEnumerable<string> Errors { get; set; } = new List<string>();
 
   async Task OnSubmit()
   {
-    var result = await AuthService.Login(loginRequest);
+    var result = await AuthService.Login(LoginRequest);
     var escapedUri = string.Empty;
 
     if (result.Succeeded)

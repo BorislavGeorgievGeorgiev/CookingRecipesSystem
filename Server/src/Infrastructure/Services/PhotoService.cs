@@ -22,9 +22,9 @@ namespace CookingRecipesSystem.Infrastructure.Services
 		{
 			using var imageResult = await Image.LoadAsync(photo.OpenReadStream(), cancellationToken);
 
-			var mainPhoto = await this.SaveImage(imageResult, MainPhotoWidth, MainPhotoHeight);
-			var phonePhoto = await this.SaveImage(imageResult, PhonePhotoWidth, PhonePhotoHeight);
-			var thumbnail = await this.SaveImage(imageResult, ThumbnailWidth, ThumbnailHeight);
+			var mainPhoto = await SaveImage(imageResult, MainPhotoWidth, MainPhotoHeight);
+			var phonePhoto = await SaveImage(imageResult, PhonePhotoWidth, PhonePhotoHeight);
+			var thumbnail = await SaveImage(imageResult, ThumbnailWidth, ThumbnailHeight);
 
 			return new PhotoResponseModel
 			{

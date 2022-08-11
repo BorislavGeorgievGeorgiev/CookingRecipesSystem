@@ -26,28 +26,28 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands
 				IAppRepository<Photo> photoRepository,
 				IMapper mapper)
 			{
-				this._photoService = photoService;
-				this._ingredientRepository = ingredientRepository;
-				this._photoRepository = photoRepository;
-				this._mapper = mapper;
+				_photoService = photoService;
+				_ingredientRepository = ingredientRepository;
+				_photoRepository = photoRepository;
+				_mapper = mapper;
 			}
 
 			public async Task<ApplicationResult> Handle(
 				CreateIngredientCommand request, CancellationToken cancellationToken)
 			{
-				PhotoResponseModel processedPhoto = await this._photoService
+				PhotoResponseModel processedPhoto = await _photoService
 					.Process(request.Photo, cancellationToken);
 
-				var mappedPhoto = this._mapper.Map<Photo>(processedPhoto);
+				var mappedPhoto = _mapper.Map<Photo>(processedPhoto);
 
-				var photo = await this._photoRepository.Create(mappedPhoto, cancellationToken);
+				var photo = await _photoRepository.Create(mappedPhoto, cancellationToken);
 
-				var mappedIngredient = this._mapper.Map<Ingredient>(request);
+				var mappedIngredient = _mapper.Map<Ingredient>(request);
 				mappedIngredient.Photo = photo;
 
-				await this._ingredientRepository.Create(mappedIngredient, cancellationToken);
+				await _ingredientRepository.Create(mappedIngredient, cancellationToken);
 
-				await this._ingredientRepository.SaveAsync(cancellationToken);
+				await _ingredientRepository.SaveAsync(cancellationToken);
 
 				return ApplicationResult.Success;
 			}

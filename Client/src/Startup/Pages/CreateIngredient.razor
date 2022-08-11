@@ -1,0 +1,66 @@
+﻿@page "/create/ingredient"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Http
+
+@attribute [Authorize]
+@inject IIngredientService IngredientService
+
+<h1 class="h2 font-weight-normal login-title">
+  Create Ingredient
+</h1>
+
+<EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="Ingredient" >
+  <DataAnnotationsValidator />
+
+  <label for="inputName" class="sr-only">@nameof(Ingredient.Name)</label>
+  <InputText id="inputName" class="form-control" placeholder="@nameof(Ingredient.Name)" autofocus @bind-Value="@Ingredient.Name" />
+  <ValidationMessage For="@(() => Ingredient.Name)" />
+
+  <label for="inputDescription" class="sr-only">@nameof(Ingredient.Description)</label>
+  <InputTextArea id="inputDescription" class="form-control" placeholder="@nameof(Ingredient.Description)" @bind-Value="@Ingredient.Description" />
+  <ValidationMessage For="@(() => Ingredient.Description)" />
+
+  <label for="inputPhoto" class="sr-only">@nameof(Ingredient.Photo)</label>
+  <InputFile id="inputPhoto" OnChange="@GetFile" class="form-control" placeholder="@nameof(Ingredient.Photo)" />
+
+  <div>
+    @foreach (var error in Errors)
+    {
+      <label class="text-danger">@error</label>
+    }
+  </div>
+  <div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+  </div>
+</EditForm>
+
+@code {
+  IngredientModel Ingredient { get; set; } = new IngredientModel
+  {
+    Name = string.Empty,
+    Description = string.Empty,
+    Photo = null
+  };
+
+  IEnumerable<string> Errors = new List<string>();
+
+  private Task GetFile(InputFileChangeEventArgs e)
+  {
+    Ingredient.Photo = e.File;
+
+    return Task.CompletedTask;
+  }
+
+  async Task OnSubmit()
+  {
+    var result = await IngredientService.Create(Ingredient);
+
+    if (result.Succeeded)
+    {
+      // navigate to...
+    }
+
+    Errors = result.Errors;
+  }
+}

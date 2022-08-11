@@ -16,26 +16,26 @@ namespace CookingRecipesSystem.Web.Controllers
 		[Route(nameof(Register))]
 		public async Task<ActionResult<ApplicationResult>> Register(
 			[FromBody] RegisterUserCommand command)
-			=> await this.Send(command);
+			=> await Send(command);
 
 		[HttpPost]
 		[Route(nameof(Login))]
 		public async Task<ActionResult<ApplicationResult<UserTokenResponseModel>>> Login(
 			[FromBody] LoginUserCommand command)
-			=> await this.Send(command);
+			=> await Send(command);
 
 		[Authorize]
 		[HttpPost]
 		[Route(nameof(ChangePassword))]
 		public async Task<ActionResult<ApplicationResult>> ChangePassword(
 			[FromBody] ChangePasswordUserCommand command)
-			=> await this.Send(command);
+			=> await Send(command);
 
-		[Authorize]
+
 		[HttpGet]
 		[Route(nameof(GetAll))]
 		public async Task<ActionResult<ApplicationResult<UsersListResponseModel>>> GetAll(
 			[FromQuery] GetUsersAllQuery query)
-			=> await this.Send(query);
+			=> await Send(query);
 	}
 }

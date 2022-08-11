@@ -12,42 +12,71 @@ namespace CookingRecipesSystem.Application.Common.Mappings
 		private readonly Type _iMapToType = typeof(IMapTo<>);
 
 		public MappingProfile()
-			=> this.ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
+			=> ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
 
 		private void ApplyMappingsFromAssembly(Assembly assembly)
 		{
-			var typesMapFrom = assembly.GetExportedTypes()
+			var typesMapFromOrTo = assembly.GetExportedTypes()
 				.Where(t => t
 				.GetInterfaces()
 				.Any(i => i.IsGenericType
-				&& (i.GetGenericTypeDefinition() == this._iMapFromType
-				|| i.GetGenericTypeDefinition() == this._iMapToType)))
+				&& (i.GetGenericTypeDefinition() == _iMapFromType
+				|| i.GetGenericTypeDefinition() == _iMapToType)))
 				.ToList();
 
-			foreach (var type in typesMapFrom)
+			foreach (var type in typesMapFromOrTo)
 			{
-				var instance = Activator.CreateInstance(type);
+				var listNames = GetIMapImplementedInterfacesNames(type);
 
-				var methodInfo = this.GetCurrentMethodInfo(type);
+				foreach (var name in listNames)
+				{
+					var instance = Activator.CreateInstance(type);
 
-				methodInfo?.Invoke(instance, new object[] { this });
+					var methodInfo = GetMethodInfo(name, type);
+
+					methodInfo?.Invoke(instance, new object[] { this });
+				}
 			}
 		}
 
-		private MethodInfo? GetCurrentMethodInfo(Type type)
+		private MethodInfo? GetMethodInfo(string name, Type type)
+		{
+			MethodInfo? methodInfo = null;
+
+			if (name == _iMapFromType.Name)
+			{
+				methodInfo = type.GetMethod(_MappingFromMethodName)
+				 ?? type.GetInterface(_iMapFromType.Name)!.GetMethod(_MappingFromMethodName);
+			}
+
+			if (name == _iMapToType.Name)
+			{
+				methodInfo = type.GetMethod(_MappingToMethodName)
+					?? type.GetInterface(_iMapToType.Name)!.GetMethod(_MappingToMethodName);
+			}
+
+			return methodInfo;
+		}
+
+		private IEnumerable<string> GetIMapImplementedInterfacesNames(Type type)
 		{
 			var implementedInterfaces = type.GetTypeInfo().ImplementedInterfaces;
+			var listNames = new List<string>();
 
-			if (implementedInterfaces.Any(t => t.Name == this._iMapFromType.Name))
+			foreach (var implementedInterface in implementedInterfaces)
 			{
-				return type.GetMethod(_MappingFromMethodName)
-					?? type.GetInterface(this._iMapFromType.Name)!.GetMethod(_MappingFromMethodName);
+				if (implementedInterface.Name == _iMapFromType.Name)
+				{
+					listNames.Add(implementedInterface.Name);
+				}
+
+				if (implementedInterface.Name == _iMapToType.Name)
+				{
+					listNames.Add(implementedInterface.Name);
+				}
 			}
-			else
-			{
-				return type.GetMethod(_MappingToMethodName)
-					?? type.GetInterface(this._iMapToType.Name)!.GetMethod(_MappingToMethodName);
-			}
+
+			return listNames;
 		}
 	}
 }

@@ -19,7 +19,7 @@ namespace CookingRecipesSystem.Startup.Services
 
   public class AuthService : IAuthService
   {
-    private const string IdentityPath = "api/Identity/";
+    private const string IdentityPath = "/Identity/";
 
     private readonly string? _apiIdentityUri;
     private readonly HttpClient _httpClient;
@@ -33,13 +33,13 @@ namespace CookingRecipesSystem.Startup.Services
       ApiAuthenticationStateProvider authenticationStateProvider,
       ILocalStorageService localStorage)
     {
-      this._httpClient = httpClient;
-      this._configuration = configuration;
-      this._apiIdentityUri = this._configuration
+      _httpClient = httpClient;
+      _configuration = configuration;
+      _apiIdentityUri = _configuration
         .GetSection(nameof(ApiConfig))
         .GetSection(nameof(ApiConfig.ApiUrl)).Value + IdentityPath;
-      this._authenticationStateProvider = authenticationStateProvider;
-      this._localStorage = localStorage;
+      _authenticationStateProvider = authenticationStateProvider;
+      _localStorage = localStorage;
     }
 
     public async Task<AppResult> Register(UserRegisterModel registerModel)
@@ -49,8 +49,8 @@ namespace CookingRecipesSystem.Startup.Services
 
       try
       {
-        response = await this._httpClient
-        .PostAsJsonAsync(this.GetRequestUri(nameof(Register)), registerModel);
+        response = await _httpClient
+        .PostAsJsonAsync(GetRequestUri(nameof(Register)), registerModel);
       }
       catch (Exception ex)
       {
@@ -70,8 +70,8 @@ namespace CookingRecipesSystem.Startup.Services
 
       try
       {
-        response = await this._httpClient
-        .PostAsJsonAsync(this.GetRequestUri(nameof(Login)), loginModel);
+        response = await _httpClient
+        .PostAsJsonAsync(GetRequestUri(nameof(Login)), loginModel);
       }
       catch (Exception ex)
       {
@@ -83,43 +83,43 @@ namespace CookingRecipesSystem.Startup.Services
 
       if (response.IsSuccessStatusCode == false)
       {
-        await this.Logout();
+        await Logout();
         return result;
       }
 
-      await this._localStorage.SetItemAsync(
+      await _localStorage.SetItemAsync(
         AppConstants.AuthTokenName, result.Response.Token);
 
-      var authenticationState = await this._authenticationStateProvider
+      var authenticationState = await _authenticationStateProvider
         .GetAuthenticationStateAsync();
 
       if (authenticationState.User.Identity.IsAuthenticated == false)
       {
-        await this.Logout();
+        await Logout();
         return AppResult<LoginResult>.Failure("User is not authenticated.");
       }
 
-      this._authenticationStateProvider.MarkUserAsAuthenticated(authenticationState);
+      _authenticationStateProvider.MarkUserAsAuthenticated(authenticationState);
 
       return result;
     }
 
     public async Task Logout()
     {
-      await this._localStorage.RemoveItemAsync(AppConstants.AuthTokenName);
+      await _localStorage.RemoveItemAsync(AppConstants.AuthTokenName);
 
-      this._httpClient.DefaultRequestHeaders.Authorization = null;
-      this._authenticationStateProvider.MarkUserAsLoggedOut();
+      _httpClient.DefaultRequestHeaders.Authorization = null;
+      _authenticationStateProvider.MarkUserAsLoggedOut();
     }
 
     public async Task<AppResult<UsersListModel>> GetAll()
     {
-      var uri = this.GetRequestUri(nameof(GetAll));
+      var uri = GetRequestUri(nameof(GetAll));
       AppResult<UsersListModel>? result;
 
       try
       {
-        result = await this._httpClient.GetFromJsonAsync<AppResult<UsersListModel>>(uri);
+        result = await _httpClient.GetFromJsonAsync<AppResult<UsersListModel>>(uri);
       }
       catch (Exception ex)
       {
@@ -132,7 +132,7 @@ namespace CookingRecipesSystem.Startup.Services
 
     private string GetRequestUri(string action)
     {
-      string uri = this._apiIdentityUri + action;
+      string uri = _apiIdentityUri + action;
       return uri.ToLower();
     }
 

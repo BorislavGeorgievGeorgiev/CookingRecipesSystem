@@ -10,12 +10,12 @@ namespace CookingRecipesSystem.Web.Services
 	{
 		public CurrentUserService(IHttpContextAccessor httpContextAccessor)
 		{
-			this.GetUserId = httpContextAccessor
+			GetUserId = httpContextAccessor
 				.HttpContext?
 				.User
-				.FindFirstValue(ClaimTypes.NameIdentifier);
+				.FindFirstValue(nameof(ClaimTypes.NameIdentifier));
 
-			this.IsAuthenticated = this.GetUserId != null;
+			IsAuthenticated = GetUserId != null;
 		}
 
 		public string? GetUserId { get; }

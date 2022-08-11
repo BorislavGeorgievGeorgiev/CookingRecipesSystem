@@ -17,6 +17,7 @@ builder.Services.AddScoped<ApiAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(s =>
   s.GetService<ApiAuthenticationStateProvider>());
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IIngredientService, IngredientService>();
 
 builder.Services.AddScoped(sp => new HttpClient
 {
