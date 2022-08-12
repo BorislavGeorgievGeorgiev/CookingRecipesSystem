@@ -10,7 +10,7 @@
   Create Ingredient
 </h1>
 
-<EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="Ingredient" >
+<EditForm class="form-signin" OnValidSubmit="OnValidSubmit" Model="Ingredient" >
   <DataAnnotationsValidator />
 
   <label for="inputName" class="sr-only">@nameof(Ingredient.Name)</label>
@@ -22,7 +22,7 @@
   <ValidationMessage For="@(() => Ingredient.Description)" />
 
   <label for="inputPhoto" class="sr-only">@nameof(Ingredient.Photo)</label>
-  <InputFile id="inputPhoto" OnChange="@GetFile" class="form-control" placeholder="@nameof(Ingredient.Photo)" />
+  <InputFile id="inputPhoto" OnChange="@GetFile" class="form-control" placeholder="@nameof(Ingredient.Photo)"  accept=".jpg, .jpeg" />
 
   <div>
     @foreach (var error in Errors)
@@ -36,12 +36,7 @@
 </EditForm>
 
 @code {
-  IngredientModel Ingredient { get; set; } = new IngredientModel
-  {
-    Name = string.Empty,
-    Description = string.Empty,
-    Photo = null
-  };
+  IngredientModel Ingredient { get; set; } = new IngredientModel();
 
   IEnumerable<string> Errors = new List<string>();
 
@@ -52,13 +47,13 @@
     return Task.CompletedTask;
   }
 
-  async Task OnSubmit()
+  async Task OnValidSubmit(EditContext editContext)
   {
     var result = await IngredientService.Create(Ingredient);
 
     if (result.Succeeded)
     {
-      // navigate to...
+       //navigate to...
     }
 
     Errors = result.Errors;

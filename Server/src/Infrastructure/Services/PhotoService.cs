@@ -47,11 +47,6 @@ namespace CookingRecipesSystem.Infrastructure.Services
 
 			image.Mutate(i => i.Resize(new Size(width, height)));
 
-			if (width == resizeWidth && height > resizeHeight)
-			{
-				image.Mutate(i => i.Crop(resizeWidth, resizeHeight));
-			}
-
 			image.Metadata.ExifProfile = null;
 
 			await using var memoryStream = new MemoryStream();

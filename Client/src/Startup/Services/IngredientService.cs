@@ -30,26 +30,30 @@ namespace CookingRecipesSystem.Startup.Services
 
 		public async Task<AppResult> Create(IngredientModel ingredientModel)
 		{
-			//HttpResponseMessage? response = null;
-			//AppResult result;
-			//long maxFileSize = 5000000;
+			HttpResponseMessage? response = null;
+			using var content = new MultipartFormDataContent();
+			using var stream = ingredientModel.Photo.OpenReadStream(ingredientModel.Photo.Size);
 
-			//using var content = new MultipartFormDataContent();
+			content.Add(new StringContent(ingredientModel.Name),
+				nameof(ingredientModel.Name));
+			content.Add(new StringContent(ingredientModel.Description),
+				nameof(ingredientModel.Description));
+			content.Add(new StreamContent(stream, Convert.ToInt32(ingredientModel.Photo.Size)),
+				nameof(ingredientModel.Photo), ingredientModel.Photo.Name);
 
-			//try
-			//{	
-			//	response = await _httpClient
-			//	.PostAsJsonAsync(GetRequestUri(nameof(Create)), content);
-			//}
-			//catch (Exception ex)
-			//{
-			//	//TODO: Log exception.
-			//	return AppResult.Failure(ex.Message);
-			//}
+			try
+			{
+				response = await _httpClient.PostAsync(GetRequestUri(nameof(Create)), content);
+			}
+			catch (Exception ex)
+			{
+				//TODO: Log exception.
+				return AppResult.Failure(ex.Message);
+			}
 
-			//result = await DeserializeResponseAsync(response);
+			var result = await DeserializeResponseAsync(response);
 
-			return AppResult.Failure("Not Implemented !");
+			return result;
 		}
 
 		private string GetRequestUri(string action)
