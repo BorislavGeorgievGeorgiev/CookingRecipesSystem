@@ -1,6 +1,7 @@
 using Blazored.LocalStorage;
 
 using CookingRecipesSystem.Startup;
+using CookingRecipesSystem.Startup.Helpers;
 using CookingRecipesSystem.Startup.Services;
 
 using Microsoft.AspNetCore.Components.Authorization;
@@ -16,6 +17,7 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<ApiAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(s =>
   s.GetService<ApiAuthenticationStateProvider>());
+builder.Services.AddScoped<ConfigurationHelper>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IIngredientService, IngredientService>();
 

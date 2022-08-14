@@ -1,9 +1,10 @@
 ﻿using System.Net.Http.Json;
-using System.Text.Json;
 
 using Blazored.LocalStorage;
 
 using CookingRecipesSystem.Startup.Constants;
+using CookingRecipesSystem.Startup.Extensions;
+using CookingRecipesSystem.Startup.Helpers;
 using CookingRecipesSystem.Startup.Models;
 
 namespace CookingRecipesSystem.Startup.Services
@@ -19,25 +20,21 @@ namespace CookingRecipesSystem.Startup.Services
 
   public class AuthService : IAuthService
   {
-    private const string IdentityPath = "/Identity/";
+    private const string IdentityControllerName = "Identity";
 
-    private readonly string? _apiIdentityUri;
     private readonly HttpClient _httpClient;
-    private readonly IConfiguration _configuration;
+    private readonly ConfigurationHelper _configurationHelper;
     private readonly ApiAuthenticationStateProvider _authenticationStateProvider;
     private readonly ILocalStorageService _localStorage;
 
     public AuthService(
       HttpClient httpClient,
-      IConfiguration configuration,
+      ConfigurationHelper configurationHelper,
       ApiAuthenticationStateProvider authenticationStateProvider,
       ILocalStorageService localStorage)
     {
       _httpClient = httpClient;
-      _configuration = configuration;
-      _apiIdentityUri = _configuration
-        .GetSection(nameof(ApiConfig))
-        .GetSection(nameof(ApiConfig.ApiUrl)).Value + IdentityPath;
+      _configurationHelper = configurationHelper;
       _authenticationStateProvider = authenticationStateProvider;
       _localStorage = localStorage;
     }
@@ -49,8 +46,9 @@ namespace CookingRecipesSystem.Startup.Services
 
       try
       {
-        response = await _httpClient
-        .PostAsJsonAsync(GetRequestUri(nameof(Register)), registerModel);
+        var uri = _configurationHelper
+          .GetRequestUri(IdentityControllerName, nameof(Register));
+        response = await _httpClient.PostAsJsonAsync(uri, registerModel);
       }
       catch (Exception ex)
       {
@@ -58,7 +56,7 @@ namespace CookingRecipesSystem.Startup.Services
         return AppResult.Failure(ErrorMessages.ServerError);
       }
 
-      result = await DeserializeResponseAsync(response);
+      result = await response.DeserializeResponseAsync();
 
       return result!;
     }
@@ -70,8 +68,9 @@ namespace CookingRecipesSystem.Startup.Services
 
       try
       {
-        response = await _httpClient
-        .PostAsJsonAsync(GetRequestUri(nameof(Login)), loginModel);
+        var uri = _configurationHelper
+          .GetRequestUri(IdentityControllerName, nameof(Login));
+        response = await _httpClient.PostAsJsonAsync(uri, loginModel);
       }
       catch (Exception ex)
       {
@@ -79,7 +78,7 @@ namespace CookingRecipesSystem.Startup.Services
         return AppResult<LoginResult>.Failure(ErrorMessages.ServerError);
       }
 
-      result = await DeserializeResponseAsync<LoginResult>(response);
+      result = await response.DeserializeResponseAsync<LoginResult>();
 
       if (response.IsSuccessStatusCode == false)
       {
@@ -114,7 +113,9 @@ namespace CookingRecipesSystem.Startup.Services
 
     public async Task<AppResult<UsersListModel>> GetAll()
     {
-      var uri = GetRequestUri(nameof(GetAll));
+      var uri = _configurationHelper
+        .GetRequestUri(IdentityControllerName, nameof(GetAll));
+
       AppResult<UsersListModel>? result;
 
       try
@@ -126,33 +127,6 @@ namespace CookingRecipesSystem.Startup.Services
         //TODO: Log exception.
         result = AppResult<UsersListModel>.Failure(ErrorMessages.ServerError);
       }
-
-      return result;
-    }
-
-    private string GetRequestUri(string action)
-    {
-      string uri = _apiIdentityUri + action;
-      return uri.ToLower();
-    }
-
-    private static async Task<AppResult> DeserializeResponseAsync(
-      HttpResponseMessage? response)
-    {
-      var result = JsonSerializer
-        .Deserialize<AppResult>(await response.Content.ReadAsStringAsync(),
-        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
-      return result;
-    }
-
-    private static async Task<AppResult<TModel>> DeserializeResponseAsync<TModel>(
-      HttpResponseMessage? response)
-      where TModel : class
-    {
-      var result = JsonSerializer
-        .Deserialize<AppResult<TModel>>(await response.Content.ReadAsStringAsync(),
-        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
       return result;
     }
