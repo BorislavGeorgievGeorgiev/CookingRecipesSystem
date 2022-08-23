@@ -6,15 +6,15 @@
 
 		public string ApiUrl
 		{
-			get { return this._apiUrl!; }
+			get { return _apiUrl!; }
 			private set
 			{
 				if (string.IsNullOrWhiteSpace(value))
 				{
-					throw new ArgumentNullException(nameof(this.ApiUrl));
+					throw new ArgumentNullException(nameof(ApiUrl));
 				}
 
-				this._apiUrl = value;
+				_apiUrl = value;
 			}
 		}
 	}

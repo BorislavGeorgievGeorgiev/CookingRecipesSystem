@@ -26,9 +26,9 @@ namespace CookingRecipesSystem.Application.Common.Mappings
 
 			foreach (var type in typesMapFromOrTo)
 			{
-				var listNames = GetIMapImplementedInterfacesNames(type);
+				var iMapNames = GetIMapImplementedInterfacesNames(type);
 
-				foreach (var name in listNames)
+				foreach (var name in iMapNames)
 				{
 					var instance = Activator.CreateInstance(type);
 

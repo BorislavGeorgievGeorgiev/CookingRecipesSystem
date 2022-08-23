@@ -25,31 +25,31 @@ namespace CookingRecipesSystem.Infrastructure.Services
 			IUserManagerService userManager,
 			IDateTimeService dateTimeService)
 		{
-			this._jwtConfig = jwtConfig.Value;
-			this._userManager = userManager;
-			this._dateTimeService = dateTimeService;
+			_jwtConfig = jwtConfig.Value;
+			_userManager = userManager;
+			_dateTimeService = dateTimeService;
 		}
 
 		public async Task<string> GenerateToken(string userId, string userEmail)
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();
-			var key = Encoding.ASCII.GetBytes(this._jwtConfig.Secret);
-			var currentUser = await this._userManager.FindByIdAsync(userId);
-			var currentUserRoles = await this._userManager.GetRolesAsync(currentUser.Response);
+			var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
+			var currentUser = await _userManager.FindByIdAsync(userId);
+			var currentUserRoles = await _userManager.GetRolesAsync(currentUser.Response);
 
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
-				Issuer = this._jwtConfig.ValidIssuer,
-				Audience = this._jwtConfig.ValidAudience,
+				Issuer = _jwtConfig.ValidIssuer,
+				Audience = _jwtConfig.ValidAudience,
 				Subject = new ClaimsIdentity(new[]
 				{
 					new Claim(ClaimId, userId),
 					new Claim(ClaimEmail, userEmail),
 					new Claim(ClaimName, currentUser.Response.UserName)
 				}),
-				NotBefore = this._dateTimeService.Now,
-				Expires = this._dateTimeService.Now.AddMinutes(
-					double.Parse(this._jwtConfig.ExpirationInMinutes)),
+				NotBefore = _dateTimeService.Now,
+				Expires = _dateTimeService.Now.AddMinutes(
+					double.Parse(_jwtConfig.ExpirationInMinutes)),
 				SigningCredentials = new SigningCredentials(
 					new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
 			};
