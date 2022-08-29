@@ -23,9 +23,8 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 				.HasMaxLength(EntityConstants.RecipeDescriptionMaxLength);
 
 			builder.HasOne(r => r.Photo).WithOne()
-				.HasConstraintName(nameof(Recipe) + nameof(Photo) + "Id")
-				.HasForeignKey<Photo>(nameof(Recipe) + nameof(Photo) + "Id")
-				.IsRequired(false);
+				.HasForeignKey<Recipe>(r => r.PhotoId)
+				.OnDelete(DeleteBehavior.Restrict);
 
 			builder.HasMany(r => r.Ingredients).WithMany(i => i.Recipes)
 				.UsingEntity(j => j.ToTable(nameof(Recipe) + "_" + nameof(Ingredient)));
@@ -33,7 +32,7 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 			builder.HasMany(r => r.RecipeTasks).WithOne()
 				.HasForeignKey(nameof(Recipe) + "Id");
 
-			this.SetAuditableEntity(builder);
+			SetAuditableEntity(builder);
 		}
 	}
 }

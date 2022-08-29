@@ -15,5 +15,8 @@
 
 		// LoginUserCommand
 		public const string InvalidCredentials = "Invalid credentials.";
+
+		// GetIngredientQuery
+		public const string InvalidIngredient = "There is no such ingredient.";
 	}
 }

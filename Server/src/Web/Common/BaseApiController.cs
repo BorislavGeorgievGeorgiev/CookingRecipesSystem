@@ -15,23 +15,23 @@ namespace CookingRecipesSystem.Web.Common
 	{
 		private IMediator? _mediator;
 
-		protected const string Id = "{id}";
+		protected const string Id = "/{Id}";
 
 		private IMediator Mediator
-				=> this._mediator ??= this.HttpContext
+				=> _mediator ??= HttpContext
 						.RequestServices
 						.GetService<IMediator>()!;
 
 		protected async Task<ActionResult<ApplicationResult>> Send(IRequest<ApplicationResult> request)
 		{
-			return await this.Mediator.Send(request).ToActionResult();
+			return await Mediator.Send(request).ToActionResult();
 		}
 
 		protected async Task<ActionResult<ApplicationResult<TModel>>> Send<TModel>(
 			IRequest<ApplicationResult<TModel>> request)
 			where TModel : class
 		{
-			return await this.Mediator.Send(request).ToActionResult();
+			return await Mediator.Send(request).ToActionResult();
 		}
 	}
 }

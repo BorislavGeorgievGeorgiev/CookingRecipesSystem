@@ -22,11 +22,10 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 				.HasMaxLength(EntityConstants.IngredientDescriptionMaxLength);
 
 			builder.HasOne(i => i.Photo).WithOne()
-				.HasConstraintName(nameof(Ingredient) + nameof(Photo) + "Id")
-				.HasForeignKey<Photo>(nameof(Ingredient) + nameof(Photo) + "Id")
-				.IsRequired(false);
+				.HasForeignKey<Ingredient>(i => i.PhotoId)
+				.OnDelete(DeleteBehavior.Restrict);
 
-			this.SetAuditableEntity(builder);
+			SetAuditableEntity(builder);
 		}
 	}
 }

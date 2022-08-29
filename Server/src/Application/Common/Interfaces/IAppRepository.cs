@@ -10,9 +10,6 @@ namespace CookingRecipesSystem.Application.Common.Interfaces
 
 		IQueryable<TEntity> GetAllAsNoTracking();
 
-		Task<TEntity?> GetById<TKey>(TKey id,
-						CancellationToken cancellationToken = default);
-
 		Task<TEntity> Create(TEntity entity,
 						CancellationToken cancellationToken = default);
 

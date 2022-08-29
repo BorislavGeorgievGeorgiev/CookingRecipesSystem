@@ -12,27 +12,29 @@ namespace CookingRecipesSystem.Domain.Entities
 
 		public string Title
 		{
-			get { return this._title!; }
+			get { return _title!; }
 			set
 			{
-				Guard.IsNotNullOrWhiteSpace(value, nameof(this.Title));
+				Guard.IsNotNullOrWhiteSpace(value, nameof(Title));
 				Guard.HasSizeLessThanOrEqualTo(
-					value, EntityConstants.RecipeTitleMaxLength, nameof(this.Title));
-				this._title = value;
+					value, EntityConstants.RecipeTitleMaxLength, nameof(Title));
+				_title = value;
 			}
 		}
 
 		public string Description
 		{
-			get { return this._description!; }
+			get { return _description!; }
 			set
 			{
-				Guard.IsNotNullOrWhiteSpace(value, nameof(this.Description));
+				Guard.IsNotNullOrWhiteSpace(value, nameof(Description));
 				Guard.HasSizeLessThanOrEqualTo(
-					value, EntityConstants.RecipeDescriptionMaxLength, nameof(this.Description));
-				this._description = value;
+					value, EntityConstants.RecipeDescriptionMaxLength, nameof(Description));
+				_description = value;
 			}
 		}
+
+		public int? PhotoId { get; set; }
 
 		public Photo Photo { get; set; }
 

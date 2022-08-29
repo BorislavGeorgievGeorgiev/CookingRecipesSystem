@@ -2,6 +2,7 @@
 
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
+using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient;
 using CookingRecipesSystem.Domain.Entities;
 
 using MediatR;
@@ -19,22 +20,24 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.GetIngredientsAll
 			public GetIngredientsAllQueryHandler(
 				IAppRepository<Ingredient> ingredientRepository, IMapper mapper)
 			{
-				this._ingredientRepository = ingredientRepository;
-				this._mapper = mapper;
+				_ingredientRepository = ingredientRepository;
+				_mapper = mapper;
 			}
 
 			public async Task<ApplicationResult<IngredientsListResponseModel>> Handle(
 				GetIngredientsAllQuery request, CancellationToken cancellationToken)
 			{
-				var mappedIngredients = await this._mapper
-					.ProjectTo<IngredientResponseModel>(this._ingredientRepository.GetAllAsNoTracking())
+				var allAsNoTracking = _ingredientRepository.GetAllAsNoTracking();
+
+				var mappedIngredients = await _mapper
+					.ProjectTo<IngredientResponseModel>(allAsNoTracking)
 					.OrderBy(x => x.Name)
 					.ToAsyncEnumerable()
 					.ToListAsync(cancellationToken);
 
-				var response = this._mapper.Map<IngredientsListResponseModel>(mappedIngredients);
+				var ingredients = _mapper.Map<IngredientsListResponseModel>(mappedIngredients);
 
-				return ApplicationResult<IngredientsListResponseModel>.Success(response);
+				return ApplicationResult<IngredientsListResponseModel>.Success(ingredients);
 			}
 		}
 	}

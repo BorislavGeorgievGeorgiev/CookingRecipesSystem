@@ -13,15 +13,17 @@ namespace CookingRecipesSystem.Domain.Entities
 
 		public string Description
 		{
-			get { return this._description!; }
+			get { return _description!; }
 			set
 			{
-				Guard.IsNotNullOrWhiteSpace(value, nameof(this.Description));
+				Guard.IsNotNullOrWhiteSpace(value, nameof(Description));
 				Guard.HasSizeLessThanOrEqualTo(
-					value, EntityConstants.RecipeTaskDescriptionMaxLength, nameof(this.Description));
-				this._description = value;
+					value, EntityConstants.RecipeTaskDescriptionMaxLength, nameof(Description));
+				_description = value;
 			}
 		}
+
+		public int? PhotoId { get; set; }
 
 		public Photo Photo { get; set; }
 	}

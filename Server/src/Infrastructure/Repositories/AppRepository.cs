@@ -15,8 +15,8 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 		protected AppRepository(TDbContext dbContext)
 		{
 			Guard.IsNotNull(dbContext, nameof(dbContext));
-			this.Context = dbContext;
-			this.DbSet = dbContext.Set<TEntity>();
+			Context = dbContext;
+			DbSet = dbContext.Set<TEntity>();
 		}
 
 		private TDbContext Context { get; }
@@ -25,7 +25,7 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 
 		public async Task<TEntity> Create(TEntity entity, CancellationToken cancellationToken = default)
 		{
-			var entry = this.Context.Entry(entity);
+			var entry = Context.Entry(entity);
 
 			if (entry.State != EntityState.Detached)
 			{
@@ -33,7 +33,7 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 			}
 			else
 			{
-				await this.DbSet.AddAsync(entity, cancellationToken);
+				await DbSet.AddAsync(entity, cancellationToken);
 			}
 
 			return entry.Entity;
@@ -41,11 +41,11 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 
 		public async Task<bool> Update(TEntity entity)
 		{
-			var entry = this.Context.Entry(entity);
+			var entry = Context.Entry(entity);
 
 			if (entry.State == EntityState.Detached)
 			{
-				this.DbSet.Attach(entity);
+				DbSet.Attach(entity);
 			}
 
 			entry.State = EntityState.Modified;
@@ -55,32 +55,27 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 
 		public async Task<bool> DeleteNoPermanent(TEntity entity)
 		{
-			await this.Update(entity);
+			await Update(entity);
 
 			entity.IsDeleted = true;
 
 			return true;
 		}
 
-		public async Task<TEntity?> GetById<TKey>(TKey id, CancellationToken cancellationToken = default)
-		{
-			return await this.DbSet.FindAsync(new object?[] { new TKey[] { id } }, cancellationToken: cancellationToken);
-		}
-
 		public IQueryable<TEntity> GetAll()
 		{
-			return this.DbSet.Where(x => !x.IsDeleted);
+			return DbSet.Where(x => !x.IsDeleted);
 		}
 
 		public IQueryable<TEntity> GetAllAsNoTracking()
 		{
-			return this.GetAll().AsNoTracking();
+			return GetAll().AsNoTracking();
 		}
 
 		public async Task<int> SaveAsync(
 			CancellationToken cancellationToken = new CancellationToken())
 		{
-			return await this.Context.SaveChangesAsync(cancellationToken);
+			return await Context.SaveChangesAsync(cancellationToken);
 		}
 	}
 }

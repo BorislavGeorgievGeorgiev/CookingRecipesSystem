@@ -10,28 +10,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesSystem.Web.Controllers
 {
+	[Authorize]
 	public class IdentityController : BaseApiController
 	{
+		[AllowAnonymous]
 		[HttpPost]
 		[Route(nameof(Register))]
 		public async Task<ActionResult<ApplicationResult>> Register(
 			[FromBody] RegisterUserCommand command)
 			=> await Send(command);
 
+		[AllowAnonymous]
 		[HttpPost]
 		[Route(nameof(Login))]
 		public async Task<ActionResult<ApplicationResult<UserTokenResponseModel>>> Login(
 			[FromBody] LoginUserCommand command)
 			=> await Send(command);
 
-		[Authorize]
 		[HttpPost]
 		[Route(nameof(ChangePassword))]
 		public async Task<ActionResult<ApplicationResult>> ChangePassword(
 			[FromBody] ChangePasswordUserCommand command)
 			=> await Send(command);
 
-		[Authorize]
 		[HttpGet]
 		[Route(nameof(GetAll))]
 		public async Task<ActionResult<ApplicationResult<UsersListResponseModel>>> GetAll(

@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 
 using CookingRecipesSystem.Application.Common.Mappings;
+using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient;
 
 namespace CookingRecipesSystem.Application.Ingredients.Queries.GetIngredientsAll
 {
-	public class IngredientsListResponseModel : IMapFrom<IEnumerable<IngredientResponseModel>>
+    public class IngredientsListResponseModel : IMapFrom<IEnumerable<IngredientResponseModel>>
 	{
 		public IEnumerable<IngredientResponseModel> Ingredients { get; set; }
 
