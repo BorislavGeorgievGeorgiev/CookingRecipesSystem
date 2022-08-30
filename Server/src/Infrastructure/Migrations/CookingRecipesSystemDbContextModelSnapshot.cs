@@ -61,15 +61,9 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("PhotoId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
-
-                    b.HasIndex("PhotoId")
+                    b.HasIndex("Name")
                         .IsUnique();
 
                     b.ToTable("Ingredients");
@@ -94,6 +88,9 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("IngredientId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -112,11 +109,29 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RecipeTaskId")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("Thumbnail")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IngredientId")
+                        .IsUnique()
+                        .HasFilter("[IngredientId] IS NOT NULL");
+
+                    b.HasIndex("RecipeId")
+                        .IsUnique()
+                        .HasFilter("[RecipeId] IS NOT NULL");
+
+                    b.HasIndex("RecipeTaskId")
+                        .IsUnique()
+                        .HasFilter("[RecipeTaskId] IS NOT NULL");
 
                     b.ToTable("Photos");
                 });
@@ -155,19 +170,12 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PhotoId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PhotoId")
-                        .IsUnique();
 
                     b.HasIndex("Title");
 
@@ -208,10 +216,6 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PhotoId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.Property<byte>("Position")
                         .HasColumnType("tinyint");
 
@@ -219,9 +223,6 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PhotoId")
-                        .IsUnique();
 
                     b.HasIndex("RecipeId");
 
@@ -441,41 +442,26 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.Ingredient", b =>
+            modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.Photo", b =>
                 {
-                    b.HasOne("CookingRecipesSystem.Domain.Entities.Photo", "Photo")
-                        .WithOne()
-                        .HasForeignKey("CookingRecipesSystem.Domain.Entities.Ingredient", "PhotoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("CookingRecipesSystem.Domain.Entities.Ingredient", null)
+                        .WithOne("Photo")
+                        .HasForeignKey("CookingRecipesSystem.Domain.Entities.Photo", "IngredientId");
 
-                    b.Navigation("Photo");
-                });
+                    b.HasOne("CookingRecipesSystem.Domain.Entities.Recipe", null)
+                        .WithOne("Photo")
+                        .HasForeignKey("CookingRecipesSystem.Domain.Entities.Photo", "RecipeId");
 
-            modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.Recipe", b =>
-                {
-                    b.HasOne("CookingRecipesSystem.Domain.Entities.Photo", "Photo")
-                        .WithOne()
-                        .HasForeignKey("CookingRecipesSystem.Domain.Entities.Recipe", "PhotoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Photo");
+                    b.HasOne("CookingRecipesSystem.Domain.Entities.RecipeTask", null)
+                        .WithOne("Photo")
+                        .HasForeignKey("CookingRecipesSystem.Domain.Entities.Photo", "RecipeTaskId");
                 });
 
             modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.RecipeTask", b =>
                 {
-                    b.HasOne("CookingRecipesSystem.Domain.Entities.Photo", "Photo")
-                        .WithOne()
-                        .HasForeignKey("CookingRecipesSystem.Domain.Entities.RecipeTask", "PhotoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("CookingRecipesSystem.Domain.Entities.Recipe", null)
                         .WithMany("RecipeTasks")
                         .HasForeignKey("RecipeId");
-
-                    b.Navigation("Photo");
                 });
 
             modelBuilder.Entity("IngredientRecipe", b =>
@@ -544,9 +530,24 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.Ingredient", b =>
+                {
+                    b.Navigation("Photo")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.Recipe", b =>
                 {
+                    b.Navigation("Photo")
+                        .IsRequired();
+
                     b.Navigation("RecipeTasks");
+                });
+
+            modelBuilder.Entity("CookingRecipesSystem.Domain.Entities.RecipeTask", b =>
+                {
+                    b.Navigation("Photo")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

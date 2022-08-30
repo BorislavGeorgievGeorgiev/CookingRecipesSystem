@@ -23,14 +23,14 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 				.HasMaxLength(EntityConstants.RecipeDescriptionMaxLength);
 
 			builder.HasOne(r => r.Photo).WithOne()
-				.HasForeignKey<Recipe>(r => r.PhotoId)
-				.OnDelete(DeleteBehavior.Restrict);
+				.HasForeignKey<Photo>(nameof(Recipe) + nameof(Recipe.Id))
+				.IsRequired(false);
 
 			builder.HasMany(r => r.Ingredients).WithMany(i => i.Recipes)
 				.UsingEntity(j => j.ToTable(nameof(Recipe) + "_" + nameof(Ingredient)));
 
 			builder.HasMany(r => r.RecipeTasks).WithOne()
-				.HasForeignKey(nameof(Recipe) + "Id");
+				.HasForeignKey(nameof(Recipe) + nameof(Recipe.Id));
 
 			SetAuditableEntity(builder);
 		}

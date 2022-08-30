@@ -19,10 +19,8 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 				.HasMaxLength(EntityConstants.RecipeTaskDescriptionMaxLength);
 
 			builder.HasOne(rt => rt.Photo).WithOne()
-				.HasForeignKey<RecipeTask>(rt => rt.PhotoId)
-				.OnDelete(DeleteBehavior.Restrict);
-
-			builder.Ignore(rt => rt.PhotoId);
+				.HasForeignKey<Photo>(nameof(RecipeTask) + nameof(RecipeTask.Id))
+				.IsRequired(false);
 
 			SetAuditableEntity(builder);
 		}

@@ -34,8 +34,6 @@ namespace CookingRecipesSystem.Domain.Entities
 			}
 		}
 
-		public int? PhotoId { get; set; }
-
 		public Photo Photo { get; set; }
 
 		public ICollection<Ingredient> Ingredients { get; } = new HashSet<Ingredient>();

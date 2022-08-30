@@ -8,15 +8,15 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands
 	{
 		public CreateIngredientCommandValidator()
 		{
-			this.RuleFor(i => i.Name)
+			RuleFor(i => i.Name)
 				.MaximumLength(EntityConstants.IngredientNameMaxLength)
 				.NotEmpty();
 
-			this.RuleFor(i => i.Description)
+			RuleFor(i => i.Description)
 				.MaximumLength(EntityConstants.IngredientDescriptionMaxLength)
 				.NotEmpty();
 
-			this.RuleFor(i => i.Photo)
+			RuleFor(i => i.Photo)
 				.NotEmpty();
 		}
 	}

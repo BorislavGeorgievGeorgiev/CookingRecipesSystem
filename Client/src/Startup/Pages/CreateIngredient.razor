@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Http
 
 @attribute [Authorize]
+@inject NavigationManager Navigation
 @inject IIngredientService IngredientService
 
 <h1 class="h2 font-weight-normal login-title">
@@ -53,7 +54,7 @@
 
     if (result.Succeeded)
     {
-       //navigate to...
+      Navigation.NavigateTo("");
     }
 
     Errors = result.Errors;

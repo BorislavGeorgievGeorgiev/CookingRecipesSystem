@@ -16,14 +16,14 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 			builder.Property(i => i.Name).IsRequired()
 				.HasMaxLength(EntityConstants.IngredientNameMaxLength);
 
-			builder.HasIndex(i => i.Name);
+			builder.HasIndex(i => i.Name).IsUnique();
 
 			builder.Property(i => i.Description).IsRequired()
 				.HasMaxLength(EntityConstants.IngredientDescriptionMaxLength);
 
 			builder.HasOne(i => i.Photo).WithOne()
-				.HasForeignKey<Ingredient>(i => i.PhotoId)
-				.OnDelete(DeleteBehavior.Restrict);
+				.HasForeignKey<Photo>(nameof(Ingredient) + nameof(Ingredient.Id))
+				.IsRequired(false);
 
 			SetAuditableEntity(builder);
 		}

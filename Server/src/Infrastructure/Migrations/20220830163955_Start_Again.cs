@@ -49,14 +49,13 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Photos",
+                name: "Ingredients",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MainPhoto = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PhonePhoto = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    Thumbnail = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -66,7 +65,27 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.PrimaryKey("PK_Ingredients", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Recipes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recipes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,60 +195,6 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ingredients",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    PhotoId = table.Column<int>(type: "int", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ingredients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Ingredients_Photos_PhotoId",
-                        column: x => x.PhotoId,
-                        principalTable: "Photos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Recipes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    PhotoId = table.Column<int>(type: "int", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Recipes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Recipes_Photos_PhotoId",
-                        column: x => x.PhotoId,
-                        principalTable: "Photos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Recipe_Ingredient",
                 columns: table => new
                 {
@@ -261,7 +226,6 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Position = table.Column<byte>(type: "tinyint", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    PhotoId = table.Column<int>(type: "int", nullable: false),
                     RecipeId = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -274,15 +238,48 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_RecipeTasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RecipeTasks_Photos_PhotoId",
-                        column: x => x.PhotoId,
-                        principalTable: "Photos",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_RecipeTasks_Recipes_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Photos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MainPhoto = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    PhonePhoto = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Thumbnail = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    IngredientId = table.Column<int>(type: "int", nullable: true),
+                    RecipeId = table.Column<int>(type: "int", nullable: true),
+                    RecipeTaskId = table.Column<int>(type: "int", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Photos_Ingredients_IngredientId",
+                        column: x => x.IngredientId,
+                        principalTable: "Ingredients",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Photos_Recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Photos_RecipeTasks_RecipeTaskId",
+                        column: x => x.RecipeTaskId,
+                        principalTable: "RecipeTasks",
                         principalColumn: "Id");
                 });
 
@@ -328,13 +325,29 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredients_Name",
                 table: "Ingredients",
-                column: "Name");
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_PhotoId",
-                table: "Ingredients",
-                column: "PhotoId",
-                unique: true);
+                name: "IX_Photos_IngredientId",
+                table: "Photos",
+                column: "IngredientId",
+                unique: true,
+                filter: "[IngredientId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_RecipeId",
+                table: "Photos",
+                column: "RecipeId",
+                unique: true,
+                filter: "[RecipeId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Photos_RecipeTaskId",
+                table: "Photos",
+                column: "RecipeTaskId",
+                unique: true,
+                filter: "[RecipeTaskId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recipe_Ingredient_RecipesId",
@@ -342,21 +355,9 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 column: "RecipesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Recipes_PhotoId",
-                table: "Recipes",
-                column: "PhotoId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Recipes_Title",
                 table: "Recipes",
                 column: "Title");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RecipeTasks_PhotoId",
-                table: "RecipeTasks",
-                column: "PhotoId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecipeTasks_RecipeId",
@@ -382,10 +383,10 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Recipe_Ingredient");
+                name: "Photos");
 
             migrationBuilder.DropTable(
-                name: "RecipeTasks");
+                name: "Recipe_Ingredient");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -394,13 +395,13 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "RecipeTasks");
+
+            migrationBuilder.DropTable(
                 name: "Ingredients");
 
             migrationBuilder.DropTable(
                 name: "Recipes");
-
-            migrationBuilder.DropTable(
-                name: "Photos");
         }
     }
 }
