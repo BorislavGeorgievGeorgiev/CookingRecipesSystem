@@ -16,7 +16,7 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient
 
     public PhotoResponseModel Photo { get; set; }
 
-    public ICollection<IngredientRecipeResponseModel> Recipes { get; set; }
+    public ICollection<RecipeNavigationResponseModel> Recipes { get; set; }
 
     public void Mapping(Profile profile)
     {

@@ -6,7 +6,9 @@ namespace CookingRecipesSystem.Startup.Services
 {
 	public interface IIngredientService
 	{
-		Task<AppResult> Create(IngredientModel ingredientModel);
+		Task<AppResult> Create(IngredientPostModel ingredientModel);
+
+		Task<AppResult<IngredientGetModel>> GetById(int id);
 	}
 
 	public class IngredientService : IIngredientService
@@ -24,7 +26,7 @@ namespace CookingRecipesSystem.Startup.Services
 			_configurationHelper = configurationHelper;
 		}
 
-		public async Task<AppResult> Create(IngredientModel ingredientModel)
+		public async Task<AppResult> Create(IngredientPostModel ingredientModel)
 		{
 			HttpResponseMessage? response = null;
 
@@ -53,6 +55,24 @@ namespace CookingRecipesSystem.Startup.Services
 			var result = await response.DeserializeResponseAsync();
 
 			return result;
+		}
+
+		public async Task<AppResult<IngredientGetModel>> GetById(int id)
+		{
+			var uri = _configurationHelper
+					.GetRequestUri(IngredientsControllerName, nameof(GetById)) + "/" + id;
+
+			try
+			{
+				var ingredient = await _httpClient.GetAsync(uri);
+			}
+			catch (Exception ex)
+			{
+				//TODO: Log exception.
+				return AppResult<IngredientGetModel>.Failure(ex.Message);
+			}
+
+			throw new NotImplementedException();
 		}
 	}
 }

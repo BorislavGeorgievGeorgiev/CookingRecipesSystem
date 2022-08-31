@@ -1,4 +1,4 @@
-﻿@page "/authentication/register"
+﻿@attribute [Route(PageRoutes.Register)]
 
 @inject NavigationManager Navigation
 @inject IAuthService AuthService
@@ -52,7 +52,7 @@
 
     if (result.Succeeded)
     {
-      Navigation.NavigateTo("/authentication/login", forceLoad: true, replace: true);
+      Navigation.NavigateTo(@PageRoutes.Login, forceLoad: true, replace: true);
     }
     else
     {      

@@ -5,25 +5,24 @@
 <PageTitle>@Title</PageTitle>
 
 <div class="page">
-    <header class="sidebar">
-        <NavMenu />
-    </header>
+  <header class="sidebar">
+    <NavMenu />
+  </header>
 
-    <main>
-        <div class="top-row px-4 auth">
-            <LoginDisplay />            
-        </div>
+  <main>
+    <div class="top-row px-4 auth">
+      <LoginDisplay />
+    </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+    <article class="content px-4">
+      @Body
+    </article>
+  </main>
 
-    <footer>
-      
-    </footer>
+  <footer>
+  </footer>
 </div>
 
 @code {
-  private const string Title = "Cooking Recipes";  
+  private const string Title = "Cooking Recipes";
 }

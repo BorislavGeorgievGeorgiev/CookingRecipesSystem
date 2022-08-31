@@ -15,7 +15,7 @@ namespace CookingRecipesSystem.Web.Common
 	{
 		private IMediator? _mediator;
 
-		protected const string Id = "/{Id}";
+		protected const string Id = "{Id}";
 
 		private IMediator Mediator
 				=> _mediator ??= HttpContext

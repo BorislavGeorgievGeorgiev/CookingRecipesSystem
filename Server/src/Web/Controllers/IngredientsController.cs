@@ -22,9 +22,9 @@ namespace CookingRecipesSystem.Web.Controllers
 
 		[AllowAnonymous]
 		[HttpGet]
-		[Route(nameof(GetIngredient) + Id)]
-		public async Task<ActionResult<ApplicationResult<IngredientResponseModel>>> GetIngredient(
-			[FromRoute] GetIngredientQuery query)
+		[Route(nameof(GetById) + "/" + Id)]
+		public async Task<ActionResult<ApplicationResult<IngredientResponseModel>>> GetById(
+			[FromRoute] GetIngredientByIdQuery query)
 			=> await Send(query);
 
 		[AllowAnonymous]

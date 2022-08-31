@@ -9,17 +9,17 @@ using MediatR;
 
 namespace CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient
 {
-	public class GetIngredientQuery : IRequest<ApplicationResult<IngredientResponseModel>>
+	public class GetIngredientByIdQuery : IRequest<ApplicationResult<IngredientResponseModel>>
 	{
 		public int Id { get; set; }
 
-		public class GetIngredientQueryHandler :
-			IRequestHandler<GetIngredientQuery, ApplicationResult<IngredientResponseModel>>
+		public class GetIngredientByIdQueryHandler :
+			IRequestHandler<GetIngredientByIdQuery, ApplicationResult<IngredientResponseModel>>
 		{
 			private readonly IAppRepository<Ingredient> _ingredientRepository;
 			private readonly IMapper _mapper;
 
-			public GetIngredientQueryHandler(
+			public GetIngredientByIdQueryHandler(
 				IAppRepository<Ingredient> ingredientRepository, IMapper mapper)
 			{
 				_ingredientRepository = ingredientRepository;
@@ -27,7 +27,7 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient
 			}
 
 			public async Task<ApplicationResult<IngredientResponseModel>> Handle(
-				GetIngredientQuery request, CancellationToken cancellationToken)
+				GetIngredientByIdQuery request, CancellationToken cancellationToken)
 			{
 				var ingredientQuery = _ingredientRepository
 					.GetAllAsNoTracking()

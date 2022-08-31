@@ -1,4 +1,4 @@
-﻿@page "/create/ingredient"
+﻿@attribute [Route(PageRoutes.IngredientCreate)]
 
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Http
@@ -37,7 +37,7 @@
 </EditForm>
 
 @code {
-  IngredientModel Ingredient { get; set; } = new IngredientModel();
+  IngredientPostModel Ingredient { get; set; } = new IngredientPostModel();
 
   IEnumerable<string> Errors = new List<string>();
 
@@ -54,7 +54,7 @@
 
     if (result.Succeeded)
     {
-      Navigation.NavigateTo("");
+      Navigation.NavigateTo(@PageRoutes.IngredientGetById);
     }
 
     Errors = result.Errors;

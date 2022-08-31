@@ -2,7 +2,7 @@
 
 namespace CookingRecipesSystem.Startup.Models
 {
-	public class IngredientModel
+	public class IngredientPostModel
 	{
 		public string Name { get; set; }
 
