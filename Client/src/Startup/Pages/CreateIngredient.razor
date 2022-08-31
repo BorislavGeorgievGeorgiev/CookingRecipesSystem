@@ -55,8 +55,8 @@
     var result = await IngredientService.Create(Ingredient);
 
     if (result.Succeeded)
-    {// TODO: Add real id.
-      Navigation.NavigateTo(@PageRoutes.IngredientGetById + "/" + 1);
+    {
+      Navigation.NavigateTo(@PageRoutes.IngredientGetById + "/" + result.Response.Id);
     }
 
     Errors = result.Errors;

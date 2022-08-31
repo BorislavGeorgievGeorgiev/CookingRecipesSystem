@@ -7,7 +7,7 @@ namespace CookingRecipesSystem.Startup.Services
 {
 	public interface IIngredientService
 	{
-		Task<AppResult> Create(IngredientPostModel ingredientModel);
+		Task<AppResult<EntityKeyResponseModel>> Create(IngredientPostModel ingredientModel);
 
 		Task<AppResult<IngredientGetModel>> GetById(int id);
 	}
@@ -27,7 +27,8 @@ namespace CookingRecipesSystem.Startup.Services
 			_configurationHelper = configurationHelper;
 		}
 
-		public async Task<AppResult> Create(IngredientPostModel ingredientModel)
+		public async Task<AppResult<EntityKeyResponseModel>> Create(
+			IngredientPostModel ingredientModel)
 		{
 			HttpResponseMessage? response = null;
 
@@ -50,10 +51,10 @@ namespace CookingRecipesSystem.Startup.Services
 			catch (Exception ex)
 			{
 				//TODO: Log exception.
-				return AppResult.Failure(ex.Message);
+				return AppResult<EntityKeyResponseModel>.Failure(ex.Message);
 			}
 
-			var result = await response.DeserializeResponseAsync();
+			var result = await response.DeserializeResponseAsync<EntityKeyResponseModel>();
 
 			return result;
 		}

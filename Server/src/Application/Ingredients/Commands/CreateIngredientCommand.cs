@@ -2,7 +2,6 @@
 
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
-using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient;
 using CookingRecipesSystem.Domain.Common.Constants;
 using CookingRecipesSystem.Domain.Entities;
 
@@ -11,11 +10,11 @@ using MediatR;
 namespace CookingRecipesSystem.Application.Ingredients.Commands
 {
 	public class CreateIngredientCommand :
-		IngredientRequestModel, IRequest<ApplicationResult>
+		IngredientRequestModel, IRequest<ApplicationResult<EntityKeyResponseModel>>
 	{
 
 		public class CreateIngredientCommandHandler
-			: IRequestHandler<CreateIngredientCommand, ApplicationResult>
+			: IRequestHandler<CreateIngredientCommand, ApplicationResult<EntityKeyResponseModel>>
 		{
 			private readonly IPhotoService _photoService;
 			private readonly IAppRepository<Ingredient> _ingredientRepository;
@@ -34,7 +33,7 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands
 				_mapper = mapper;
 			}
 
-			public async Task<ApplicationResult> Handle(
+			public async Task<ApplicationResult<EntityKeyResponseModel>> Handle(
 				CreateIngredientCommand request, CancellationToken cancellationToken)
 			{
 				var isExist = _ingredientRepository

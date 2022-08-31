@@ -14,7 +14,7 @@ namespace CookingRecipesSystem.Web.Controllers
 	{
 		[HttpPost]
 		[Route(nameof(Create))]
-		public async Task<ActionResult<ApplicationResult>> Create(
+		public async Task<ActionResult<ApplicationResult<EntityKeyResponseModel>>> Create(
 			[FromForm] CreateIngredientCommand command)
 		{
 			return await Send(command);
