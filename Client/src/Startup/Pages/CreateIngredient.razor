@@ -3,6 +3,8 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Http
 
+@using CookingRecipesSystem.Startup.Models.Ingredient
+
 @attribute [Authorize]
 @inject NavigationManager Navigation
 @inject IIngredientService IngredientService
@@ -11,7 +13,7 @@
   Create Ingredient
 </h1>
 
-<EditForm class="form-signin" OnValidSubmit="OnValidSubmit" Model="Ingredient" >
+<EditForm class="form-signin" OnValidSubmit="OnValidSubmit" Model="Ingredient">
   <DataAnnotationsValidator />
 
   <label for="inputName" class="sr-only">@nameof(Ingredient.Name)</label>
@@ -23,7 +25,7 @@
   <ValidationMessage For="@(() => Ingredient.Description)" />
 
   <label for="inputPhoto" class="sr-only">@nameof(Ingredient.Photo)</label>
-  <InputFile id="inputPhoto" OnChange="@GetFile" class="form-control" placeholder="@nameof(Ingredient.Photo)"  accept=".jpg, .jpeg" />
+  <InputFile id="inputPhoto" OnChange="@GetFile" class="form-control" placeholder="@nameof(Ingredient.Photo)" accept=".jpg, .jpeg" />
 
   <div>
     @foreach (var error in Errors)
@@ -53,8 +55,8 @@
     var result = await IngredientService.Create(Ingredient);
 
     if (result.Succeeded)
-    {
-      Navigation.NavigateTo(@PageRoutes.IngredientGetById);
+    {// TODO: Add real id.
+      Navigation.NavigateTo(@PageRoutes.IngredientGetById + "/" + 1);
     }
 
     Errors = result.Errors;

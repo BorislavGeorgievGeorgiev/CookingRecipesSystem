@@ -1,6 +1,7 @@
 ﻿using CookingRecipesSystem.Startup.Extensions;
 using CookingRecipesSystem.Startup.Helpers;
 using CookingRecipesSystem.Startup.Models;
+using CookingRecipesSystem.Startup.Models.Ingredient;
 
 namespace CookingRecipesSystem.Startup.Services
 {

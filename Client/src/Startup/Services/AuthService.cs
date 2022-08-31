@@ -6,12 +6,13 @@ using CookingRecipesSystem.Startup.Constants;
 using CookingRecipesSystem.Startup.Extensions;
 using CookingRecipesSystem.Startup.Helpers;
 using CookingRecipesSystem.Startup.Models;
+using CookingRecipesSystem.Startup.Models.User;
 
 namespace CookingRecipesSystem.Startup.Services
 {
-  public interface IAuthService
+    public interface IAuthService
   {
-    Task<AppResult<LoginResult>> Login(UserLoginModel loginModel);
+    Task<AppResult<TokenResponseModel>> Login(UserLoginModel loginModel);
     Task Logout();
     Task<AppResult> Register(UserRegisterModel registerModel);
 
@@ -61,10 +62,10 @@ namespace CookingRecipesSystem.Startup.Services
       return result!;
     }
 
-    public async Task<AppResult<LoginResult>> Login(UserLoginModel loginModel)
+    public async Task<AppResult<TokenResponseModel>> Login(UserLoginModel loginModel)
     {
       HttpResponseMessage? response = null;
-      AppResult<LoginResult> result;
+      AppResult<TokenResponseModel> result;
 
       try
       {
@@ -75,10 +76,10 @@ namespace CookingRecipesSystem.Startup.Services
       catch (Exception ex)
       {
         //TODO: Log exception.
-        return AppResult<LoginResult>.Failure(ErrorMessages.ServerError);
+        return AppResult<TokenResponseModel>.Failure(ErrorMessages.ServerError);
       }
 
-      result = await response.DeserializeResponseAsync<LoginResult>();
+      result = await response.DeserializeResponseAsync<TokenResponseModel>();
 
       if (response.IsSuccessStatusCode == false)
       {
@@ -95,7 +96,7 @@ namespace CookingRecipesSystem.Startup.Services
       if (authenticationState.User.Identity.IsAuthenticated == false)
       {
         await Logout();
-        return AppResult<LoginResult>.Failure("User is not authenticated.");
+        return AppResult<TokenResponseModel>.Failure("User is not authenticated.");
       }
 
       _authenticationStateProvider.MarkUserAsAuthenticated(authenticationState);

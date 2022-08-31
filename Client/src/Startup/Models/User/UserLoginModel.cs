@@ -2,7 +2,7 @@
 
 using CookingRecipesSystem.Startup.Constants;
 
-namespace CookingRecipesSystem.Startup.Models
+namespace CookingRecipesSystem.Startup.Models.User
 {
   public class UserLoginModel
   {
