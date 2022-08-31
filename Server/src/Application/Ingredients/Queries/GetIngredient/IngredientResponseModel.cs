@@ -6,10 +6,8 @@ using CookingRecipesSystem.Domain.Entities;
 
 namespace CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient
 {
-  public class IngredientResponseModel : IMapFrom<Ingredient>
+  public class IngredientResponseModel : EntityKeyResponseModel, IMapFrom<Ingredient>
   {
-    public int Id { get; set; }
-
     public string Name { get; set; }
 
     public string Description { get; set; }

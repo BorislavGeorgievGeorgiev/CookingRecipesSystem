@@ -2,6 +2,7 @@
 
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
+using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient;
 using CookingRecipesSystem.Domain.Common.Constants;
 using CookingRecipesSystem.Domain.Entities;
 
@@ -42,7 +43,8 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands
 
 				if (isExist)
 				{
-					return ApplicationResult.Failure(ExceptionMessages.IngredientExist);
+					return ApplicationResult<EntityKeyResponseModel>
+						.Failure(ExceptionMessages.IngredientExist);
 				}
 
 				PhotoResponseModel processedPhoto = await _photoService
@@ -55,11 +57,13 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands
 				var mappedIngredient = _mapper.Map<Ingredient>(request);
 				mappedIngredient.Photo = photo;
 
-				await _ingredientRepository.Create(mappedIngredient, cancellationToken);
+				var ingredient = await _ingredientRepository
+					.Create(mappedIngredient, cancellationToken);
 
 				await _ingredientRepository.SaveAsync(cancellationToken);
 
-				return ApplicationResult.Success;
+				return ApplicationResult<EntityKeyResponseModel>
+					.Success(new EntityKeyResponseModel { Id = ingredient.Id });
 			}
 		}
 	}
