@@ -32,7 +32,7 @@ namespace CookingRecipesSystem.Application.Identity.Commands.LoginUser
 				if (!applicationResultUser.Succeeded)
 				{
 					return ApplicationResult<UserTokenResponseModel>.Failure(
-						ExceptionMessages.InvalidCredentials);
+						ExceptionMessages.CredentialsInvalid);
 				}
 
 				var user = applicationResultUser.Response;
@@ -43,7 +43,7 @@ namespace CookingRecipesSystem.Application.Identity.Commands.LoginUser
 				if (!applicationResultPassword.Succeeded)
 				{
 					return ApplicationResult<UserTokenResponseModel>.Failure(
-						ExceptionMessages.InvalidCredentials);
+						ExceptionMessages.CredentialsInvalid);
 				}
 
 				var token = await this._jwtService.GenerateToken(user.Id, request.Email);

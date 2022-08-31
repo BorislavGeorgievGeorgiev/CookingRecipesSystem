@@ -35,7 +35,7 @@ namespace CookingRecipesSystem.Infrastructure.Services
 
 			if (!isValidPassword)
 			{
-				return ApplicationResult<CheckPasswordModel>.Failure(ExceptionMessages.InvalidPassword);
+				return ApplicationResult<CheckPasswordModel>.Failure(ExceptionMessages.PasswordInvalid);
 			}
 
 			var response = new CheckPasswordModel(isValidPassword);
@@ -89,7 +89,7 @@ namespace CookingRecipesSystem.Infrastructure.Services
 		{
 			if (user == null)
 			{
-				return ApplicationResult<IApplicationUser>.Failure(ExceptionMessages.InvalidUser);
+				return ApplicationResult<IApplicationUser>.Failure(ExceptionMessages.UserInvalid);
 			}
 
 			return ApplicationResult<IApplicationUser>.Success(user);

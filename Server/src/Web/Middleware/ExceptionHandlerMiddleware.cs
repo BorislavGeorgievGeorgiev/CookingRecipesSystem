@@ -14,13 +14,13 @@ namespace CookingRecipesSystem.Web.Middleware
 		private readonly RequestDelegate _next;
 
 		public ExceptionHandlerMiddleware(RequestDelegate next)
-				=> this._next = next;
+				=> _next = next;
 
 		public async Task Invoke(HttpContext context)
 		{
 			try
 			{
-				await this._next(context);
+				await _next(context);
 			}
 			catch (Exception ex)
 			{

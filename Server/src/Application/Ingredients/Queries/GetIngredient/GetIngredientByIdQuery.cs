@@ -36,13 +36,13 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient
 				if (ingredientQuery.Any() == false)
 				{
 					return ApplicationResult<IngredientResponseModel>.Failure(
-						ExceptionMessages.InvalidIngredient);
+						ExceptionMessages.IngredientInvalid);
 				}
 
 				var ingredient = await _mapper
 					.ProjectTo<IngredientResponseModel>(ingredientQuery)
 					.ToAsyncEnumerable()
-					.FirstAsync();
+					.FirstAsync(cancellationToken);
 
 				return ApplicationResult<IngredientResponseModel>.Success(ingredient);
 			}

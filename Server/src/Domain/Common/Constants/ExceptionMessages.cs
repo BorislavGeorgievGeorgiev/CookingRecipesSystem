@@ -8,15 +8,17 @@
 
 		public const string ModelValidationFailures = "One or more validation failures have occurred.";
 
-		// UserManagerService GetUserName()
-		public const string InvalidUser = "The user not exist.";
-		// UserManagerService CheckPassword()
-		public const string InvalidPassword = "The password is not valid.";
+		// UserManagerService
+		public const string UserInvalid = "The user not exist.";
+		public const string PasswordInvalid = "The password is not valid.";
 
 		// LoginUserCommand
-		public const string InvalidCredentials = "Invalid credentials.";
+		public const string CredentialsInvalid = "Invalid credentials.";
+
+		// CreateIngredientCommand
+		public const string IngredientExist = "This ingredient exist.";
 
 		// GetIngredientQuery
-		public const string InvalidIngredient = "There is no such ingredient.";
+		public const string IngredientInvalid = "There is no such ingredient.";
 	}
 }

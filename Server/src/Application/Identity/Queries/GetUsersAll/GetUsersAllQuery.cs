@@ -18,20 +18,20 @@ namespace CookingRecipesSystem.Application.Identity.Queries.GetUsersAll
 			public GetUsersAllQueryHandler(
 				IUserManagerService userManagerService, IMapper mapper)
 			{
-				this._userManagerService = userManagerService;
-				this._mapper = mapper;
+				_userManagerService = userManagerService;
+				_mapper = mapper;
 			}
 
 			public async Task<ApplicationResult<UsersListResponseModel>> Handle(
 				GetUsersAllQuery request, CancellationToken cancellationToken)
 			{
-				var mappedUsers = await this._mapper
-					.ProjectTo<UserResponseModel>(this._userManagerService.GetAllAsNoTracking().Response)
+				var mappedUsers = await _mapper
+					.ProjectTo<UserResponseModel>(_userManagerService.GetAllAsNoTracking().Response)
 					.OrderBy(x => x.UserName)
 					.ToAsyncEnumerable()
 					.ToListAsync(cancellationToken);
 
-				var response = this._mapper.Map<UsersListResponseModel>(mappedUsers);
+				var response = _mapper.Map<UsersListResponseModel>(mappedUsers);
 
 				return ApplicationResult<UsersListResponseModel>.Success(response);
 			}

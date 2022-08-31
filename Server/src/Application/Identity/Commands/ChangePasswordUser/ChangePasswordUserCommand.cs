@@ -20,12 +20,12 @@ namespace CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser
 			private readonly IUserManagerService _userManagerService;
 
 			public ChangePasswordUserCommandHandler(IUserManagerService userManagerService)
-				=> this._userManagerService = userManagerService;
+				=> _userManagerService = userManagerService;
 
 			public async Task<ApplicationResult> Handle(
 				ChangePasswordUserCommand request, CancellationToken cancellationToken)
 			{
-				var applicationResultUser = await this._userManagerService
+				var applicationResultUser = await _userManagerService
 					.FindByIdAsync(request.UserId);
 
 				if (!applicationResultUser.Succeeded)
@@ -35,7 +35,7 @@ namespace CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser
 
 				var user = applicationResultUser.Response;
 
-				return await this._userManagerService.ChangePasswordAsync(
+				return await _userManagerService.ChangePasswordAsync(
 						user, request.CurrentPassword, request.NewPassword);
 			}
 		}

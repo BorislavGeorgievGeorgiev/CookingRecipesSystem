@@ -2,6 +2,7 @@
 
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
+using CookingRecipesSystem.Domain.Common.Constants;
 using CookingRecipesSystem.Domain.Entities;
 
 using MediatR;
@@ -35,6 +36,15 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands
 			public async Task<ApplicationResult> Handle(
 				CreateIngredientCommand request, CancellationToken cancellationToken)
 			{
+				var isExist = _ingredientRepository
+					.GetAll()
+					.FirstOrDefault(i => i.Name == request.Name) != null;
+
+				if (isExist)
+				{
+					return ApplicationResult.Failure(ExceptionMessages.IngredientExist);
+				}
+
 				PhotoResponseModel processedPhoto = await _photoService
 					.Process(request.Photo, cancellationToken);
 
