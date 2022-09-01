@@ -57,7 +57,7 @@ namespace CookingRecipesSystem.Startup.Services
         return AppResult.Failure(ErrorMessages.ServerError);
       }
 
-      result = await response.DeserializeResponseAsync();
+      result = await response.JsonDeserializeResponseAsync();
 
       return result!;
     }
@@ -79,7 +79,7 @@ namespace CookingRecipesSystem.Startup.Services
         return AppResult<TokenResponseModel>.Failure(ErrorMessages.ServerError);
       }
 
-      result = await response.DeserializeResponseAsync<TokenResponseModel>();
+      result = await response.JsonDeserializeResponseAsync<TokenResponseModel>();
 
       if (response.IsSuccessStatusCode == false)
       {

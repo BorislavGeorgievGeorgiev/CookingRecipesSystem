@@ -6,7 +6,7 @@ namespace CookingRecipesSystem.Startup.Extensions
 {
 	public static class HttpResponseMessageExtension
 	{
-		public static async Task<AppResult> DeserializeResponseAsync(
+		public static async Task<AppResult> JsonDeserializeResponseAsync(
 			this HttpResponseMessage? response)
 		{
 			var result = JsonSerializer
@@ -16,7 +16,7 @@ namespace CookingRecipesSystem.Startup.Extensions
 			return result;
 		}
 
-		public static async Task<AppResult<TModel>> DeserializeResponseAsync<TModel>(
+		public static async Task<AppResult<TModel>> JsonDeserializeResponseAsync<TModel>(
 			this HttpResponseMessage? response)
 			where TModel : class
 		{

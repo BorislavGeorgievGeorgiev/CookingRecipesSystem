@@ -1,0 +1,47 @@
+﻿@attribute [Route(PageRoutes.IngredientGetById)]
+
+@using CookingRecipesSystem.Startup.Models.Ingredient
+@using CookingRecipesSystem.Startup.Models.Photo
+
+@inject IIngredientService IngredientService
+
+<h3>Ingredient</h3>
+
+<div class="card text-white bg-info mb-3" style="width: 18rem; height: 20rem">
+  <img src="@IngredientModel.Photo.MainPhoto" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">@IngredientModel.Name</h5>
+    <p class="card-text">@IngredientModel.Description</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>
+
+@code {
+  [Parameter]
+  public int? Id { get; set; }
+
+  public IngredientGetModel IngredientModel { get; set; } = new IngredientGetModel
+    {
+      Name = string.Empty,
+      Description = string.Empty,
+      Photo = new PhotoGetModel
+      {
+        MainPhoto = string.Empty,
+        PhonePhoto = string.Empty,
+        Thumbnail = string.Empty
+      }
+    };
+
+  protected async override Task OnParametersSetAsync()
+  {
+    await base.OnParametersSetAsync();
+    IngredientModel = await GetIngredient();
+  }
+
+  private async Task<IngredientGetModel> GetIngredient()
+  {
+    var result = await IngredientService.GetById(Id.Value);
+    return result.Response;
+  }
+
+}

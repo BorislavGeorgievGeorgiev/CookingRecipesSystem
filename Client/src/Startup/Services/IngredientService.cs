@@ -54,19 +54,21 @@ namespace CookingRecipesSystem.Startup.Services
 				return AppResult<EntityKeyResponseModel>.Failure(ex.Message);
 			}
 
-			var result = await response.DeserializeResponseAsync<EntityKeyResponseModel>();
+			var result = await response.JsonDeserializeResponseAsync<EntityKeyResponseModel>();
 
 			return result;
 		}
 
 		public async Task<AppResult<IngredientGetModel>> GetById(int id)
 		{
-			var uri = _configurationHelper
-					.GetRequestUri(IngredientsControllerName, nameof(GetById)) + "/" + id;
+			HttpResponseMessage? response = null;
+			AppResult<IngredientGetModel> result;
 
 			try
 			{
-				var ingredient = await _httpClient.GetAsync(uri);
+				var uri = _configurationHelper
+					.GetRequestUri(IngredientsControllerName, nameof(GetById)) + "/" + id;
+				response = await _httpClient.GetAsync(uri);
 			}
 			catch (Exception ex)
 			{
@@ -74,7 +76,9 @@ namespace CookingRecipesSystem.Startup.Services
 				return AppResult<IngredientGetModel>.Failure(ex.Message);
 			}
 
-			throw new NotImplementedException();
+			result = await response.JsonDeserializeResponseAsync<IngredientGetModel>();
+
+			return result;
 		}
 	}
 }

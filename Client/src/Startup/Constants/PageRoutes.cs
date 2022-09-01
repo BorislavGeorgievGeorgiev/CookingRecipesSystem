@@ -12,6 +12,6 @@
 		public const string Profile = "/authentication/profile";
 		//============================================
 		public const string IngredientCreate = "/ingredient/create";
-		public const string IngredientGetById = "/ingredient/getbyid";
+		public const string IngredientGetById = "/ingredient/getbyid/{id:int}";
 	}
 }
