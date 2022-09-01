@@ -56,7 +56,7 @@
 
     if (result.Succeeded)
     {
-      Navigation.NavigateTo(@PageRoutes.IngredientGetById + "/" + result.Response.Id);
+      Navigation.NavigateTo(@PageRoutes.IngredientGetById + result.Response.Id);
     }
 
     Errors = result.Errors;

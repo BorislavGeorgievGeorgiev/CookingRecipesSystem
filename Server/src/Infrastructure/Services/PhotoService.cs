@@ -39,13 +39,20 @@ namespace CookingRecipesSystem.Infrastructure.Services
 			int width = image.Width;
 			int height = image.Height;
 
-			if (width > resizeWidth)
+			if (width != resizeWidth)
 			{
 				height = (int)((double)resizeWidth / width * height);
 				width = resizeWidth;
 			}
 
 			image.Mutate(i => i.Resize(new Size(width, height)));
+
+			if (height > resizeHeight)
+			{
+				image.Mutate(i => i.Rotate(-90));
+				image.Mutate(i => i.Crop(resizeHeight, width));
+				image.Mutate(i => i.Rotate(90));
+			}
 
 			image.Metadata.ExifProfile = null;
 
