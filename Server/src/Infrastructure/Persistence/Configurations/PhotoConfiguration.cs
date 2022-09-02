@@ -14,7 +14,7 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 
 			builder.Property(i => i.MainPhoto).IsRequired();
 
-			builder.Property(i => i.PhonePhoto).IsRequired();
+			builder.Property(i => i.CardPhoto).IsRequired();
 
 			builder.Property(i => i.Thumbnail).IsRequired();
 

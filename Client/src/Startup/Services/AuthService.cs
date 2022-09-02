@@ -10,7 +10,7 @@ using CookingRecipesSystem.Startup.Models.User;
 
 namespace CookingRecipesSystem.Startup.Services
 {
-    public interface IAuthService
+  public interface IAuthService
   {
     Task<AppResult<TokenResponseModel>> Login(UserLoginModel loginModel);
     Task Logout();
@@ -54,7 +54,7 @@ namespace CookingRecipesSystem.Startup.Services
       catch (Exception ex)
       {
         //TODO: Log exception.
-        return AppResult.Failure(ErrorMessages.ServerError);
+        return AppResult.Failure(ErrorMessages.ServerNoFound);
       }
 
       result = await response.JsonDeserializeResponseAsync();
@@ -76,7 +76,7 @@ namespace CookingRecipesSystem.Startup.Services
       catch (Exception ex)
       {
         //TODO: Log exception.
-        return AppResult<TokenResponseModel>.Failure(ErrorMessages.ServerError);
+        return AppResult<TokenResponseModel>.Failure(ErrorMessages.ServerNoFound);
       }
 
       result = await response.JsonDeserializeResponseAsync<TokenResponseModel>();
@@ -126,7 +126,7 @@ namespace CookingRecipesSystem.Startup.Services
       catch (Exception ex)
       {
         //TODO: Log exception.
-        result = AppResult<UsersListModel>.Failure(ErrorMessages.ServerError);
+        result = AppResult<UsersListModel>.Failure(ErrorMessages.ServerNoFound);
       }
 
       return result;

@@ -10,6 +10,6 @@ namespace CookingRecipesSystem.Startup.Models.Ingredient
 
     public PhotoGetModel Photo { get; set; }
 
-    //public ICollection<RecipeNavigationGetModel> Recipes { get; set; }
+    public ICollection<RecipeNavigationGetModel> Recipes { get; set; }
   }
 }

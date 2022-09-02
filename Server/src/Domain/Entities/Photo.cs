@@ -6,7 +6,7 @@ namespace CookingRecipesSystem.Domain.Entities
 	{
 		public byte[] MainPhoto { get; set; }
 
-		public byte[] PhonePhoto { get; set; }
+		public byte[] CardPhoto { get; set; }
 
 		public byte[] Thumbnail { get; set; }
 	}

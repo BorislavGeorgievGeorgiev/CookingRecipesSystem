@@ -7,7 +7,7 @@ namespace CookingRecipesSystem.Application.Common.Models
 	{
 		public byte[] MainPhoto { get; set; }
 
-		public byte[] PhonePhoto { get; set; }
+		public byte[] CardPhoto { get; set; }
 
 		public byte[] Thumbnail { get; set; }
 	}

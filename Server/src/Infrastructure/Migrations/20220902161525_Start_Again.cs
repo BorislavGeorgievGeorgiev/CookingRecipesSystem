@@ -251,7 +251,7 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     MainPhoto = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PhonePhoto = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    CardPhoto = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     Thumbnail = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     IngredientId = table.Column<int>(type: "int", nullable: true),
                     RecipeId = table.Column<int>(type: "int", nullable: true),

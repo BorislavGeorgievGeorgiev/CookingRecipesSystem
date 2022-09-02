@@ -1,4 +1,7 @@
-﻿using CookingRecipesSystem.Startup.Extensions;
+﻿using System.Net;
+
+using CookingRecipesSystem.Startup.Constants;
+using CookingRecipesSystem.Startup.Extensions;
 using CookingRecipesSystem.Startup.Helpers;
 using CookingRecipesSystem.Startup.Models;
 using CookingRecipesSystem.Startup.Models.Ingredient;
@@ -31,6 +34,7 @@ namespace CookingRecipesSystem.Startup.Services
 			IngredientPostModel ingredientModel)
 		{
 			HttpResponseMessage? response = null;
+			AppResult<EntityKeyResponseModel> result;
 
 			using var content = new MultipartFormDataContent();
 			using var stream = ingredientModel.Photo.OpenReadStream(ingredientModel.Photo.Size);
@@ -54,7 +58,15 @@ namespace CookingRecipesSystem.Startup.Services
 				return AppResult<EntityKeyResponseModel>.Failure(ex.Message);
 			}
 
-			var result = await response.JsonDeserializeResponseAsync<EntityKeyResponseModel>();
+			if (response.IsSuccessStatusCode == false)
+			{
+				if (response.StatusCode == HttpStatusCode.Unauthorized)
+				{
+					return AppResult<EntityKeyResponseModel>.Failure(ErrorMessages.NotLogedIn);
+				}
+			}
+
+			result = await response.JsonDeserializeResponseAsync<EntityKeyResponseModel>();
 
 			return result;
 		}

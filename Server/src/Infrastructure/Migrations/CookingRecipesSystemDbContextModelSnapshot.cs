@@ -77,6 +77,10 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<byte[]>("CardPhoto")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -104,10 +108,6 @@ namespace CookingRecipesSystem.Infrastructure.Migrations
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<byte[]>("PhonePhoto")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
 
                     b.Property<int?>("RecipeId")
                         .HasColumnType("int");

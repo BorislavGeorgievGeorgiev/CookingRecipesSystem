@@ -13,6 +13,7 @@ namespace CookingRecipesSystem.Startup.Services
   public class ApiAuthenticationStateProvider : AuthenticationStateProvider
   {
     private const string AuthenticationType = "jwt";
+    private const string ClaimTypeExpiration = "exp";
 
     private readonly ILocalStorageService _localStorage;
     private readonly HttpClient _httpClient;
@@ -21,24 +22,35 @@ namespace CookingRecipesSystem.Startup.Services
       ILocalStorageService localStorage,
       HttpClient httpClient)
     {
-      this._localStorage = localStorage;
-      this._httpClient = httpClient;
+      _localStorage = localStorage;
+      _httpClient = httpClient;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-      var savedToken = await this._localStorage.GetItemAsync<string>(AppConstants.AuthTokenName);
+      var savedToken = await _localStorage.GetItemAsync<string>(AppConstants.AuthTokenName);
 
       if (string.IsNullOrWhiteSpace(savedToken))
       {
-        return new AuthenticationState(GetAnonymousUser());
+        return new AuthenticationState(GetEmptyShellUser());
       }
 
       var claims = ParseClaimsFromJwt(savedToken);
+      var expiration = claims.First(c => c.Type == ClaimTypeExpiration).Value;
+      var expirationDate = DateTimeOffset
+        .FromUnixTimeSeconds(long.Parse(expiration)).DateTime;
+      var isExpired = expirationDate < DateTime.UtcNow;
+
+      if (isExpired)
+      {
+        MarkUserAsLoggedOut();
+        return new AuthenticationState(GetEmptyShellUser());
+      }
+
       var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims, AuthenticationType));
       var authenticationState = new AuthenticationState(claimsPrincipal);
 
-      this._httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+      _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
         AppConstants.BearerName, savedToken);
 
       return authenticationState;
@@ -47,13 +59,14 @@ namespace CookingRecipesSystem.Startup.Services
     public void MarkUserAsAuthenticated(AuthenticationState authenticationState)
     {
       var authenticationStateTask = Task.FromResult(authenticationState);
-      this.NotifyAuthenticationStateChanged(authenticationStateTask);
+      NotifyAuthenticationStateChanged(authenticationStateTask);
     }
 
     public void MarkUserAsLoggedOut()
     {
-      var authenticationStateTask = Task.FromResult(new AuthenticationState(GetAnonymousUser()));
-      this.NotifyAuthenticationStateChanged(authenticationStateTask);
+      var authenticationStateTask = Task.FromResult(
+        new AuthenticationState(GetEmptyShellUser()));
+      NotifyAuthenticationStateChanged(authenticationStateTask);
     }
 
     private static IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
@@ -90,7 +103,7 @@ namespace CookingRecipesSystem.Startup.Services
       return newClaims;
     }
 
-    private static ClaimsPrincipal GetAnonymousUser()
+    private static ClaimsPrincipal GetEmptyShellUser()
     {
       return new ClaimsPrincipal(new ClaimsIdentity());
     }

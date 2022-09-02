@@ -3,7 +3,7 @@
   public class PhotoGetModel
   {
     private string _mainPhoto;
-    private string _phonePhoto;
+    private string _cardPhoto;
     private string _thumbnail;
 
     public string MainPhoto
@@ -12,10 +12,10 @@
       set { _mainPhoto = GetFormatedValue(value); }
     }
 
-    public string PhonePhoto
+    public string CardPhoto
     {
-      get { return _phonePhoto; }
-      set { _phonePhoto = GetFormatedValue(value); }
+      get { return _cardPhoto; }
+      set { _cardPhoto = GetFormatedValue(value); }
     }
 
     public string Thumbnail

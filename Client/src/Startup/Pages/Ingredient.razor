@@ -7,8 +7,8 @@
 
 <h3>Ingredient</h3>
 
-<div class="card text-white bg-info mb-3" style="width: 18rem; height: 20rem">
-  <img src="@IngredientModel.Photo.PhonePhoto" class="card-img-top" alt="...">
+<div class="card card-size text-white bg-info mb-3">
+  <img src="@IngredientModel.Photo.MainPhoto" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">@IngredientModel.Name</h5>
     <p class="card-text">@IngredientModel.Description</p>
@@ -27,7 +27,7 @@
       Photo = new PhotoGetModel
       {
         MainPhoto = string.Empty,
-        PhonePhoto = string.Empty,
+        CardPhoto = string.Empty,
         Thumbnail = string.Empty
       }
     };

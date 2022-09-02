@@ -6,6 +6,8 @@
     public const string InvalidPasswordConfirm = "The password and confirmation password do not match.";
     public const string InvalidEmail = "The {0} field is not a valid e-mail address.";
     //==================================================
-    public const string ServerError = "Cannot connect to the server.";
+    public const string ServerNoFound = "Cannot connect to the server.";
+    public const string NotLogedIn = "You are not logged in.";
+
   }
 }

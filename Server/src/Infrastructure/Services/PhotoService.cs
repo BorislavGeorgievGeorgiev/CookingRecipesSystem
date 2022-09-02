@@ -10,47 +10,64 @@ namespace CookingRecipesSystem.Infrastructure.Services
 {
 	public class PhotoService : IPhotoService
 	{
-		private const int MainPhotoWidth = 1280;
-		private const int MainPhotoHeight = 720;
-		private const int PhonePhotoWidth = 320;
-		private const int PhonePhotoHeight = 240;
+		private const int MainPhotoWidth = 900;
+		private const int CardPhotoWidth = 300;
 		private const int ThumbnailWidth = 100;
-		private const int ThumbnailHeight = 100;
 
 		public async Task<PhotoResponseModel> Process(
 			IFormFile photo, CancellationToken cancellationToken = default)
 		{
-			using var imageResult = await Image.LoadAsync(photo.OpenReadStream(), cancellationToken);
+			using var imageResult = await Image.LoadAsync(
+				photo.OpenReadStream(), cancellationToken);
 
-			var mainPhoto = await SaveImage(imageResult, MainPhotoWidth, MainPhotoHeight);
-			var phonePhoto = await SaveImage(imageResult, PhonePhotoWidth, PhonePhotoHeight);
-			var thumbnail = await SaveImage(imageResult, ThumbnailWidth, ThumbnailHeight);
+			var mainPhoto = await SaveImage(imageResult, MainPhotoWidth, false);
+			var phonePhoto = await SaveImage(imageResult, CardPhotoWidth);
+			var thumbnail = await SaveImage(imageResult, ThumbnailWidth);
 
 			return new PhotoResponseModel
 			{
 				MainPhoto = mainPhoto,
-				PhonePhoto = phonePhoto,
+				CardPhoto = phonePhoto,
 				Thumbnail = thumbnail
 			};
 		}
 
-		private async Task<byte[]> SaveImage(Image image, int resizeWidth, int resizeHeight)
+		private async Task<byte[]> SaveImage(
+			Image image, int resizeSize, bool isSquare = true)
 		{
+			//TODO: Refactor to fit for all ratios.
 			int width = image.Width;
 			int height = image.Height;
+			bool isRotated = false;
 
-			if (width != resizeWidth)
+			if (image.Width > image.Height && isSquare)
 			{
-				height = (int)((double)resizeWidth / width * height);
-				width = resizeWidth;
+				image.Mutate(i => i.Rotate(-90));
+				width = image.Width;
+				height = image.Height;
+				isRotated = true;
+			}
+
+			if (width != resizeSize)
+			{
+				height = (int)((double)resizeSize / width * height);
+				width = resizeSize;
 			}
 
 			image.Mutate(i => i.Resize(new Size(width, height)));
 
-			if (height > resizeHeight)
+			if (height > resizeSize)
 			{
+				var halfHeightToCrop = (height - resizeSize) / 2;
 				image.Mutate(i => i.Rotate(-90));
-				image.Mutate(i => i.Crop(resizeHeight, width));
+				image.Mutate(i => i.Crop(resizeSize + halfHeightToCrop, width));
+				image.Mutate(i => i.Rotate(180));
+				image.Mutate(i => i.Crop(resizeSize, width));
+				image.Mutate(i => i.Rotate(-90));
+			}
+
+			if (isRotated && isSquare)
+			{
 				image.Mutate(i => i.Rotate(90));
 			}
 
