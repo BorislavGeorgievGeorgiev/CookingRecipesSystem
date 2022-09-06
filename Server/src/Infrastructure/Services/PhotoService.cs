@@ -10,7 +10,8 @@ namespace CookingRecipesSystem.Infrastructure.Services
 {
 	public class PhotoService : IPhotoService
 	{
-		private const int MainPhotoWidth = 900;
+		private const int MainPhotoWidth = 1280;
+		private const int MainPhotoHeight = 720;
 		private const int CardPhotoWidth = 300;
 		private const int ThumbnailWidth = 100;
 
@@ -20,9 +21,9 @@ namespace CookingRecipesSystem.Infrastructure.Services
 			using var imageResult = await Image.LoadAsync(
 				photo.OpenReadStream(), cancellationToken);
 
-			var mainPhoto = await SaveImage(imageResult, MainPhotoWidth, false);
-			var phonePhoto = await SaveImage(imageResult, CardPhotoWidth);
-			var thumbnail = await SaveImage(imageResult, ThumbnailWidth);
+			var mainPhoto = await SaveImage(imageResult, MainPhotoWidth, MainPhotoHeight);
+			var phonePhoto = await SaveImage(imageResult, CardPhotoWidth, CardPhotoWidth);
+			var thumbnail = await SaveImage(imageResult, ThumbnailWidth, ThumbnailWidth);
 
 			return new PhotoResponseModel
 			{
@@ -32,15 +33,24 @@ namespace CookingRecipesSystem.Infrastructure.Services
 			};
 		}
 
-		private async Task<byte[]> SaveImage(
-			Image image, int resizeSize, bool isSquare = true)
+		private static async Task<byte[]> SaveImage(
+			Image image, int resizeWidth, int resizeHeight)
 		{
-			//TODO: Refactor to fit for all ratios.
 			int width = image.Width;
 			int height = image.Height;
 			bool isRotated = false;
 
-			if (image.Width > image.Height && isSquare)
+			var resizeRatio = (decimal)resizeWidth / resizeHeight;
+			var ratio = (decimal)width / height;
+			var rotatedImageRatio = (decimal)height / width;
+
+			if (resizeRatio < 1)
+			{
+				resizeRatio = (decimal)resizeHeight / resizeWidth;
+			}
+
+			if ((ratio > resizeRatio) ||
+				(ratio < 1 && rotatedImageRatio <= resizeRatio))
 			{
 				image.Mutate(i => i.Rotate(-90));
 				width = image.Width;
@@ -48,28 +58,30 @@ namespace CookingRecipesSystem.Infrastructure.Services
 				isRotated = true;
 			}
 
-			if (width != resizeSize)
+			if (image.Width != resizeWidth)
 			{
-				height = (int)((double)resizeSize / width * height);
-				width = resizeSize;
+				if ((ratio > resizeRatio) || (rotatedImageRatio > resizeRatio))
+				{
+					height = (int)((double)resizeHeight / width * height);
+					width = resizeHeight;
+				}
+				else
+				{
+					height = (int)((double)resizeWidth / width * height);
+					width = resizeWidth;
+				}
 			}
 
 			image.Mutate(i => i.Resize(new Size(width, height)));
 
-			if (height > resizeSize)
-			{
-				var halfHeightToCrop = (height - resizeSize) / 2;
-				image.Mutate(i => i.Rotate(-90));
-				image.Mutate(i => i.Crop(resizeSize + halfHeightToCrop, width));
-				image.Mutate(i => i.Rotate(180));
-				image.Mutate(i => i.Crop(resizeSize, width));
-				image.Mutate(i => i.Rotate(-90));
-			}
-
-			if (isRotated && isSquare)
+			if (isRotated || rotatedImageRatio > resizeRatio)
 			{
 				image.Mutate(i => i.Rotate(90));
 			}
+
+			var x = (image.Width - resizeWidth) / 2;
+			var y = (image.Height - resizeHeight) / 2;
+			image.Mutate(i => i.Crop(new Rectangle(x, y, resizeWidth, resizeHeight)));
 
 			image.Metadata.ExifProfile = null;
 
@@ -79,5 +91,6 @@ namespace CookingRecipesSystem.Infrastructure.Services
 
 			return memoryStream.ToArray();
 		}
+
 	}
 }
