@@ -5,16 +5,16 @@
 @inject IAuthService AuthService
 
 <AuthorizeView>
-  <Authorized>
-    <a href=@PageRoutes.Profile>Hello, @context.User.Identity.Name !</a>
-    <button class="nav-link btn btn-link" @onclick="LogoutClick">Log out</button>
+  <Authorized>    
+    <NavLink href=@PageRoutes.Profile class="btn btn-outline-info m-1">Hello, @context.User.Identity.Name !</NavLink>
+    <button class="btn btn-outline-danger m-1" @onclick="LogoutClick">Log out</button>
   </Authorized>
   <Authorizing>
     <h1>Loading ...</h1>
   </Authorizing>
   <NotAuthorized>
-    <a href=@PageRoutes.Register>Register</a>
-    <a href=@PageRoutes.Login>Log in</a>
+    <NavLink href=@PageRoutes.Login class="btn btn-outline-info m-1">Log in</NavLink>
+    <NavLink href=@PageRoutes.Register class="btn btn-outline-warning m-1">Register</NavLink>
   </NotAuthorized>
 </AuthorizeView>
 

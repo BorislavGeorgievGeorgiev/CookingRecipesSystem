@@ -1,44 +1,56 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="">CookingRecipesSystem</a>
+﻿<nav class="p-3 navbar navbar-expand-md navbar-dark bg-dark d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+  <div class="container p-1 justify-content-md-center">
+    <a href="/" class="navbar-brand d-flex align-items-center mb-2 mb-lg-0">
+      @Brand
+    </a>
     <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
       <span class="navbar-toggler-icon"></span>
     </button>
-  </div>
-</div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-  <nav class="flex-column">
-    <div class="nav-item px-3">
-      <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-        <span class="oi oi-home" aria-hidden="true"></span> Home
-      </NavLink>
+    <div class="@CollapseNav navbar-collapse justify-content-center" @onclick="ToggleNavMenu">
+      <ul class="nav col-12 col-md-auto me-md-auto mb-1 mb-md-0 d-flex flex-md-row flex-column" @onclick="RowClicked">
+        <li class="m-1">
+          <NavLink class="btn btn-outline-light " href="" Match="NavLinkMatch.All">
+            <span class="oi oi-home" aria-hidden="true"></span> Home
+          </NavLink>
+        </li>
+        <li class="m-1">
+          <NavLink class="btn btn-outline-light" href=@PageRoutes.GetAllUsers>
+            <span class="oi oi-people" aria-hidden="true"></span> Users
+          </NavLink>
+        </li>
+        <li class="m-1">
+          <NavLink class="btn btn-outline-light" href=@PageRoutes.IngredientCreate>
+            <span class="oi oi-cog" aria-hidden="true"></span> Ingredient Create
+          </NavLink>
+        </li>
+        <li class="m-1">
+          <NavLink class="btn btn-outline-light" href="/ingredient/getbyid/1">
+            <span class="oi oi-document" aria-hidden="true"></span> Ingredient Show
+          </NavLink>
+        </li>
+      </ul>
+
+      <div class="text-end">
+        <LoginDisplay />
+      </div>
     </div>
-    <div class="nav-item px-3">
-      <NavLink class="nav-link" href=@PageRoutes.GetAllUsers>
-        <span class="oi oi-plus" aria-hidden="true"></span> Users
-      </NavLink>
-    </div>
-    <div class="nav-item px-3">
-      <NavLink class="nav-link" href=@PageRoutes.IngredientCreate>
-        <span class="oi oi-plus" aria-hidden="true"></span> Ingredient Create
-      </NavLink>
-    </div>
-    <div class="nav-item px-3">
-      <NavLink class="nav-link" href="/ingredient/getbyid/1">
-        <span class="oi oi-plus" aria-hidden="true"></span> Ingredient Show
-      </NavLink>
-    </div>
-  </nav>
-</div>
+  </div>
+</nav>
 
 @code {
-  private bool collapseNavMenu = true;
+  private const string Brand = "CRS";
 
-  private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+  private bool isCollapsedNavMenu = true;
+
+  private string? CollapseNav => isCollapsedNavMenu ? "collapse" : null;
 
   private void ToggleNavMenu()
   {
-    collapseNavMenu = !collapseNavMenu;
+    isCollapsedNavMenu = !isCollapsedNavMenu;
+  }
+
+  private void RowClicked() 
+  {
   }
 }
