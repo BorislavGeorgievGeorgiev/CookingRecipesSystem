@@ -7,6 +7,7 @@
 
 <h3>Ingredient</h3>
 
+@if(succeeded){
 <div class="card card-size text-white bg-info mb-3">
   <img src="@IngredientModel.Photo.CardPhoto" class="card-img-top" alt="...">
   <div class="card-body">
@@ -15,10 +16,22 @@
     <a href="#" class="btn btn-primary">Go somewhere</a>
   </div>
 </div>
+}
+
+<div>
+  @foreach (var error in Errors)
+  {
+    <label class="text-danger">@error</label>
+  }
+</div>
 
 @code {
+  private bool succeeded = false;
+
+  private IEnumerable<string> Errors { get; set; } = new List<string>();
+
   [Parameter]
-  public int? Id { get; set; }
+  public int? Id { get; set; }  
 
   public IngredientGetModel IngredientModel { get; set; } = new IngredientGetModel
     {
@@ -35,13 +48,15 @@
   protected async override Task OnParametersSetAsync()
   {
     await base.OnParametersSetAsync();
-    IngredientModel = await GetIngredient();
-  }
 
-  private async Task<IngredientGetModel> GetIngredient()
-  {
     var result = await IngredientService.GetById(Id.Value);
-    return result.Response;
-  }
 
+    if (result.Succeeded)
+    {
+      succeeded = true;
+      IngredientModel = result.Response;
+    }
+    
+    Errors = result.Errors;
+  }
 }
