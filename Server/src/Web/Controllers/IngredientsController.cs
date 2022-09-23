@@ -14,7 +14,7 @@ namespace CookingRecipesSystem.Web.Controllers
 	{
 		[HttpPost]
 		[Route(nameof(Create))]
-		public async Task<ActionResult<ApplicationResult<EntityKeyResponseModel>>> Create(
+		public async Task<ActionResult<EntityKeyResponseModel>> Create(
 			[FromForm] CreateIngredientCommand command)
 		{
 			return await Send(command);
@@ -23,14 +23,14 @@ namespace CookingRecipesSystem.Web.Controllers
 		[AllowAnonymous]
 		[HttpGet]
 		[Route(nameof(GetById) + "/" + Id)]
-		public async Task<ActionResult<ApplicationResult<IngredientResponseModel>>> GetById(
+		public async Task<ActionResult<IngredientResponseModel>> GetById(
 			[FromRoute] GetIngredientByIdQuery query)
 			=> await Send(query);
 
 		[AllowAnonymous]
 		[HttpGet]
 		[Route(nameof(GetAll))]
-		public async Task<ActionResult<ApplicationResult<IngredientsListResponseModel>>> GetAll(
+		public async Task<ActionResult<IngredientsListResponseModel>> GetAll(
 			[FromQuery] GetIngredientsAllQuery query)
 			=> await Send(query);
 	}

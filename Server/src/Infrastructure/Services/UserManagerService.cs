@@ -15,13 +15,13 @@ namespace CookingRecipesSystem.Infrastructure.Services
 
 		public UserManagerService(UserManager<ApplicationUser> userManager)
 		{
-			this._userManager = userManager;
+			_userManager = userManager;
 		}
 
 		public async Task<ApplicationResult> ChangePasswordAsync(
 			IApplicationUser user, string currentPassword, string newPassword)
 		{
-			var identityResult = await this._userManager.ChangePasswordAsync(
+			var identityResult = await _userManager.ChangePasswordAsync(
 					(ApplicationUser)user, currentPassword, newPassword);
 
 			return identityResult.ToApplicationResult();
@@ -30,7 +30,7 @@ namespace CookingRecipesSystem.Infrastructure.Services
 		public async Task<ApplicationResult<CheckPasswordModel>> CheckPasswordAsync(
 			IApplicationUser user, string password)
 		{
-			var isValidPassword = await this._userManager
+			var isValidPassword = await _userManager
 				.CheckPasswordAsync((ApplicationUser)user, password);
 
 			if (!isValidPassword)
@@ -45,42 +45,42 @@ namespace CookingRecipesSystem.Infrastructure.Services
 
 		public async Task<ApplicationResult> CreateAsync(IApplicationUser user, string password)
 		{
-			var identityResult = await this._userManager.CreateAsync((ApplicationUser)user, password);
+			var identityResult = await _userManager.CreateAsync((ApplicationUser)user, password);
 
 			return identityResult.ToApplicationResult();
 		}
 
 		public async Task<ApplicationResult<IApplicationUser>> FindByEmailAsync(string email)
 		{
-			var user = await this._userManager.FindByEmailAsync(email);
+			var user = await _userManager.FindByEmailAsync(email);
 
-			return this.UserResult(user);
+			return UserResult(user);
 		}
 
 		public async Task<ApplicationResult<IApplicationUser>> FindByIdAsync(string userId)
 		{
-			var user = await this._userManager.FindByIdAsync(userId);
+			var user = await _userManager.FindByIdAsync(userId);
 
-			return this.UserResult(user);
+			return UserResult(user);
 		}
 
 		public async Task<ApplicationResult<IList<string>>> GetRolesAsync(IApplicationUser user)
 		{
-			var roles = await this._userManager.GetRolesAsync((ApplicationUser)user);
+			var roles = await _userManager.GetRolesAsync((ApplicationUser)user);
 
 			return ApplicationResult<IList<string>>.Success(roles);
 		}
 
 		public ApplicationResult<IQueryable<IApplicationUser>> GetAll()
 		{
-			var users = this._userManager.Users;
+			var users = _userManager.Users;
 
 			return ApplicationResult<IQueryable<IApplicationUser>>.Success(users);
 		}
 
 		public ApplicationResult<IQueryable<IApplicationUser>> GetAllAsNoTracking()
 		{
-			var users = this._userManager.Users.AsNoTracking();
+			var users = _userManager.Users.AsNoTracking();
 
 			return ApplicationResult<IQueryable<IApplicationUser>>.Success(users);
 		}

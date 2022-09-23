@@ -1,5 +1,4 @@
-﻿using CookingRecipesSystem.Application.Common.Models;
-using CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser;
+﻿using CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser;
 using CookingRecipesSystem.Application.Identity.Commands.LoginUser;
 using CookingRecipesSystem.Application.Identity.Commands.RegisterUser;
 using CookingRecipesSystem.Application.Identity.Queries.GetUsersAll;
@@ -16,26 +15,26 @@ namespace CookingRecipesSystem.Web.Controllers
 		[AllowAnonymous]
 		[HttpPost]
 		[Route(nameof(Register))]
-		public async Task<ActionResult<ApplicationResult>> Register(
+		public async Task<ActionResult> Register(
 			[FromBody] RegisterUserCommand command)
 			=> await Send(command);
 
 		[AllowAnonymous]
 		[HttpPost]
 		[Route(nameof(Login))]
-		public async Task<ActionResult<ApplicationResult<UserTokenResponseModel>>> Login(
+		public async Task<ActionResult<UserTokenResponseModel>> Login(
 			[FromBody] LoginUserCommand command)
 			=> await Send(command);
 
 		[HttpPost]
 		[Route(nameof(ChangePassword))]
-		public async Task<ActionResult<ApplicationResult>> ChangePassword(
+		public async Task<ActionResult> ChangePassword(
 			[FromBody] ChangePasswordUserCommand command)
 			=> await Send(command);
 
 		[HttpGet]
 		[Route(nameof(GetAll))]
-		public async Task<ActionResult<ApplicationResult<UsersListResponseModel>>> GetAll(
+		public async Task<ActionResult<UsersListResponseModel>> GetAll(
 			[FromQuery] GetUsersAllQuery query)
 			=> await Send(query);
 	}

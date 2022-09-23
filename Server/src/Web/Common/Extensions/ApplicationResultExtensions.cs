@@ -6,7 +6,7 @@ namespace CookingRecipesSystem.Web.Common.Extensions
 {
 	public static class ApplicationResultExtensions
 	{
-		public static async Task<ActionResult<ApplicationResult>> ToActionResult(
+		public static async Task<ActionResult> ToActionResult(
 			this Task<ApplicationResult> resultTask)
 		{
 			var result = await resultTask;
@@ -19,7 +19,7 @@ namespace CookingRecipesSystem.Web.Common.Extensions
 			return new OkObjectResult(result);
 		}
 
-		public static async Task<ActionResult<ApplicationResult<TData>>> ToActionResult<TData>(
+		public static async Task<ActionResult<TData>> ToActionResult<TData>(
 			this Task<ApplicationResult<TData>> resultTask)
 			where TData : class
 		{
