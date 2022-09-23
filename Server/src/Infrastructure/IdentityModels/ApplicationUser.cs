@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Identity;
 
-namespace CookingRecipesSystem.Infrastructure.Identity
+namespace CookingRecipesSystem.Infrastructure.IdentityModels
 {
 	public class ApplicationUser : IdentityUser, IApplicationUser
 	{

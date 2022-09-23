@@ -1,7 +1,7 @@
 ﻿using CookingRecipesSystem.Application.Common.Exceptions;
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Interfaces.Factories;
-using CookingRecipesSystem.Infrastructure.Identity;
+using CookingRecipesSystem.Infrastructure.IdentityModels;
 
 namespace CookingRecipesSystem.Infrastructure.Factories
 {

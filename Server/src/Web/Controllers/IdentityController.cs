@@ -1,6 +1,7 @@
 ﻿using CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser;
 using CookingRecipesSystem.Application.Identity.Commands.LoginUser;
 using CookingRecipesSystem.Application.Identity.Commands.RegisterUser;
+using CookingRecipesSystem.Application.Identity.Queries.GetUserById;
 using CookingRecipesSystem.Application.Identity.Queries.GetUsersAll;
 using CookingRecipesSystem.Web.Common;
 
@@ -36,6 +37,12 @@ namespace CookingRecipesSystem.Web.Controllers
 		[Route(nameof(GetAll))]
 		public async Task<ActionResult<UsersListResponseModel>> GetAll(
 			[FromQuery] GetUsersAllQuery query)
+			=> await Send(query);
+
+		[HttpGet]
+		[Route(nameof(GetById) + "/" + Id)]
+		public async Task<ActionResult<UserInfoResponseModel>> GetById(
+			[FromRoute] GetUserByIdQuery query)
 			=> await Send(query);
 	}
 }

@@ -2,7 +2,7 @@
 using CookingRecipesSystem.Application.Common.Models;
 using CookingRecipesSystem.Domain.Common.Constants;
 using CookingRecipesSystem.Infrastructure.Common.Extensions;
-using CookingRecipesSystem.Infrastructure.Identity;
+using CookingRecipesSystem.Infrastructure.IdentityModels;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

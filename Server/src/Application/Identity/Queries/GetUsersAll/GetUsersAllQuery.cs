@@ -2,6 +2,7 @@
 
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
+using CookingRecipesSystem.Application.Identity.Queries.GetUserById;
 
 using MediatR;
 
@@ -26,14 +27,14 @@ namespace CookingRecipesSystem.Application.Identity.Queries.GetUsersAll
 				GetUsersAllQuery request, CancellationToken cancellationToken)
 			{
 				var mappedUsers = await _mapper
-					.ProjectTo<UserResponseModel>(_userManagerService.GetAllAsNoTracking().Response)
+					.ProjectTo<UserSimpleResponseModel>(_userManagerService.GetAllAsNoTracking().Response)
 					.OrderBy(x => x.UserName)
 					.ToAsyncEnumerable()
 					.ToListAsync(cancellationToken);
 
-				var response = _mapper.Map<UsersListResponseModel>(mappedUsers);
+				var mappedUserList = _mapper.Map<UsersListResponseModel>(mappedUsers);
 
-				return ApplicationResult<UsersListResponseModel>.Success(response);
+				return ApplicationResult<UsersListResponseModel>.Success(mappedUserList);
 			}
 		}
 	}

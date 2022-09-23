@@ -3,7 +3,7 @@
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Domain.Common;
 using CookingRecipesSystem.Domain.Entities;
-using CookingRecipesSystem.Infrastructure.Identity;
+using CookingRecipesSystem.Infrastructure.IdentityModels;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

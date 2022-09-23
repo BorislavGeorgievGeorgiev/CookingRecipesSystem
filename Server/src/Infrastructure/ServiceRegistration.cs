@@ -5,7 +5,7 @@ using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Domain.Common.Constants;
 using CookingRecipesSystem.Infrastructure.Common;
 using CookingRecipesSystem.Infrastructure.Common.Extensions;
-using CookingRecipesSystem.Infrastructure.Identity;
+using CookingRecipesSystem.Infrastructure.IdentityModels;
 using CookingRecipesSystem.Infrastructure.Persistence;
 
 using Microsoft.AspNetCore.Identity;
