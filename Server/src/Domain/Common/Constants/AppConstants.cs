@@ -6,6 +6,8 @@
 
 		public const string RoleNameAdministrator = "Administrator";
 		public const string RoleNameModerator = "Moderator";
+		//==
+		public const string PolicyNameCurrentUser = "CurrentUser";
 
 		//======================================
 		public const string EmailRegEx = "^[A-Za-z0-9]+[\\._A-Za-z0-9-]+@([A-Za-z0-9]+[-\\.]?[A-Za-z0-9]+)+(\\.[A-Za-z0-9]+[-\\.]?[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";

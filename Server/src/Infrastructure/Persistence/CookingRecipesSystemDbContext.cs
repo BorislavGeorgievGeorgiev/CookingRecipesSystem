@@ -21,8 +21,8 @@ namespace CookingRecipesSystem.Infrastructure.Persistence
 			ICurrentUserService currentUserService, IDateTimeService dateTimeService)
 			: base(options)
 		{
-			this._currentUserService = currentUserService;
-			this._dateTimeService = dateTimeService;
+			_currentUserService = currentUserService;
+			_dateTimeService = dateTimeService;
 		}
 
 		public DbSet<Recipe> Recipes { get; set; }
@@ -36,18 +36,18 @@ namespace CookingRecipesSystem.Infrastructure.Persistence
 		public override Task<int> SaveChangesAsync(
 			CancellationToken cancellationToken = new CancellationToken())
 		{
-			foreach (var entry in this.ChangeTracker.Entries<IAuditableEntity>())
+			foreach (var entry in ChangeTracker.Entries<IAuditableEntity>())
 			{
 				switch (entry.State)
 				{
 					case EntityState.Added:
-						entry.Entity.CreatedBy ??= this._currentUserService.GetUserId!;
-						entry.Entity.CreatedOn = this._dateTimeService.Now;
+						entry.Entity.CreatedBy ??= _currentUserService.GetUserId!;
+						entry.Entity.CreatedOn = _dateTimeService.Now;
 						break;
 					case EntityState.Modified:
-						entry.Entity.ModifiedBy = this._currentUserService.GetUserId!;
-						entry.Entity.ModifiedOn = this._dateTimeService.Now;
-						entry.Entity.DeletedOn = entry.Entity.IsDeleted ? this._dateTimeService.Now : null;
+						entry.Entity.ModifiedBy = _currentUserService.GetUserId!;
+						entry.Entity.ModifiedOn = _dateTimeService.Now;
+						entry.Entity.DeletedOn = entry.Entity.IsDeleted ? _dateTimeService.Now : null;
 						break;
 				}
 			}

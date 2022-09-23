@@ -46,7 +46,6 @@ namespace CookingRecipesSystem.Infrastructure
 			services.AddRepositories(Assembly.GetExecutingAssembly());
 
 			services.AddTokenAuthentication(configuration);
-			services.AddAuthorization();
 
 			return services;
 		}

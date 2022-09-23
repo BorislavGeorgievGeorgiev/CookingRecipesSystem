@@ -12,6 +12,8 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddWebComponents();
 
+builder.Services.AddAuthorization();
+
 builder.Services.AddControllers();
 
 const string MyAllowTestOrigins = "_myAllowTestOrigins";

@@ -21,23 +21,15 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		public void Public_String_UserName_Property_Should_Exist()
 		{
 			// Arrange, Act & Assert
-			Assert.True(this._registerModel
-				.PublicPropertyExist(UserNamePropertyName, this._returnTypeString));
-		}
-
-		[Fact]
-		public void Public_String_UserName_Property_Should_Has_Private_Set()
-		{
-			// Arrange, Act & Assert
-			Assert.False(this._registerModel
-				.PublicPropertyCanWrite(UserNamePropertyName, this._returnTypeString));
+			Assert.True(_registerModel
+				.PublicPropertyExist(UserNamePropertyName, _returnTypeString));
 		}
 
 		[Fact]
 		public void UserName_Should_Be_Set_Correctly()
 		{
 			// Arrange, Act & Assert
-			Assert.True(this._registerModel.UserName == UserNameString);
+			Assert.True(_registerModel.UserName == UserNameString);
 		}
 	}
 }
