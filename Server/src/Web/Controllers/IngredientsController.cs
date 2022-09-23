@@ -1,5 +1,6 @@
 ﻿using CookingRecipesSystem.Application.Common.Models;
-using CookingRecipesSystem.Application.Ingredients.Commands;
+using CookingRecipesSystem.Application.Ingredients.Commands.Create;
+using CookingRecipesSystem.Application.Ingredients.Commands.Edit;
 using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient;
 using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredientsAll;
 using CookingRecipesSystem.Web.Common;
@@ -14,8 +15,16 @@ namespace CookingRecipesSystem.Web.Controllers
 	{
 		[HttpPost]
 		[Route(nameof(Create))]
-		public async Task<ActionResult<EntityKeyResponseModel>> Create(
+		public async Task<ActionResult<EntityKeyModel>> Create(
 			[FromForm] CreateIngredientCommand command)
+		{
+			return await Send(command);
+		}
+
+		[HttpPost]
+		[Route(nameof(Edit))]
+		public async Task<ActionResult<IngredientResponseModel>> Edit(
+			[FromForm] EditIngredientCommand command)
 		{
 			return await Send(command);
 		}

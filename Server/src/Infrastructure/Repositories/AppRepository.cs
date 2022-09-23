@@ -38,7 +38,8 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 			return entry.Entity;
 		}
 
-		public async Task<bool> Update(TEntity entity)
+		public async Task<bool> Update(
+			TEntity entity, CancellationToken cancellationToken = default)
 		{
 			var entry = Context.Entry(entity);
 
@@ -52,9 +53,10 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 			return await Task.FromResult(true);
 		}
 
-		public async Task<bool> DeleteNoPermanent(TEntity entity)
+		public async Task<bool> DeleteNoPermanent(
+			TEntity entity, CancellationToken cancellationToken = default)
 		{
-			await Update(entity);
+			await Update(entity, cancellationToken);
 
 			entity.IsDeleted = true;
 

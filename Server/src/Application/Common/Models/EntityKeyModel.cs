@@ -1,6 +1,6 @@
 ﻿namespace CookingRecipesSystem.Application.Common.Models
 {
-  public class EntityKeyResponseModel
+  public class EntityKeyModel
   {
     public int Id { get; set; }
   }

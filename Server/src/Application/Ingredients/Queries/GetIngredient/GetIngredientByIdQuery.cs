@@ -39,12 +39,12 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient
 						ExceptionMessages.IngredientInvalid);
 				}
 
-				var ingredient = await _mapper
+				var mappedIngredient = await _mapper
 					.ProjectTo<IngredientResponseModel>(ingredientQuery)
 					.ToAsyncEnumerable()
 					.FirstAsync(cancellationToken);
 
-				return ApplicationResult<IngredientResponseModel>.Success(ingredient);
+				return ApplicationResult<IngredientResponseModel>.Success(mappedIngredient);
 			}
 		}
 	}
