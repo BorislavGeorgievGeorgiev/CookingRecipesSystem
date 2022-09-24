@@ -1,5 +1,6 @@
 ﻿using CookingRecipesSystem.Application.Common.Models;
 using CookingRecipesSystem.Application.Ingredients.Commands.Create;
+using CookingRecipesSystem.Application.Ingredients.Commands.Delete;
 using CookingRecipesSystem.Application.Ingredients.Commands.Edit;
 using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient;
 using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredientsAll;
@@ -25,6 +26,14 @@ namespace CookingRecipesSystem.Web.Controllers
 		[Route(nameof(Edit))]
 		public async Task<ActionResult<IngredientResponseModel>> Edit(
 			[FromForm] EditIngredientCommand command)
+		{
+			return await Send(command);
+		}
+
+		[HttpPost]
+		[Route(nameof(Delete))]
+		public async Task<ActionResult> Delete(
+			[FromQuery] DeleteIngredientCommand command)
 		{
 			return await Send(command);
 		}

@@ -56,21 +56,26 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 		public async Task<bool> DeleteNoPermanent(
 			TEntity entity, CancellationToken cancellationToken = default)
 		{
-			await Update(entity, cancellationToken);
-
 			entity.IsDeleted = true;
 
-			return true;
+			return await Update(entity, cancellationToken);
 		}
 
-		public IQueryable<TEntity> GetAll()
+		public IQueryable<TEntity> GetAll(string? include = default)
 		{
-			return DbSet.Where(x => !x.IsDeleted);
+			if (include == null)
+			{
+				return DbSet.Where(x => x.IsDeleted == false);
+			}
+			else
+			{
+				return DbSet.Where(x => x.IsDeleted == false).Include(include);
+			}
 		}
 
-		public IQueryable<TEntity> GetAllAsNoTracking()
+		public IQueryable<TEntity> GetAllAsNoTracking(string? include = default)
 		{
-			return GetAll().AsNoTracking();
+			return GetAll(include).AsNoTracking();
 		}
 
 		public async Task<int> SaveAsync(

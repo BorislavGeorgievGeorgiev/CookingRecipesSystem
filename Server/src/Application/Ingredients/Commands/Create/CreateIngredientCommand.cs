@@ -39,7 +39,7 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands.Create
         var ingredient = await _ingredientRepository
             .GetAll()
             .ToAsyncEnumerable()
-            .FirstOrDefaultAsync(i => i.Name == request.Name);
+            .FirstOrDefaultAsync(i => i.Name == request.Name, cancellationToken);
 
         if (ingredient != null)
         {

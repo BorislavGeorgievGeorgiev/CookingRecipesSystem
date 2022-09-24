@@ -20,5 +20,9 @@
 
 		// GetIngredientQuery
 		public const string IngredientInvalid = "There is no such ingredient.";
+
+		// DeleteIngredientCommand
+		public const string IngredientNotDeleted = "Cannot delete this ingredient.";
+		public const string IngredientPhotoNotDeleted = "Cannot delete this ingredient photos.";
 	}
 }

@@ -6,9 +6,9 @@ namespace CookingRecipesSystem.Application.Common.Interfaces
 	public interface IAppRepository<TEntity> : ITransientService
 		where TEntity : class, IAggregateRoot, IDeletableEntity
 	{
-		IQueryable<TEntity> GetAll();
+		IQueryable<TEntity> GetAll(string? include = default);
 
-		IQueryable<TEntity> GetAllAsNoTracking();
+		IQueryable<TEntity> GetAllAsNoTracking(string? include = default);
 
 		Task<TEntity> Create(TEntity entity,
 						CancellationToken cancellationToken = default);
