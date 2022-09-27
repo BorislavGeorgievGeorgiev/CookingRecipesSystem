@@ -1,4 +1,4 @@
-﻿using CookingRecipesSystem.Application.Identity.Commands.LoginUser;
+﻿using CookingRecipesSystem.Application.Identity.Commands.Login;
 
 namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 {
@@ -10,7 +10,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		private const string PasswordString = "strongPassword";
 
 		private readonly Type _returnTypeString = typeof(string);
-		private readonly UserLoginRequestModel _loginModel = new UserLoginRequestModel
+		private readonly LoginRequestModel _loginModel = new LoginRequestModel
 		{
 			Email = EmailString,
 			Password = PasswordString

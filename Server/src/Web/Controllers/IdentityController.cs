@@ -1,8 +1,8 @@
-﻿using CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser;
-using CookingRecipesSystem.Application.Identity.Commands.LoginUser;
-using CookingRecipesSystem.Application.Identity.Commands.RegisterUser;
-using CookingRecipesSystem.Application.Identity.Queries.GetUserById;
-using CookingRecipesSystem.Application.Identity.Queries.GetUsersAll;
+﻿using CookingRecipesSystem.Application.Identity.Commands.ChangePassword;
+using CookingRecipesSystem.Application.Identity.Commands.Login;
+using CookingRecipesSystem.Application.Identity.Commands.Register;
+using CookingRecipesSystem.Application.Identity.Queries.GetAll;
+using CookingRecipesSystem.Application.Identity.Queries.GetById;
 using CookingRecipesSystem.Web.Common;
 
 using Microsoft.AspNetCore.Authorization;
@@ -17,32 +17,32 @@ namespace CookingRecipesSystem.Web.Controllers
 		[HttpPost]
 		[Route(nameof(Register))]
 		public async Task<ActionResult> Register(
-			[FromBody] RegisterUserCommand command)
+			[FromBody] RegisterCommand command)
 			=> await Send(command);
 
 		[AllowAnonymous]
 		[HttpPost]
 		[Route(nameof(Login))]
-		public async Task<ActionResult<UserTokenResponseModel>> Login(
-			[FromBody] LoginUserCommand command)
+		public async Task<ActionResult<TokenResponseModel>> Login(
+			[FromBody] LoginCommand command)
 			=> await Send(command);
 
 		[HttpPost]
 		[Route(nameof(ChangePassword))]
 		public async Task<ActionResult> ChangePassword(
-			[FromBody] ChangePasswordUserCommand command)
+			[FromBody] ChangePasswordCommand command)
 			=> await Send(command);
 
 		[HttpGet]
 		[Route(nameof(GetAll))]
-		public async Task<ActionResult<UsersListResponseModel>> GetAll(
-			[FromQuery] GetUsersAllQuery query)
+		public async Task<ActionResult<UserListResponseModel>> GetAll(
+			[FromQuery] UserGetAllQuery query)
 			=> await Send(query);
 
 		[HttpGet]
 		[Route(nameof(GetById) + "/" + Id)]
 		public async Task<ActionResult<UserInfoResponseModel>> GetById(
-			[FromRoute] GetUserByIdQuery query)
+			[FromRoute] UserGetByIdQuery query)
 			=> await Send(query);
 	}
 }

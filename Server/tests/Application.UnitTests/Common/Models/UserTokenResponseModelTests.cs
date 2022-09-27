@@ -1,4 +1,4 @@
-﻿using CookingRecipesSystem.Application.Identity.Commands.LoginUser;
+﻿using CookingRecipesSystem.Application.Identity.Commands.Login;
 
 namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 {
@@ -8,7 +8,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 		private const string TokenString = "SomeTokenString";
 
 		private readonly Type _returnTypeString = typeof(string);
-		private readonly UserTokenResponseModel _tokenModel = new UserTokenResponseModel(TokenString);
+		private readonly TokenResponseModel _tokenModel = new TokenResponseModel(TokenString);
 
 		[Fact]
 		public void Public_String_Token_Property_Should_Exist()

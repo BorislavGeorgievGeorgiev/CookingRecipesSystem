@@ -2,7 +2,7 @@
 
 using CookingRecipesSystem.Application.Common.Behaviours;
 using CookingRecipesSystem.Application.Common.Interfaces.Lifetime;
-using CookingRecipesSystem.Application.Identity.Commands.RegisterUser;
+using CookingRecipesSystem.Application.Identity.Commands.Register;
 
 using FluentValidation;
 
@@ -19,7 +19,7 @@ namespace CookingRecipesSystem.Application
 			.AddAutoMapper(Assembly.GetExecutingAssembly())
 			.AddMediatR(Assembly.GetExecutingAssembly())
 			.AddConventionalServices(Assembly.GetExecutingAssembly())
-			.AddValidatorsFromAssemblyContaining<RegisterUserCommandValidator>(ServiceLifetime.Transient)
+			.AddValidatorsFromAssemblyContaining<RegisterCommandValidator>(ServiceLifetime.Transient)
 			.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
 		public static IServiceCollection AddConventionalServices(

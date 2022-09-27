@@ -1,4 +1,4 @@
-﻿using CookingRecipesSystem.Application.Identity.Commands.ChangePasswordUser;
+﻿using CookingRecipesSystem.Application.Identity.Commands.ChangePassword;
 
 namespace CookingRecipesSystem.Application.UnitTests.Common.Models
 {
