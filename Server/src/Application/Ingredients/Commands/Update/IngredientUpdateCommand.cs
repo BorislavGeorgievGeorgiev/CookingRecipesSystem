@@ -3,7 +3,7 @@
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
 using CookingRecipesSystem.Application.Ingredients.Commands.Create;
-using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient;
+using CookingRecipesSystem.Application.Ingredients.Queries.GetById;
 using CookingRecipesSystem.Domain.Common.Constants;
 using CookingRecipesSystem.Domain.Entities;
 

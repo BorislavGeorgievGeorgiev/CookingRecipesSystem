@@ -4,7 +4,6 @@ using CookingRecipesSystem.Application.Ingredients.Commands.Delete;
 using CookingRecipesSystem.Application.Ingredients.Commands.Update;
 using CookingRecipesSystem.Application.Ingredients.Queries.GetAll;
 using CookingRecipesSystem.Application.Ingredients.Queries.GetById;
-using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient;
 using CookingRecipesSystem.Application.Ingredients.Queries.Search;
 using CookingRecipesSystem.Web.Common;
 

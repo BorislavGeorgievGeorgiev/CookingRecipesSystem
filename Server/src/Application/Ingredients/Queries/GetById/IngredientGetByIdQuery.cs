@@ -2,7 +2,6 @@
 
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
-using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient;
 using CookingRecipesSystem.Domain.Common.Constants;
 using CookingRecipesSystem.Domain.Entities;
 

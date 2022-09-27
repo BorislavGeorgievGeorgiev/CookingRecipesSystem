@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 
 using CookingRecipesSystem.Application.Common.Mappings;
-using CookingRecipesSystem.Application.Ingredients.Queries.GetIngredient;
+using CookingRecipesSystem.Application.Ingredients.Queries.GetById;
 
 namespace CookingRecipesSystem.Application.Ingredients.Queries.GetAll
 {
