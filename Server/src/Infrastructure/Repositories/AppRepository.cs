@@ -38,8 +38,7 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 			return entry.Entity;
 		}
 
-		public async Task<bool> Update(
-			TEntity entity, CancellationToken cancellationToken = default)
+		public Task Update(TEntity entity)
 		{
 			var entry = Context.Entry(entity);
 
@@ -50,15 +49,14 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 
 			entry.State = EntityState.Modified;
 
-			return await Task.FromResult(true);
+			return Task.CompletedTask;
 		}
 
-		public async Task<bool> DeleteNoPermanent(
-			TEntity entity, CancellationToken cancellationToken = default)
+		public Task DeleteNoPermanent(TEntity entity)
 		{
 			entity.IsDeleted = true;
 
-			return await Update(entity, cancellationToken);
+			return Update(entity);
 		}
 
 		public IQueryable<TEntity> GetAll(string? include = default)
@@ -78,8 +76,7 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 			return GetAll(include).AsNoTracking();
 		}
 
-		public async Task<int> SaveAsync(
-			CancellationToken cancellationToken = new CancellationToken())
+		public async Task<int> SaveAsync(CancellationToken cancellationToken)
 		{
 			return await Context.SaveChangesAsync(cancellationToken);
 		}

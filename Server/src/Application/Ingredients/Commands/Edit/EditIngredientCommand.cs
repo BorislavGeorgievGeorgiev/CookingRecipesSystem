@@ -58,10 +58,10 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands.Edit
 
 					ingredient.Photo = _mapper.Map<Photo>(processedPhoto);
 
-					await _photoRepository.Update(ingredient.Photo, cancellationToken);
+					await _photoRepository.Update(ingredient.Photo);
 				}
 
-				await _ingredientRepository.Update(ingredient, cancellationToken);
+				await _ingredientRepository.Update(ingredient);
 
 				var mappedIngredient = _mapper.Map<IngredientResponseModel>(ingredient);
 

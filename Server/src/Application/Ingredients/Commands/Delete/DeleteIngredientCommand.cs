@@ -37,25 +37,13 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands.Delete
 						ExceptionMessages.IngredientInvalid);
 				}
 
-				var isIngredientDeleted = await _ingredientRepository
-					.DeleteNoPermanent(ingredient, cancellationToken);
-
-				if (isIngredientDeleted == false)
-				{
-					return ApplicationResult.Failure(ExceptionMessages.IngredientNotDeleted);
-				}
+				await _ingredientRepository.DeleteNoPermanent(ingredient);
 
 				var photo = await _photoRepository.GetAll()
 					.ToAsyncEnumerable()
 					.FirstOrDefaultAsync(ph => ph.Id == ingredient.Photo.Id);
 
-				var isPhotoDeleted = await _photoRepository
-					.DeleteNoPermanent(ingredient.Photo, cancellationToken);
-
-				if (isPhotoDeleted == false)
-				{
-					return ApplicationResult.Failure(ExceptionMessages.IngredientPhotoNotDeleted);
-				}
+				await _photoRepository.DeleteNoPermanent(ingredient.Photo);
 
 				await _ingredientRepository.SaveAsync(cancellationToken);
 
