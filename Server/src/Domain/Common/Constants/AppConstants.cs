@@ -24,5 +24,9 @@
 
 		//======================================
 		public const string ColumnTypeImage = "image";
+
+		//======================================
+		public const int SkipDefault = 0;
+		public const int TakeDefault = 10;
 	}
 }

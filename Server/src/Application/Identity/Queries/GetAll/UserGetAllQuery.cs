@@ -8,7 +8,9 @@ using MediatR;
 
 namespace CookingRecipesSystem.Application.Identity.Queries.GetAll
 {
-	public class UserGetAllQuery : IRequest<ApplicationResult<UserListResponseModel>>
+	public class UserGetAllQuery :
+		PaginationModel,
+		IRequest<ApplicationResult<UserListResponseModel>>
 	{
 		public class UserGetAllQueryHandler :
 			IRequestHandler<UserGetAllQuery, ApplicationResult<UserListResponseModel>>
@@ -29,6 +31,8 @@ namespace CookingRecipesSystem.Application.Identity.Queries.GetAll
 				var mappedUsers = await _mapper
 					.ProjectTo<UserSimpleResponseModel>(_userManagerService.GetAllAsNoTracking().Response)
 					.OrderBy(x => x.UserName)
+					.Skip(request.Skip)
+					.Take(request.Take)
 					.ToAsyncEnumerable()
 					.ToListAsync(cancellationToken);
 

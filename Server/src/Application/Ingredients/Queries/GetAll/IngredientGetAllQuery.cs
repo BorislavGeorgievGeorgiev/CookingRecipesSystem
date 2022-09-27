@@ -9,7 +9,9 @@ using MediatR;
 
 namespace CookingRecipesSystem.Application.Ingredients.Queries.GetAll
 {
-	public class IngredientGetAllQuery : IRequest<ApplicationResult<IngredientListResponseModel>>
+	public class IngredientGetAllQuery :
+		PaginationModel,
+		IRequest<ApplicationResult<IngredientListResponseModel>>
 	{
 		public class IngredientGetAllQueryHandler :
 			IRequestHandler<IngredientGetAllQuery, ApplicationResult<IngredientListResponseModel>>
@@ -27,11 +29,13 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.GetAll
 			public async Task<ApplicationResult<IngredientListResponseModel>> Handle(
 				IngredientGetAllQuery request, CancellationToken cancellationToken)
 			{
-				var allAsNoTracking = _ingredientRepository.GetAllAsNoTracking();
+				var allAsNoTrackingQueryable = _ingredientRepository.GetAllAsNoTracking();
 
 				var mappedIngredients = await _mapper
-					.ProjectTo<IngredientResponseModel>(allAsNoTracking)
+					.ProjectTo<IngredientResponseModel>(allAsNoTrackingQueryable)
 					.OrderBy(x => x.Name)
+					.Skip(request.Skip)
+					.Take(request.Take)
 					.ToAsyncEnumerable()
 					.ToListAsync(cancellationToken);
 
