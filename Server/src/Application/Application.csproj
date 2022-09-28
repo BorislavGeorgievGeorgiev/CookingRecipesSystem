@@ -23,8 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Recipes\Queries\" />
-    <Folder Include="RecipeTasks\Commands\" />
-    <Folder Include="RecipeTasks\Queries\" />
   </ItemGroup>
 
 </Project>

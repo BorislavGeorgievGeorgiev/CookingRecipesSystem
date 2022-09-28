@@ -39,7 +39,7 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands.Create
         var ingredient = await _ingredientRepository
             .GetAllAsNoTracking()
             .ToAsyncEnumerable()
-            .FirstOrDefaultAsync(i => i.Name == request.Name, cancellationToken);
+            .FirstOrDefaultAsync(i => i.Name.ToLower() == request.Name.ToLower(), cancellationToken);
 
         if (ingredient != null)
         {
@@ -47,18 +47,14 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands.Create
               .Failure(ExceptionMessages.IngredientExist);
         }
 
-        PhotoResponseModel processedPhoto = await _photoService
-            .Process(request.Photo, cancellationToken);
-
+        var processedPhoto = await _photoService.Process(request.Photo, cancellationToken);
         var mappedPhoto = _mapper.Map<Photo>(processedPhoto);
-
         var photo = await _photoRepository.Create(mappedPhoto, cancellationToken);
 
         var mappedIngredient = _mapper.Map<Ingredient>(request);
         mappedIngredient.Photo = photo;
 
-        ingredient = await _ingredientRepository
-            .Create(mappedIngredient, cancellationToken);
+        ingredient = await _ingredientRepository.Create(mappedIngredient, cancellationToken);
 
         await _ingredientRepository.SaveAsync(cancellationToken);
 

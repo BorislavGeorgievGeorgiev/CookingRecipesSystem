@@ -17,12 +17,14 @@ namespace CookingRecipesSystem.Application.Recipes.Commands.Create
 
 		public ICollection<Ingredient> Ingredients { get; set; } = new HashSet<Ingredient>();
 
-		public ICollection<RecipeTask> RecipeTasks { get; set; } = new HashSet<RecipeTask>();
+		public ICollection<RecipeTaskRequestModel> RecipeTasks { get; set; } = new HashSet<RecipeTaskRequestModel>();
 
 		public void Mapping(Profile profile)
 		{
 			profile.CreateMap<RecipeRequestModel, Recipe>()
 							.ForMember(d => d.Photo, opt => opt.Ignore());
+			profile.CreateMap<RecipeRequestModel, Recipe>()
+							.ForMember(d => d.RecipeTasks, opt => opt.Ignore());
 		}
 	}
 }

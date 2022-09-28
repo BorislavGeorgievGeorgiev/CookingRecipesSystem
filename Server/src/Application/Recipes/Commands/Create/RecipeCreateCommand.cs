@@ -7,6 +7,8 @@ using CookingRecipesSystem.Domain.Entities;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Http;
+
 namespace CookingRecipesSystem.Application.Recipes.Commands.Create
 {
 	public class RecipeCreateCommand :
@@ -42,7 +44,7 @@ namespace CookingRecipesSystem.Application.Recipes.Commands.Create
 				var recipe = await _recipeRepository
 						.GetAllAsNoTracking()
 						.ToAsyncEnumerable()
-						.FirstOrDefaultAsync(i => i.Title == request.Title, cancellationToken);
+						.FirstOrDefaultAsync(i => i.Title.ToLower() == request.Title.ToLower(), cancellationToken);
 
 				if (recipe != null)
 				{
@@ -50,7 +52,31 @@ namespace CookingRecipesSystem.Application.Recipes.Commands.Create
 							.Failure(ExceptionMessages.RcipeExist);
 				}
 
+				var recipePhoto = await CreatePhoto(request.Photo, cancellationToken);
+				var mappedRecipe = _mapper.Map<Recipe>(request);
+				mappedRecipe.Photo = recipePhoto;
+				recipe = await _recipeRepository.Create(mappedRecipe);
+
+				foreach (var requestRecipeTask in request.RecipeTasks)
+				{
+					var recipeTaskPhoto = await CreatePhoto(requestRecipeTask.Photo, cancellationToken);
+					var mappedRecipeTask = _mapper.Map<RecipeTask>(requestRecipeTask);
+					mappedRecipeTask.Photo = recipeTaskPhoto;
+					var recipeTask = await _recipeTaskRepository.Create(mappedRecipeTask);
+					recipe.RecipeTasks.Add(recipeTask);
+				}
+
+				//TODO: How to add Ingredients properly ?
 				throw new NotImplementedException();
+			}
+
+			private async Task<Photo> CreatePhoto(IFormFile requestPhoto, CancellationToken cancellationToken)
+			{
+				var processedPhoto = await _photoService.Process(requestPhoto, cancellationToken);
+				var mappedPhoto = _mapper.Map<Photo>(processedPhoto);
+				var photo = await _photoRepository.Create(mappedPhoto, cancellationToken);
+
+				return photo;
 			}
 		}
 	}
