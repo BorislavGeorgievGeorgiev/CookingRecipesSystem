@@ -4,10 +4,10 @@ using CookingRecipesSystem.Infrastructure.Persistence;
 
 namespace CookingRecipesSystem.Infrastructure.Repositories
 {
-	public class PhotoRepository :
-		AppRepository<CookingRecipesSystemDbContext, Photo>, IAppRepository<Photo>
+	public class RecipeTaskRepository :
+		AppRepository<CookingRecipesSystemDbContext, RecipeTask>, IAppRepository<RecipeTask>
 	{
-		public PhotoRepository(CookingRecipesSystemDbContext dbContext) : base(dbContext)
+		public RecipeTaskRepository(CookingRecipesSystemDbContext dbContext) : base(dbContext)
 		{
 		}
 	}

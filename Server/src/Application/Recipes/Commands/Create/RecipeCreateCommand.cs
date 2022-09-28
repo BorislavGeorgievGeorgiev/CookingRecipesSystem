@@ -1,4 +1,9 @@
-﻿using CookingRecipesSystem.Application.Common.Models;
+﻿using AutoMapper;
+
+using CookingRecipesSystem.Application.Common.Interfaces;
+using CookingRecipesSystem.Application.Common.Models;
+using CookingRecipesSystem.Domain.Common.Constants;
+using CookingRecipesSystem.Domain.Entities;
 
 using MediatR;
 
@@ -8,7 +13,7 @@ namespace CookingRecipesSystem.Application.Recipes.Commands.Create
 				RecipeRequestModel, IRequest<ApplicationResult<EntityKeyModel>>
 	{
 
-		/*public class RecipeCreateCommandHandler
+		public class RecipeCreateCommandHandler
 				: IRequestHandler<RecipeCreateCommand, ApplicationResult<EntityKeyModel>>
 		{
 			private readonly IAppRepository<Recipe> _recipeRepository;
@@ -47,6 +52,6 @@ namespace CookingRecipesSystem.Application.Recipes.Commands.Create
 
 				throw new NotImplementedException();
 			}
-		}*/
+		}
 	}
 }

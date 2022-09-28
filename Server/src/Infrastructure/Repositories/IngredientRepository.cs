@@ -7,8 +7,7 @@ namespace CookingRecipesSystem.Infrastructure.Repositories
 	public class IngredientRepository :
 		AppRepository<CookingRecipesSystemDbContext, Ingredient>, IAppRepository<Ingredient>
 	{
-		public IngredientRepository(CookingRecipesSystemDbContext dbContext) :
-			base(dbContext)
+		public IngredientRepository(CookingRecipesSystemDbContext dbContext) : base(dbContext)
 		{
 		}
 	}
