@@ -12,17 +12,20 @@
 		public const string UserInvalid = "The user not exist.";
 		public const string PasswordInvalid = "The password is not valid.";
 
-		// LoginUserCommand
+		// LoginCommand
 		public const string CredentialsInvalid = "Invalid credentials.";
 
-		// CreateIngredientCommand
+		// IngredientCreateCommand
 		public const string IngredientExist = "This ingredient exist.";
 
-		// GetIngredientQuery
+		// IngredientGetByIdQuery
 		public const string IngredientInvalid = "There is no such ingredient.";
 
-		// DeleteIngredientCommand
+		// IngredientDeleteCommand
 		public const string IngredientNotDeleted = "Cannot delete this ingredient.";
 		public const string IngredientPhotoNotDeleted = "Cannot delete this ingredient photos.";
+
+		// RecipeCreateCommand
+		public const string RcipeExist = "This recipe exist.";
 	}
 }

@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Recipes\Commands\" />
     <Folder Include="Recipes\Queries\" />
     <Folder Include="RecipeTasks\Commands\" />
     <Folder Include="RecipeTasks\Queries\" />

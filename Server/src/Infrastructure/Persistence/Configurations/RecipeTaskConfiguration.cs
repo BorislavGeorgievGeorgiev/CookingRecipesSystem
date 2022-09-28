@@ -15,6 +15,8 @@ namespace CookingRecipesSystem.Infrastructure.Persistence.Configurations
 
 			builder.Property(rt => rt.Position).IsRequired();
 
+			builder.HasIndex(rt => rt.Position).IsUnique();
+
 			builder.Property(rt => rt.Description).IsRequired()
 				.HasMaxLength(EntityConstants.RecipeTaskDescriptionMaxLength);
 

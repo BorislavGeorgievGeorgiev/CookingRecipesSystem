@@ -37,7 +37,7 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands.Create
           IngredientCreateCommand request, CancellationToken cancellationToken)
       {
         var ingredient = await _ingredientRepository
-            .GetAll()
+            .GetAllAsNoTracking()
             .ToAsyncEnumerable()
             .FirstOrDefaultAsync(i => i.Name == request.Name, cancellationToken);
 
