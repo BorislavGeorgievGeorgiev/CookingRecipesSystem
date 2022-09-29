@@ -18,7 +18,7 @@ namespace CookingRecipesSystem.Web.Controllers
 			return await Send(command);
 		}
 
-		/*[HttpPost]
+		/*[HttpPut]
 		[Route(nameof(Edit))]
 		public async Task<ActionResult<RecipeResponseModel>> Edit(
 			[FromForm] RecipeUpdateCommand command)
@@ -26,7 +26,7 @@ namespace CookingRecipesSystem.Web.Controllers
 			return await Send(command);
 		}
 
-		[HttpPost]
+		[HttpDelete]
 		[Route(nameof(Delete))]
 		public async Task<ActionResult> Delete(
 			[FromQuery] RecipeDeleteCommand command)
