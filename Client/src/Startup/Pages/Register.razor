@@ -7,33 +7,50 @@
 <h1 class="h2 font-weight-normal login-title">
   Register
 </h1>
+<br />
 
 <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="RegisterRequest">
   <DataAnnotationsValidator />
 
-  <label for="inputUsername" class="sr-only">@AppConstants.UserNameDisplay</label>
-  <InputText id="inputUsername" class="form-control" placeholder="@AppConstants.UserNameDisplay" autofocus @bind-Value="@RegisterRequest.UserName" />
   <ValidationMessage For="@(() => RegisterRequest.UserName)" />
-
-  <label for="inputEmail" class="sr-only">@AppConstants.EmailDisplay</label>
-  <InputText id="inputEmail" class="form-control" placeholder="@AppConstants.EmailDisplay" @bind-Value="@RegisterRequest.Email" />
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label for="inputUsername" class="input-group-text">@AppConstants.UserNameDisplay</label>
+    </div>
+    <InputText id="inputUsername" class="form-control" placeholder="@AppConstants.UserNameDisplay" autofocus @bind-Value="@RegisterRequest.UserName" />
+  </div>
+  
   <ValidationMessage For="@(() => RegisterRequest.Email)" />
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label for="inputEmail" class="input-group-text">@AppConstants.EmailDisplay</label>
+    </div>
+    <InputText id="inputEmail" class="form-control" placeholder="@AppConstants.EmailDisplay" @bind-Value="@RegisterRequest.Email" />
+  </div>
 
-  <label for="inputPassword" class="sr-only">@AppConstants.PasswordDisplay</label>
-  <InputText type="password" id="inputPassword" class="form-control" placeholder="@AppConstants.PasswordDisplay" @bind-Value="@RegisterRequest.Password" />
   <ValidationMessage For="@(() => RegisterRequest.Password)" />
-
-  <label for="inputPasswordConfirm" class="sr-only">@AppConstants.PasswordConfirmDisplay</label>
-  <InputText type="password" id="inputPasswordConfirm" class="form-control" placeholder="@AppConstants.PasswordConfirmDisplay" @bind-Value="@RegisterRequest.PasswordConfirm" />
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label for="inputPassword" class="input-group-text">@AppConstants.PasswordDisplay</label>
+    </div>
+    <InputText type="password" id="inputPassword" class="form-control" placeholder="@AppConstants.PasswordDisplay" @bind-Value="@RegisterRequest.Password" />
+  </div>
+ 
   <ValidationMessage For="@(() => RegisterRequest.PasswordConfirm)" />
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label for="inputPasswordConfirm" class="input-group-text">@AppConstants.PasswordConfirmDisplay</label>
+    </div>
+    <InputText type="password" id="inputPasswordConfirm" class="form-control" placeholder="@AppConstants.PasswordConfirmDisplay" @bind-Value="@RegisterRequest.PasswordConfirm" />
+  </div>  
 
-  <div>
+  <div class="input-group mb-3">
     @foreach (var error in Errors)
     {
       <label class="text-danger">@error</label>
     }
   </div>
-  <div>
+  <div class="input-group mb-3">
     <button class="btn btn-lg btn-primary btn-block" type="submit">Create account</button>
   </div>
 </EditForm>

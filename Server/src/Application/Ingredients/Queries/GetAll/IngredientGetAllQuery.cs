@@ -11,10 +11,10 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.GetAll
 {
 	public class IngredientGetAllQuery :
 		PaginationModel,
-		IRequest<ApplicationResult<IngredientListResponseModel>>
+		IRequest<ApplicationResult<IEnumerable<IngredientResponseModel>>>
 	{
 		public class IngredientGetAllQueryHandler :
-			IRequestHandler<IngredientGetAllQuery, ApplicationResult<IngredientListResponseModel>>
+			IRequestHandler<IngredientGetAllQuery, ApplicationResult<IEnumerable<IngredientResponseModel>>>
 		{
 			private readonly IAppRepository<Ingredient> _ingredientRepository;
 			private readonly IMapper _mapper;
@@ -26,7 +26,7 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.GetAll
 				_mapper = mapper;
 			}
 
-			public async Task<ApplicationResult<IngredientListResponseModel>> Handle(
+			public async Task<ApplicationResult<IEnumerable<IngredientResponseModel>>> Handle(
 				IngredientGetAllQuery request, CancellationToken cancellationToken)
 			{
 				var allAsNoTrackingQueryable = _ingredientRepository.GetAllAsNoTracking();
@@ -39,9 +39,9 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.GetAll
 					.ToAsyncEnumerable()
 					.ToListAsync(cancellationToken);
 
-				var ingredients = _mapper.Map<IngredientListResponseModel>(mappedIngredients);
+				var ingredients = _mapper.Map<IEnumerable<IngredientResponseModel>>(mappedIngredients);
 
-				return ApplicationResult<IngredientListResponseModel>.Success(ingredients);
+				return ApplicationResult<IEnumerable<IngredientResponseModel>>.Success(ingredients);
 			}
 		}
 	}

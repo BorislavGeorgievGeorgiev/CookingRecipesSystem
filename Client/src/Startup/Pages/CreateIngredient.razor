@@ -12,20 +12,34 @@
 <h1 class="h2 font-weight-normal login-title">
   Create Ingredient
 </h1>
+<br />
 
 <EditForm class="form-signin" OnValidSubmit="OnValidSubmit" Model="Ingredient">
   <DataAnnotationsValidator />
 
-  <label for="inputName" class="sr-only">@nameof(Ingredient.Name)</label>
-  <InputText id="inputName" class="form-control" placeholder="@nameof(Ingredient.Name)" autofocus @bind-Value="@Ingredient.Name" />
   <ValidationMessage For="@(() => Ingredient.Name)" />
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label for="inputName" class="input-group-text">@nameof(Ingredient.Name)</label>
+    </div>
+    <InputText id="inputName" class="form-control" placeholder="@nameof(Ingredient.Name)" autofocus @bind-Value="@Ingredient.Name" />
+  </div>
 
-  <label for="inputDescription" class="sr-only">@nameof(Ingredient.Description)</label>
-  <InputTextArea id="inputDescription" class="form-control" placeholder="@nameof(Ingredient.Description)" @bind-Value="@Ingredient.Description" />
   <ValidationMessage For="@(() => Ingredient.Description)" />
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label for="inputDescription" class="input-group-text">@nameof(Ingredient.Description)</label>
+    </div>
+    <InputTextArea id="inputDescription" class="form-control" placeholder="@nameof(Ingredient.Description)" @bind-Value="@Ingredient.Description" />
+  </div>
 
-  <label for="inputPhoto" class="sr-only">@nameof(Ingredient.Photo)</label>
-  <InputFile id="inputPhoto" OnChange="@GetFile" class="form-control" placeholder="@nameof(Ingredient.Photo)" accept=".jpg, .jpeg" />
+  <ValidationMessage For="@(() => Ingredient.Photo)" />
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label for="inputPhoto" class="input-group-text">@nameof(Ingredient.Photo)</label>
+    </div>
+    <InputFile id="inputPhoto" OnChange="@GetFile" class="form-control" placeholder="@nameof(Ingredient.Photo)" accept=".jpg, .jpeg" />
+  </div>
 
   <div>
     @foreach (var error in Errors)

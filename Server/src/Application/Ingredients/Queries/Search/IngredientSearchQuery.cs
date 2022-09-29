@@ -2,7 +2,6 @@
 
 using CookingRecipesSystem.Application.Common.Interfaces;
 using CookingRecipesSystem.Application.Common.Models;
-using CookingRecipesSystem.Application.Ingredients.Queries.GetAll;
 using CookingRecipesSystem.Application.Ingredients.Queries.GetById;
 using CookingRecipesSystem.Domain.Entities;
 
@@ -12,12 +11,12 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.Search
 {
 	public class IngredientSearchQuery :
 		PaginationModel,
-		IRequest<ApplicationResult<IngredientListResponseModel>>
+		IRequest<ApplicationResult<IEnumerable<IngredientResponseModel>>>
 	{
 		public string Name { get; set; } = string.Empty;
 
 		public class IngredientSearchQueryHandler :
-			IRequestHandler<IngredientSearchQuery, ApplicationResult<IngredientListResponseModel>>
+			IRequestHandler<IngredientSearchQuery, ApplicationResult<IEnumerable<IngredientResponseModel>>>
 		{
 			private readonly IAppRepository<Ingredient> _ingredientRepository;
 			private readonly IMapper _mapper;
@@ -30,7 +29,7 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.Search
 				_mapper = mapper;
 			}
 
-			public async Task<ApplicationResult<IngredientListResponseModel>> Handle(
+			public async Task<ApplicationResult<IEnumerable<IngredientResponseModel>>> Handle(
 				IngredientSearchQuery request, CancellationToken cancellationToken)
 			{
 				var allAsNoTrackingQueryable = _ingredientRepository.GetAllAsNoTracking();
@@ -46,9 +45,9 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.Search
 					.ToAsyncEnumerable()
 					.ToListAsync();
 
-				var ingredients = _mapper.Map<IngredientListResponseModel>(mappedIngredients);
+				var ingredients = _mapper.Map<IEnumerable<IngredientResponseModel>>(mappedIngredients);
 
-				return ApplicationResult<IngredientListResponseModel>.Success(ingredients);
+				return ApplicationResult<IEnumerable<IngredientResponseModel>>.Success(ingredients);
 			}
 		}
 	}

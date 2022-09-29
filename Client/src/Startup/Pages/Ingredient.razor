@@ -7,15 +7,16 @@
 
 <h3>Ingredient</h3>
 
-@if(succeeded){
-<div class="card card-size text-white bg-info mb-3">
-  <img src="@IngredientModel.Photo.CardPhoto" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">@IngredientModel.Name</h5>
-    <p class="card-text">@IngredientModel.Description</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+@if (succeeded)
+{
+  <div class="card card-size text-white bg-info mb-3">
+    <img src="@IngredientModel.Photo.CardPhoto" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">@IngredientModel.Name</h5>
+      <p class="card-text">@IngredientModel.Description</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
   </div>
-</div>
 }
 
 <div>
@@ -31,7 +32,7 @@
   private IEnumerable<string> Errors { get; set; } = new List<string>();
 
   [Parameter]
-  public int? Id { get; set; }  
+  public int? Id { get; set; }
 
   public IngredientGetModel IngredientModel { get; set; } = new IngredientGetModel
     {
@@ -49,14 +50,22 @@
   {
     await base.OnParametersSetAsync();
 
-    var result = await IngredientService.GetById(Id.Value);
+    if (Id != null) 
+    { 
+      var result = await IngredientService.GetById(Id.Value);
 
-    if (result.Succeeded)
-    {
-      succeeded = true;
-      IngredientModel = result.Response;
+      if (result.Succeeded)
+      {
+        succeeded = true;
+        IngredientModel = result.Response;
+      }
+
+      Errors = result.Errors;
     }
-    
-    Errors = result.Errors;
+    else
+    {
+      Errors =  new string[] { ErrorMessages.IngredientInvalid };
+    }
+   
   }
 }

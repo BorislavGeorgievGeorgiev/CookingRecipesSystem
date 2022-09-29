@@ -13,6 +13,7 @@
 		public const string Profile = "/authentication/profile/";
 		//============================================
 		public const string IngredientCreate = "/ingredient/create/";
+		public const string IngredientAll = "/ingredient/all/";
 		public const string IngredientGetById = "/ingredient/getbyid/";
 	}
 }

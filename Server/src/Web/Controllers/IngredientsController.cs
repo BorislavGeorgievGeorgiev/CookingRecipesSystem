@@ -49,14 +49,14 @@ namespace CookingRecipesSystem.Web.Controllers
 		[AllowAnonymous]
 		[HttpGet]
 		[Route(nameof(GetAll))]
-		public async Task<ActionResult<IngredientListResponseModel>> GetAll(
+		public async Task<ActionResult<IEnumerable<IngredientResponseModel>>> GetAll(
 			[FromQuery] IngredientGetAllQuery query)
 			=> await Send(query);
 
 		[AllowAnonymous]
 		[HttpGet]
 		[Route(nameof(Search))]
-		public async Task<ActionResult<IngredientListResponseModel>> Search(
+		public async Task<ActionResult<IEnumerable<IngredientResponseModel>>> Search(
 			[FromQuery] IngredientSearchQuery query)
 			=> await Send(query);
 	}

@@ -8,6 +8,8 @@
     //==================================================
     public const string ServerNoFound = "Cannot connect to the server.";
     public const string NotLogedIn = "You are not logged in.";
-
+    //==================================================
+    public const string ResultInvalid = "Cannot return result.";
+    public const string IngredientInvalid = "No Ingredient";
   }
 }

@@ -7,17 +7,26 @@
 <h1 class="h2 font-weight-normal login-title">
   Login
 </h1>
+<br />
 
 <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="LoginRequest">
   <DataAnnotationsValidator />
 
-  <label for="inputEmail" class="sr-only">@AppConstants.EmailDisplay</label>
-  <InputText id="inputEmail" class="form-control" placeholder="@AppConstants.EmailDisplay" autofocus @bind-Value="@LoginRequest.Email" />
   <ValidationMessage For="@(() => LoginRequest.Email)" />
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label for="inputEmail" class="input-group-text">@AppConstants.EmailDisplay</label>
+    </div>
+    <InputText id="inputEmail" class="form-control" placeholder="@AppConstants.EmailDisplay" autofocus @bind-Value="@LoginRequest.Email" />
+  </div>
 
-  <label for="inputPassword" class="sr-only">@AppConstants.PasswordDisplay</label>
-  <InputText type="password" id="inputPassword" class="form-control" placeholder="@AppConstants.PasswordDisplay" @bind-Value="LoginRequest.Password" />
   <ValidationMessage For="@(() => LoginRequest.Password)" />
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label for="inputPassword" class="input-group-text">@AppConstants.PasswordDisplay</label>
+    </div>
+    <InputText type="password" id="inputPassword" class="form-control" placeholder="@AppConstants.PasswordDisplay" @bind-Value="LoginRequest.Password" />
+  </div>
 
   <div>
     @foreach (var error in Errors)

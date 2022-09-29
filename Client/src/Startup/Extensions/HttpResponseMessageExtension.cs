@@ -9,8 +9,10 @@ namespace CookingRecipesSystem.Startup.Extensions
 		public static async Task<AppResult> JsonDeserializeResponseAsync(
 			this HttpResponseMessage? response)
 		{
+			var json = await response.Content.ReadAsStringAsync();
+
 			var result = JsonSerializer
-				.Deserialize<AppResult>(await response.Content.ReadAsStringAsync(),
+				.Deserialize<AppResult>(json,
 				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
 			return result;
@@ -20,8 +22,10 @@ namespace CookingRecipesSystem.Startup.Extensions
 			this HttpResponseMessage? response)
 			where TModel : class
 		{
+			var json = await response.Content.ReadAsStringAsync();
+
 			var result = JsonSerializer
-				.Deserialize<AppResult<TModel>>(await response.Content.ReadAsStringAsync(),
+				.Deserialize<AppResult<TModel>>(json,
 				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
 			return result;

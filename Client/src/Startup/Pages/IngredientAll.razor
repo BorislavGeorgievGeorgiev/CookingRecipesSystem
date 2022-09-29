@@ -1,0 +1,57 @@
+﻿@attribute [Route(PageRoutes.IngredientAll)]
+
+@using CookingRecipesSystem.Startup.Models.Ingredient
+@using CookingRecipesSystem.Startup.Models.Photo
+
+@inject IIngredientService IngredientService
+
+<h3>Ingredients</h3>
+<br />
+
+@if (succeeded)
+{
+  <div class="row">
+    @foreach (var Ingredient in IngredientList)
+    {
+      <div class="col">
+        <div class="card card-size text-white bg-info mb-3">
+          <img src="@Ingredient.Photo.CardPhoto" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">@Ingredient.Name</h5>
+            <p class="card-text">@Ingredient.Description</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}
+
+<div>
+  @foreach (var error in Errors)
+  {
+    <label class="text-danger">@error</label>
+  }
+</div>
+
+@code {
+  private bool succeeded = false;
+
+  private IEnumerable<string> Errors { get; set; } = new List<string>();
+
+  public IEnumerable<IngredientGetModel> IngredientList { get; set; }
+
+  protected override async Task OnInitializedAsync()
+  {
+    var result = await IngredientService.GetAll();
+
+    if (result.Succeeded)
+    {
+      succeeded = true;
+      IngredientList = result.Response;
+    }
+
+    Errors = result.Errors;
+  }
+
+}
