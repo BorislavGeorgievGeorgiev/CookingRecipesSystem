@@ -49,7 +49,7 @@ namespace CookingRecipesSystem.Application.Recipes.Commands.Create
 				if (recipe != null)
 				{
 					return ApplicationResult<EntityKeyModel>
-							.Failure(ExceptionMessages.RcipeExist);
+							.Failure(ExceptionMessages.RecipeExist);
 				}
 
 				var recipePhoto = await CreatePhoto(request.Photo, cancellationToken);
@@ -66,8 +66,14 @@ namespace CookingRecipesSystem.Application.Recipes.Commands.Create
 					recipe.RecipeTasks.Add(recipeTask);
 				}
 
-				//TODO: How to add Ingredients properly ?
-				throw new NotImplementedException();
+				var writtenEntries = await _recipeRepository.SaveAsync(cancellationToken);
+
+				if (writtenEntries == 0)
+				{
+					return ApplicationResult<EntityKeyModel>.Failure(ExceptionMessages.RecipeNotCreated);
+				}
+
+				return ApplicationResult<EntityKeyModel>.Success(new EntityKeyModel { Id = recipe.Id });
 			}
 
 			private async Task<Photo> CreatePhoto(IFormFile requestPhoto, CancellationToken cancellationToken)

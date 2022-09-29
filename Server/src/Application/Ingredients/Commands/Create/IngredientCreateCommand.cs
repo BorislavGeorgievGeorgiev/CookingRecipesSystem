@@ -56,7 +56,13 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands.Create
 
         ingredient = await _ingredientRepository.Create(mappedIngredient, cancellationToken);
 
-        await _ingredientRepository.SaveAsync(cancellationToken);
+        var writtenEntries = await _ingredientRepository.SaveAsync(cancellationToken);
+
+        if (writtenEntries == 0)
+        {
+          return ApplicationResult<EntityKeyModel>.Failure(ExceptionMessages.IngredientNotCreated);
+
+        }
 
         return ApplicationResult<EntityKeyModel>
             .Success(new EntityKeyModel { Id = ingredient.Id });

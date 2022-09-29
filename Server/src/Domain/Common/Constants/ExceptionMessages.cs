@@ -17,6 +17,7 @@
 
 		// IngredientCreateCommand
 		public const string IngredientExist = "This ingredient exist.";
+		public const string IngredientNotCreated = "Cannot create the ingredient.";
 
 		// IngredientGetByIdQuery
 		public const string IngredientInvalid = "There is no such ingredient.";
@@ -26,6 +27,7 @@
 		public const string IngredientPhotoNotDeleted = "Cannot delete this ingredient photos.";
 
 		// RecipeCreateCommand
-		public const string RcipeExist = "This recipe exist.";
+		public const string RecipeExist = "This recipe exist.";
+		public const string RecipeNotCreated = "Cannot create the recipe.";
 	}
 }

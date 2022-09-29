@@ -15,7 +15,7 @@ namespace CookingRecipesSystem.Application.Recipes.Commands.Create
 
 		public IFormFile Photo { get; set; }
 
-		public ICollection<Ingredient> Ingredients { get; set; } = new HashSet<Ingredient>();
+		public ICollection<RecipeIngredientNavigationModel> Ingredients { get; set; } = new HashSet<RecipeIngredientNavigationModel>();
 
 		public ICollection<RecipeTaskRequestModel> RecipeTasks { get; set; } = new HashSet<RecipeTaskRequestModel>();
 
@@ -23,6 +23,8 @@ namespace CookingRecipesSystem.Application.Recipes.Commands.Create
 		{
 			profile.CreateMap<RecipeRequestModel, Recipe>()
 							.ForMember(d => d.Photo, opt => opt.Ignore());
+			profile.CreateMap<RecipeRequestModel, Recipe>()
+							.ForMember(d => d.Ingredients, opt => opt.MapFrom(s => s.Ingredients));
 			profile.CreateMap<RecipeRequestModel, Recipe>()
 							.ForMember(d => d.RecipeTasks, opt => opt.Ignore());
 		}
