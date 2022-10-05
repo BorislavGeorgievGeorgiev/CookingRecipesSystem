@@ -39,9 +39,7 @@ namespace CookingRecipesSystem.Application.Ingredients.Queries.GetAll
 					.ToAsyncEnumerable()
 					.ToListAsync(cancellationToken);
 
-				var ingredients = _mapper.Map<IEnumerable<IngredientResponseModel>>(mappedIngredients);
-
-				return ApplicationResult<IEnumerable<IngredientResponseModel>>.Success(ingredients);
+				return ApplicationResult<IEnumerable<IngredientResponseModel>>.Success(mappedIngredients);
 			}
 		}
 	}

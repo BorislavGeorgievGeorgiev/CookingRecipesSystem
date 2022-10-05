@@ -52,17 +52,17 @@ namespace CookingRecipesSystem.Application.Recipes.Commands.Create
 							.Failure(ExceptionMessages.RecipeExist);
 				}
 
-				var recipePhoto = await CreatePhoto(request.Photo, cancellationToken);
 				var mappedRecipe = _mapper.Map<Recipe>(request);
+				var recipePhoto = await CreatePhoto(request.PhotoFile, cancellationToken);
 				mappedRecipe.Photo = recipePhoto;
-				recipe = await _recipeRepository.Create(mappedRecipe);
+				recipe = await _recipeRepository.Create(mappedRecipe, cancellationToken);
 
 				foreach (var requestRecipeTask in request.RecipeTasks)
 				{
-					var recipeTaskPhoto = await CreatePhoto(requestRecipeTask.Photo, cancellationToken);
+					var recipeTaskPhoto = await CreatePhoto(requestRecipeTask.PhotoFile, cancellationToken);
 					var mappedRecipeTask = _mapper.Map<RecipeTask>(requestRecipeTask);
 					mappedRecipeTask.Photo = recipeTaskPhoto;
-					var recipeTask = await _recipeTaskRepository.Create(mappedRecipeTask);
+					var recipeTask = await _recipeTaskRepository.Create(mappedRecipeTask, cancellationToken);
 					recipe.RecipeTasks.Add(recipeTask);
 				}
 

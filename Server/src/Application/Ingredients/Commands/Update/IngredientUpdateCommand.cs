@@ -51,10 +51,10 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands.Update
 
 				ingredient = _mapper.Map<Ingredient>(request);
 
-				if (request.Photo != null)
+				if (request.PhotoFile != null)
 				{
 					PhotoResponseModel processedPhoto = await _photoService
-					 .Process(request.Photo, cancellationToken);
+					 .Process(request.PhotoFile, cancellationToken);
 
 					ingredient.Photo = _mapper.Map<Photo>(processedPhoto);
 

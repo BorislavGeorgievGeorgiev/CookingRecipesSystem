@@ -17,7 +17,7 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands.Create
           .MaximumLength(EntityConstants.IngredientDescriptionMaxLength)
           .NotEmpty();
 
-      RuleFor(i => i.Photo)
+      RuleFor(i => i.PhotoFile)
           .NotEmpty();
     }
   }

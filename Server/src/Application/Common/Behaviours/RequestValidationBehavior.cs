@@ -14,15 +14,17 @@ namespace CookingRecipesSystem.Application.Common.Behaviours
 		private readonly IEnumerable<IValidator<TRequest>> _validators;
 
 		public RequestValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
-				=> this._validators = validators;
+				=> _validators = validators;
 
-		public async Task<TResponse> Handle(TRequest request,
-		CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+		public async Task<TResponse> Handle(
+			TRequest request,
+			RequestHandlerDelegate<TResponse> next,
+			CancellationToken cancellationToken)
 		{
 			var context = new ValidationContext<TRequest>(request);
 
-			var failures = this
-					._validators
+			var failures =
+					_validators
 					.Select(v => v.Validate(context))
 					.SelectMany(result => result.Errors)
 					.Where(f => f != null)

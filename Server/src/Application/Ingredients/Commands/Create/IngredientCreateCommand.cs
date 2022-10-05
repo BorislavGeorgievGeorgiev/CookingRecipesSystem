@@ -47,7 +47,7 @@ namespace CookingRecipesSystem.Application.Ingredients.Commands.Create
               .Failure(ExceptionMessages.IngredientExist);
         }
 
-        var processedPhoto = await _photoService.Process(request.Photo, cancellationToken);
+        var processedPhoto = await _photoService.Process(request.PhotoFile, cancellationToken);
         var mappedPhoto = _mapper.Map<Photo>(processedPhoto);
         var photo = await _photoRepository.Create(mappedPhoto, cancellationToken);
 

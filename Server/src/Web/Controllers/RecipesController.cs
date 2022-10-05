@@ -10,6 +10,7 @@ namespace CookingRecipesSystem.Web.Controllers
 	[Authorize]
 	public class RecipesController : BaseApiController
 	{
+		[AllowAnonymous]
 		[HttpPost]
 		[Route(nameof(Create))]
 		public async Task<ActionResult<EntityKeyModel>> Create(
