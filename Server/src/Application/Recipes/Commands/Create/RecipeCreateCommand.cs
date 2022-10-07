@@ -43,8 +43,9 @@ namespace CookingRecipesSystem.Application.Recipes.Commands.Create
 			{
 				var recipe = await _recipeRepository
 						.GetAllAsNoTracking()
+						.Where(i => i.Title.ToLower() == request.Title.ToLower())
 						.ToAsyncEnumerable()
-						.FirstOrDefaultAsync(i => i.Title.ToLower() == request.Title.ToLower(), cancellationToken);
+						.FirstOrDefaultAsync(cancellationToken);
 
 				if (recipe != null)
 				{

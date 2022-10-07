@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesSystem.Web.Controllers
 {
-	[Authorize]
 	public class IdentityController : BaseApiController
 	{
 		[AllowAnonymous]

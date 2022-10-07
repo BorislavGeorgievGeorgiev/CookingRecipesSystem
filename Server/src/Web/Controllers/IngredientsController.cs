@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesSystem.Web.Controllers
 {
-	[Authorize]
 	public class IngredientsController : BaseApiController
 	{
 		[HttpPost]

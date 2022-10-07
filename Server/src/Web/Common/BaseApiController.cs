@@ -4,11 +4,13 @@ using CookingRecipesSystem.Web.Common.Extensions;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CookingRecipesSystem.Web.Common
 {
+	[Authorize]
 	[ApiController]
 	[Route("api/[controller]")]
 	public abstract class BaseApiController : ControllerBase

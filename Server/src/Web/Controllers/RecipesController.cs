@@ -2,15 +2,12 @@
 using CookingRecipesSystem.Application.Recipes.Commands.Create;
 using CookingRecipesSystem.Web.Common;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CookingRecipesSystem.Web.Controllers
 {
-	[Authorize]
 	public class RecipesController : BaseApiController
 	{
-		[AllowAnonymous]
 		[HttpPost]
 		[Route(nameof(Create))]
 		public async Task<ActionResult<EntityKeyModel>> Create(
