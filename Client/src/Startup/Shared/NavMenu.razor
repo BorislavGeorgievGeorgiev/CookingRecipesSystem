@@ -7,28 +7,54 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="@CollapseNav navbar-collapse justify-content-center" @onclick="ToggleNavMenu">
-      <ul class="nav col-12 col-md-auto me-md-auto mb-1 mb-md-0 d-flex flex-md-row flex-column" @onclick="RowClicked">
+    <div class="@collapseNav navbar-collapse justify-content-center" >
+      <ul class="nav col-12 col-md-auto me-md-auto mb-1 mb-md-0 d-flex flex-md-row flex-column" >
         <li class="m-1">
           <NavLink class="btn btn-outline-light " href="" Match="NavLinkMatch.All">
-            <span class="oi oi-home" aria-hidden="true"></span> Home
+            Home
           </NavLink>
         </li>
         <li class="m-1">
           <NavLink class="btn btn-outline-light" href=@PageRoutes.GetAllUsers>
-            <span class="oi oi-people" aria-hidden="true"></span> Users
+            Users
           </NavLink>
         </li>
-        <li class="m-1">
-          <NavLink class="btn btn-outline-light" href=@PageRoutes.IngredientCreate>
-            <span class="oi oi-cog" aria-hidden="true"></span> Ingredient Create
-          </NavLink>
+        <li class="m-1" @onmouseover="ToggleIngredientsAriaExpand" @onmouseout="ToggleIngredientsAriaExpand">
+          <div class="dropdown @showIngredientsAria">
+            <NavLink class="btn btn-outline-light dropdown-toggle" type="button"
+                     @onclick="ToggleIngredientsAriaExpand"
+                     id="dropdownMenuIngredients" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="@isIngredientsAriaExpanded">
+              Ingredients
+            </NavLink>
+            <div class="dropdown-menu @showIngredientsAria" aria-labelledby="dropdownMenuIngredients">
+              <NavLink class="btn btn-outline-light dropdown-item" href=@PageRoutes.IngredientCreate>
+                Ingredient Create
+              </NavLink>
+              <NavLink class="btn btn-outline-light dropdown-item" href=@PageRoutes.IngredientAll>
+                Ingredients Show
+              </NavLink>             
+            </div>
+          </div>
         </li>
-        <li class="m-1">
-          <NavLink class="btn btn-outline-light" href=@PageRoutes.IngredientAll>
-            <span class="oi oi-document" aria-hidden="true"></span> Ingredients Show
-          </NavLink>
-        </li>
+        <li class="m-1" @onmouseover="ToggleRecipesAriaExpand" @onmouseout="ToggleRecipesAriaExpand">
+          <div class="dropdown @showRecipesAria">
+            <NavLink class="btn btn-outline-light dropdown-toggle" type="button"
+                     @onclick="ToggleRecipesAriaExpand"
+                     id="dropdownMenuRecipes" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="@isRecipesAriaExpanded">
+              Recipes
+            </NavLink>
+            <div class="dropdown-menu @showRecipesAria" aria-labelledby="dropdownMenuRecipes">
+              <NavLink class="btn btn-outline-light dropdown-item" href=#>
+                Recipe Create
+              </NavLink>
+              <NavLink class="btn btn-outline-light dropdown-item" href=# >
+                Recipes Show
+              </NavLink>             
+            </div>
+          </div>
+        </li>        
       </ul>
 
       <div class="text-end">
@@ -40,17 +66,43 @@
 
 @code {
   private const string Brand = "CRS";
+  private const string Collapse = "collapse";
+  private const string CssShow = "show";
 
   private bool isCollapsedNavMenu = true;
+  private bool isIngredientsAriaExpanded = false;
+  private bool isRecipesAriaExpanded = false; 
 
-  private string? CollapseNav => isCollapsedNavMenu ? "collapse" : null;
+  private string? showIngredientsAria => isIngredientsAriaExpanded ? CssShow : null;
+  private string? showRecipesAria => isRecipesAriaExpanded ? CssShow : null;
+  private string? collapseNav => isCollapsedNavMenu ? Collapse : null;
 
   private void ToggleNavMenu()
   {
     isCollapsedNavMenu = !isCollapsedNavMenu;
   }
 
-  private void RowClicked() 
+  private void ToggleIngredientsAriaExpand(MouseEventArgs mouseEventArgs)
+  {    
+    if (mouseEventArgs.Type == "mouseout")
+    {
+      isIngredientsAriaExpanded = false;
+    }
+    else
+    {
+      isIngredientsAriaExpanded = !isIngredientsAriaExpanded;
+    }
+  }   
+
+  private void ToggleRecipesAriaExpand(MouseEventArgs mouseEventArgs)
   {
-  }
+    if (mouseEventArgs.Type == "mouseout")
+    {
+      isRecipesAriaExpanded = false;
+    }
+    else
+    {
+      isRecipesAriaExpanded = !isRecipesAriaExpanded;
+    }    
+  }  
 }
