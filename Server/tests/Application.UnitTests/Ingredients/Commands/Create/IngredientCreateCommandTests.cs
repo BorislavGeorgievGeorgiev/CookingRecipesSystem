@@ -37,9 +37,6 @@ namespace CookingRecipesSystem.Application.UnitTests.Ingredients.Commands.Create
 			Ingredient ingredient,
 			int writtenEntries)
 		{
-			var ingredientList = new List<Ingredient>();
-			ingredientList.Add(ingredient);
-
 			var mockedMapper = new Mock<IMapper>();
 			mockedMapper
 				.Setup(x => x.Map<Photo>(It.IsAny<PhotoResponseModel>()))
@@ -58,8 +55,13 @@ namespace CookingRecipesSystem.Application.UnitTests.Ingredients.Commands.Create
 				.Setup(x => x.Create(It.IsAny<Photo>(), CancellationToken.None))
 				.Returns(Task.FromResult(photoFile));
 
-			var mockedIngredientRepository = new Mock<IAppRepository<Ingredient>>();
+			var ingredientList = new List<Ingredient>();
+			ingredientList.Add(ingredient);
 
+			var mockedIngredientRepository = new Mock<IAppRepository<Ingredient>>();
+			mockedIngredientRepository
+				.Setup(x => x.GetAllAsNoTracking(null))
+				.Returns(ingredientList.AsQueryable());
 			mockedIngredientRepository
 				.Setup(x => x.Create(ingredient, CancellationToken.None))
 				.Returns(Task.FromResult(ingredient));
@@ -67,8 +69,7 @@ namespace CookingRecipesSystem.Application.UnitTests.Ingredients.Commands.Create
 				.Setup(x => x.SaveAsync(CancellationToken.None))
 				.Returns(Task.FromResult(writtenEntries));
 
-			var handler = new IngredientCreateCommand
-				.IngredientCreateCommandHandler(
+			var handler = new IngredientCreateCommandHandler(
 				mockedPhotoService.Object,
 				mockedIngredientRepository.Object,
 				mockedPhotoRepository.Object,
@@ -144,6 +145,39 @@ namespace CookingRecipesSystem.Application.UnitTests.Ingredients.Commands.Create
 			//Assert
 			result.Succeeded.ShouldBe(false);
 			result.Errors.ShouldContain(ExceptionMessages.IngredientNotCreated);
+			result.Response.ShouldBeNull();
+		}
+
+		[Fact]
+		public async Task Handle_Should_Return_Properly_Result_When_Ingredient_Exist()
+		{
+			//Arrange
+			Fixture fixture = new Fixture();
+			var photoResponseModel = fixture.Create<PhotoResponseModel>();
+			var photoFile = fixture.Create<Photo>();
+			var ingredient = fixture.Create<Ingredient>();
+			var iFormFileFile = GetIFormImageFile();
+			var writtenEntries = 0; // 0 entity is save in database.
+
+			var command = new IngredientCreateCommand
+			{
+				Name = ingredient.Name,
+				Description = ingredient.Description,
+				PhotoFile = iFormFileFile,
+			};
+
+			var handler = MockIngredientCreateCommandHandler(
+				photoResponseModel,
+				photoFile,
+				ingredient,
+				writtenEntries);
+
+			//Act
+			var result = await handler.Handle(command, CancellationToken.None);
+
+			//Assert
+			result.Succeeded.ShouldBe(false);
+			result.Errors.ShouldContain(ExceptionMessages.IngredientExist);
 			result.Response.ShouldBeNull();
 		}
 	}
