@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-using AutoFixture;
+﻿using AutoFixture;
 
 using AutoMapper;
 
@@ -20,17 +18,8 @@ using static CookingRecipesSystem.Application.Ingredients.Commands.Create.Ingred
 
 namespace CookingRecipesSystem.Application.UnitTests.Ingredients.Commands.Create
 {
-	public class IngredientCreateCommandTests
+	public class IngredientCreateCommandTests : CommandTestBase
 	{
-		private IFormFile GetIFormImageFile()
-		{
-			string content = "File content.";
-			byte[] bytes = Encoding.Unicode.GetBytes(content);
-			var iFormFileFile = new FormFile(new MemoryStream(bytes), 0, bytes.Length, "Data", "dummy.jpeg");
-
-			return iFormFileFile;
-		}
-
 		private IngredientCreateCommandHandler MockIngredientCreateCommandHandler(
 			PhotoResponseModel photoResponseModel,
 			Photo photoFile,
